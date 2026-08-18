@@ -1,3 +1,256 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Home-only cosmic theme */
+body > main.min-h-screen {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  color: #f8f5ff;
+  background:
+    radial-gradient(ellipse at 82% 2%, rgba(124, 58, 237, 0.34) 0%, transparent 38%),
+    radial-gradient(ellipse at 8% 66%, rgba(88, 28, 135, 0.3) 0%, transparent 42%),
+    radial-gradient(circle at 52% 42%, rgba(76, 29, 149, 0.16) 0%, transparent 34%),
+    linear-gradient(145deg, #020106 0%, #08030f 52%, #030106 100%);
+}
+
+body > main.min-h-screen::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.82;
+  background-image:
+    radial-gradient(circle, rgba(255, 255, 255, 0.96) 0 1px, transparent 1.4px),
+    radial-gradient(circle, rgba(221, 214, 254, 0.82) 0 0.8px, transparent 1.3px),
+    radial-gradient(circle, rgba(255, 255, 255, 0.72) 0 1.2px, transparent 1.7px),
+    radial-gradient(circle, rgba(196, 181, 253, 0.7) 0 0.65px, transparent 1.1px);
+  background-position:
+    17px 29px,
+    109px 73px,
+    47px 151px,
+    191px 41px;
+  background-size:
+    173px 211px,
+    257px 229px,
+    311px 283px,
+    223px 337px;
+  mask-image: linear-gradient(to bottom, black 0%, rgba(0, 0, 0, 0.8) 70%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, black 0%, rgba(0, 0, 0, 0.8) 70%, transparent 100%);
+  animation: star-pulse-near 6.5s ease-in-out -1.2s infinite;
+}
+
+body > main.min-h-screen::after {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  top: -20rem;
+  right: -18rem;
+  width: 46rem;
+  height: 43rem;
+  border-radius: 43% 57% 68% 32% / 41% 36% 64% 59%;
+  pointer-events: none;
+  opacity: 0.76;
+  transform: rotate(-16deg);
+  background:
+    radial-gradient(circle at 38% 58%, rgba(233, 213, 255, 0.34), transparent 15%),
+    radial-gradient(circle at 45% 54%, rgba(147, 51, 234, 0.62), transparent 40%),
+    conic-gradient(from 210deg, transparent, rgba(88, 28, 135, 0.68), transparent 68%);
+  box-shadow: 0 0 10rem rgba(109, 40, 217, 0.34);
+  filter: blur(2px);
+  animation: nebula-drift 10s ease-in-out infinite alternate;
+}
+
+body > main.min-h-screen > .container {
+  position: relative;
+  z-index: 1;
+  isolation: isolate;
+}
+
+body > main.min-h-screen > .container::before,
+body > main.min-h-screen > .container::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  mask-image: linear-gradient(to bottom, black 0%, rgba(0, 0, 0, 0.76) 74%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, black 0%, rgba(0, 0, 0, 0.76) 74%, transparent 100%);
+}
+
+body > main.min-h-screen > .container::before {
+  opacity: 0.58;
+  background-image:
+    radial-gradient(circle, rgba(216, 180, 254, 0.82) 0 1px, transparent 1.5px),
+    radial-gradient(circle, rgba(255, 255, 255, 0.68) 0 0.75px, transparent 1.2px),
+    radial-gradient(circle, rgba(192, 132, 252, 0.72) 0 1.1px, transparent 1.6px),
+    radial-gradient(circle, rgba(237, 233, 254, 0.56) 0 0.65px, transparent 1px);
+  background-position:
+    83px 61px,
+    31px 127px,
+    167px 19px,
+    211px 173px;
+  background-size:
+    229px 263px,
+    181px 239px,
+    307px 277px,
+    269px 347px;
+  animation: star-pulse-mid 8.5s ease-in-out -3.6s infinite;
+}
+
+body > main.min-h-screen > .container::after {
+  opacity: 0.42;
+  background-image:
+    radial-gradient(circle, rgba(255, 255, 255, 0.6) 0 0.7px, transparent 1.2px),
+    radial-gradient(circle, rgba(196, 181, 253, 0.52) 0 0.6px, transparent 1px),
+    radial-gradient(circle, rgba(255, 255, 255, 0.46) 0 0.8px, transparent 1.25px),
+    radial-gradient(circle, rgba(216, 180, 254, 0.48) 0 0.55px, transparent 0.95px),
+    radial-gradient(circle, rgba(255, 255, 255, 0.38) 0 0.65px, transparent 1.05px);
+  background-position:
+    37px 91px,
+    71px 23px,
+    149px 117px,
+    19px 181px,
+    227px 53px;
+  background-size:
+    103px 131px,
+    149px 173px,
+    211px 197px,
+    277px 233px,
+    193px 311px;
+  animation: star-pulse-far 11.5s ease-in-out -6.8s infinite;
+}
+
+body > main.min-h-screen header h1 {
+  width: fit-content;
+  color: transparent;
+  background: linear-gradient(105deg, #ffffff 14%, #ede9fe 56%, #c4b5fd 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  text-shadow: 0 0 3rem rgba(167, 139, 250, 0.18);
+}
+
+body > main.min-h-screen header p {
+  color: rgba(237, 233, 254, 0.7);
+  line-height: 1.7;
+}
+
+body > main.min-h-screen section > h2::after {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 1px;
+  margin-top: 1rem;
+  background: linear-gradient(90deg, rgba(192, 132, 252, 0.48), transparent);
+}
+
+body > main.min-h-screen section > .grid > div {
+  padding: 1rem;
+  border: 1px solid rgba(216, 180, 254, 0.13);
+  border-radius: 1.25rem;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.06), rgba(88, 28, 135, 0.04));
+  box-shadow: 0 1.5rem 5rem rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(14px);
+  transition:
+    transform 220ms ease,
+    border-color 220ms ease,
+    background-color 220ms ease;
+}
+
+body > main.min-h-screen section > .grid > div:hover {
+  transform: translateY(-4px);
+  border-color: rgba(192, 132, 252, 0.3);
+  background-color: rgba(124, 58, 237, 0.07);
+}
+
+body > main.min-h-screen section img {
+  border-radius: 0.75rem;
+}
+
+body > main.min-h-screen section a {
+  color: #faf8ff;
+  transition: color 180ms ease;
+}
+
+body > main.min-h-screen section a:hover {
+  color: #c4b5fd;
+}
+
+body > main.min-h-screen section p,
+body > main.min-h-screen section time {
+  color: rgba(237, 233, 254, 0.68);
+}
+
+@keyframes star-pulse-near {
+  0%,
+  100% {
+    opacity: 0.82;
+  }
+
+  42% {
+    opacity: 0.34;
+  }
+
+  72% {
+    opacity: 0.68;
+  }
+}
+
+@keyframes star-pulse-mid {
+  0%,
+  100% {
+    opacity: 0.58;
+  }
+
+  36% {
+    opacity: 0.22;
+  }
+
+  67% {
+    opacity: 0.48;
+  }
+}
+
+@keyframes star-pulse-far {
+  0%,
+  100% {
+    opacity: 0.42;
+  }
+
+  48% {
+    opacity: 0.14;
+  }
+
+  78% {
+    opacity: 0.34;
+  }
+}
+
+@keyframes nebula-drift {
+  to {
+    translate: -1.5rem 2rem;
+    scale: 1.04;
+  }
+}
+
+@media (max-width: 640px) {
+  body > main.min-h-screen::after {
+    top: -12rem;
+    right: -25rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body > main.min-h-screen::before,
+  body > main.min-h-screen::after,
+  body > main.min-h-screen > .container::before,
+  body > main.min-h-screen > .container::after {
+    animation: none;
+  }
+
+  body > main.min-h-screen section > .grid > div {
+    transition: none;
+  }
+}

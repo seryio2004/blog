@@ -10,7 +10,7 @@ export default function Home() {
       <Container>
         <header className="py-20">
           <h1 className="text-5xl md:text-7xl font-bold tracking-tighter">
-            Niggi blog
+            Type shit
           </h1>
           <p className="mt-6 max-w-2xl text-xl text-neutral-600">
             Articulos sobre programación, electronica, diseño web y todas las paridas que hacemos los informaticos.
