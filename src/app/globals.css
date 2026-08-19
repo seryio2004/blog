@@ -365,7 +365,7 @@ body > main.min-h-screen section time {
 }
 
 .post-page article {
-  padding: clamp(1rem, 3vw, 2.5rem);
+  padding: clamp(1rem, 2.2vw, 2rem);
   border: 1px solid rgba(125, 211, 252, 0.1);
   border-radius: 1.5rem;
   background: linear-gradient(145deg, rgba(1, 7, 15, 0.58), rgba(3, 15, 28, 0.4));

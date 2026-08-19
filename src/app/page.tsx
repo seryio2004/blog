@@ -3,7 +3,7 @@ import { PostPreview } from "@/app/_components/post-preview";
 import { getAllPosts } from "@/lib/api";
 
 export default function Home() {
-  const posts = getAllPosts();
+  const posts = getAllPosts().slice(0,4);
 
   return (
     <main className="min-h-screen">
@@ -23,7 +23,7 @@ export default function Home() {
             Últimos artículos
           </h2>
 
-        <div className="grid grid-cols-1 gap-16 md:grid-cols-2">
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
             {posts.map((post) => (
               <PostPreview
                 key={post.slug}

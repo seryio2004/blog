@@ -26,7 +26,7 @@ export default async function Post(props: Params) {
       <Alert preview={post.preview} />
       <Container>
         <Header />
-        <article className="mb-32">
+        <article className="mx-auto mb-32 max-w-6xl">
           <PostHeader
             title={post.title}
             coverImage={post.coverImage}
