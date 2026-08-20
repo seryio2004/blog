@@ -12,7 +12,7 @@ export type PostSection = {
   latestPost: Post;
 };
 
-function getSectionSlug(section: string) {
+export function getSectionSlug(section: string) {
   return section
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")

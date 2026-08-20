@@ -1,10 +1,11 @@
 import Container from "@/app/_components/container";
 import { PostPreview } from "@/app/_components/post-preview";
-import { getSections } from "@/lib/api";
+import { getAllPosts, getSectionSlug, getSections } from "@/lib/api";
 import Link from "next/link";
 
 export default function Home() {
   const sections = getSections();
+  const latestPosts = getAllPosts().slice(0, 4);
 
   return (
     <main className="min-h-screen">
@@ -14,10 +15,46 @@ export default function Home() {
             Type shit
           </h1>
           <p className="mt-6 max-w-2xl text-xl text-neutral-600">
-            Articulos sobre programación, electronica, diseño web y todas las paridas que hacemos los informaticos.
-
+            Artículos sobre programación, electrónica, diseño web y todas las
+            paridas que hacemos los informáticos.
           </p>
+        </header>
 
+        <section className="pb-20" aria-labelledby="latest-posts-title">
+          <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
+            <h2 id="latest-posts-title" className="text-3xl font-bold">
+              Últimos artículos
+            </h2>
+            <Link
+              href="/articulos"
+              className="inline-flex items-center gap-2 text-sm font-medium text-violet-100/80 hover:text-white"
+            >
+              Ver todos
+              <span aria-hidden="true">→</span>
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+            {latestPosts.map((post) => (
+              <PostPreview
+                key={post.slug}
+                title={post.title}
+                coverImage={post.coverImage}
+                date={post.date}
+                excerpt={post.excerpt}
+                author={post.author}
+                slug={post.slug}
+                section={post.section}
+                sectionSlug={getSectionSlug(post.section)}
+              />
+            ))}
+          </div>
+        </section>
+
+        <section className="pb-20" aria-labelledby="sections-title">
+          <h2 id="sections-title" className="mb-8 text-3xl font-bold">
+            Explora por secciones
+          </h2>
           <nav className="mt-10" aria-label="Secciones del blog">
             <ul className="flex flex-wrap gap-3">
               {sections.map((section) => (
@@ -40,7 +77,7 @@ export default function Home() {
               </li>
             </ul>
           </nav>
-        </header>
+        </section>
 
         {sections.map((section) => {
           const post = section.latestPost;
@@ -70,7 +107,6 @@ export default function Home() {
             </section>
           );
         })}
-
       </Container>
     </main>
   );
