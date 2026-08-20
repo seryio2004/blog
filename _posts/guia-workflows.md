@@ -1,5 +1,6 @@
 ---
 title: "Como crear workflows para CI/CD basandonos en forgejo"
+section: "Forgejo"
 excerpt: "En esta guía se aprendera como crear workflows basicos para la ejecución de tests basandonos en el sistema de git de forgejo, la sintaxis y funcionamiento es el mismo que sigue github actions"
 coverImage: "/assets/blog/dynamic-routing/cover.jpg"
 date: "2026-08-18T05:35:07.322Z"

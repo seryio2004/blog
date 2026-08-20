@@ -1,5 +1,6 @@
 ---
 title: "Guia runners"
+section: "Forgejo"
 excerpt: "Esta guia toma como base el la maquina ubuntu desplegada junto con un primer runner funcional."
 coverImage: "/assets/blog/guia_runners/runner.jpg"
 date: "2026-08-16T05:35:07.322Z"
