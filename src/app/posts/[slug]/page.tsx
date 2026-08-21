@@ -9,6 +9,7 @@ import Header from "@/app/_components/header";
 import { PostBody } from "@/app/_components/post-body";
 import { PostHeader } from "@/app/_components/post-header";
 import { PostLiquidBackground } from "@/app/_components/post-liquid-background";
+import { withBasePath } from "@/lib/paths";
 
 export default async function Post(props: Params) {
   const params = await props.params;
@@ -60,7 +61,7 @@ export async function generateMetadata(props: Params): Promise<Metadata> {
     title,
     openGraph: {
       title,
-      images: [post.ogImage.url],
+      images: [withBasePath(post.ogImage.url)],
     },
   };
 }
