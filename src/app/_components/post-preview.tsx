@@ -1,4 +1,5 @@
 import { type Author } from "@/interfaces/author";
+import cn from "classnames";
 import Link from "next/link";
 import Avatar from "./avatar";
 import CoverImage from "./cover-image";
@@ -13,6 +14,7 @@ type Props = {
   slug: string;
   section?: string;
   sectionSlug?: string;
+  compact?: boolean;
 };
 
 export function PostPreview({
@@ -24,30 +26,74 @@ export function PostPreview({
   slug,
   section,
   sectionSlug,
+  compact = false,
 }: Props) {
   return (
-    <div>
-      <div className="mb-5">
+    <div
+      className={cn({
+        "mx-auto w-[90%] justify-self-center": compact,
+      })}
+      style={
+        compact
+          ? {
+              padding: "0.9rem",
+              borderRadius: "1.125rem",
+            }
+          : undefined
+      }
+    >
+      <div className={compact ? "mb-[1.125rem]" : "mb-5"}>
         <CoverImage slug={slug} title={title} src={coverImage} />
       </div>
       {section && sectionSlug && (
         <Link
           href={`/secciones/${sectionSlug}`}
-          className="mb-3 inline-flex rounded-full border border-violet-300/20 bg-violet-950/50 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-violet-200/80 hover:border-violet-300/40 hover:text-white"
+          className={cn(
+            "inline-flex rounded-full border border-violet-300/20 bg-violet-950/50 font-semibold uppercase tracking-wider text-violet-200/80 hover:border-violet-300/40 hover:text-white",
+            compact
+              ? "mb-[0.675rem] px-[0.675rem] py-[0.225rem] text-[0.675rem]"
+              : "mb-3 px-3 py-1 text-xs",
+          )}
         >
           {section}
         </Link>
       )}
-      <h3 className="text-3xl mb-3 leading-snug">
+      <h3
+        className={cn(
+          "leading-snug",
+          compact
+            ? "mb-[0.675rem] text-[1.6875rem]"
+            : "mb-3 text-3xl",
+        )}
+      >
         <Link href={`/posts/${slug}`} className="hover:underline">
           {title}
         </Link>
       </h3>
-      <div className="text-lg mb-4">
+      <div
+        className={
+          compact
+            ? "mb-[0.9rem] text-[1.0125rem]"
+            : "mb-4 text-lg"
+        }
+      >
         <DateFormatter dateString={date} />
       </div>
-      <p className="text-lg leading-relaxed mb-4">{excerpt}</p>
-      <Avatar name={author.name} picture={author.picture} />
+      <p
+        className={cn(
+          "leading-relaxed",
+          compact
+            ? "mb-[0.9rem] text-[1.0125rem]"
+            : "mb-4 text-lg",
+        )}
+      >
+        {excerpt}
+      </p>
+      <Avatar
+        name={author.name}
+        picture={author.picture}
+        compact={compact}
+      />
     </div>
   );
 }

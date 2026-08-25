@@ -1,4 +1,6 @@
 import { Post } from "@/interfaces/post";
+import { type Author } from "@/interfaces/author";
+import { getAuthorProfile } from "@/lib/authors";
 import fs from "fs";
 import matter from "gray-matter";
 import { join } from "path";
@@ -10,6 +12,12 @@ export type PostSection = {
   name: string;
   posts: Post[];
   latestPost: Post;
+};
+
+export type BlogAuthor = Author & {
+  slug: string;
+  bio: string;
+  posts: Post[];
 };
 
 export function getSectionSlug(section: string) {
@@ -90,4 +98,31 @@ export function getSections(): PostSection[] {
 
 export function getSectionBySlug(slug: string) {
   return getSections().find((section) => section.slug === getSectionSlug(slug));
+}
+
+export function getAuthors(): BlogAuthor[] {
+  const authors = new Map<string, BlogAuthor>();
+
+  for (const post of getAllPosts()) {
+    const profile = getAuthorProfile(post.author.name);
+    const existingAuthor = authors.get(profile.slug);
+
+    if (existingAuthor) {
+      existingAuthor.posts.push(post);
+    } else {
+      authors.set(profile.slug, {
+        ...post.author,
+        ...profile,
+        posts: [post],
+      });
+    }
+  }
+
+  return Array.from(authors.values());
+}
+
+export function getAuthorBySlug(slug: string) {
+  const normalizedSlug = slug.trim().toLowerCase();
+
+  return getAuthors().find((author) => author.slug === normalizedSlug);
 }
