@@ -10,6 +10,9 @@ import { PostBody } from "@/app/_components/post-body";
 import { PostHeader } from "@/app/_components/post-header";
 import { PostLiquidBackground } from "@/app/_components/post-liquid-background";
 import { withBasePath } from "@/lib/paths";
+import { PlanetPostTemplate } from "./_components/planet-post-template";
+
+const PLANET_TEMPLATE_SLUG = "hello-world";
 
 export default async function Post(props: Params) {
   const params = await props.params;
@@ -20,6 +23,10 @@ export default async function Post(props: Params) {
   }
 
   const content = await markdownToHtml(post.content || "");
+
+  if (post.slug === PLANET_TEMPLATE_SLUG) {
+    return <PlanetPostTemplate post={post} content={content} />;
+  }
 
   return (
     <main className="post-page">

@@ -46,6 +46,7 @@ export default function Home() {
                 slug={post.slug}
                 section={post.section}
                 sectionSlug={getSectionSlug(post.section)}
+                compact
               />
             ))}
           </div>
@@ -94,6 +95,7 @@ export default function Home() {
                   excerpt={post.excerpt}
                   author={post.author}
                   slug={post.slug}
+                  compact
                 />
               </div>
 
