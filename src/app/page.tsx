@@ -1,5 +1,6 @@
 import Container from "@/app/_components/container";
 import { PostPreview } from "@/app/_components/post-preview";
+import SocialSidebar from "@/app/_components/social-sidebar";
 import { getAllPosts, getSectionSlug, getSections } from "@/lib/api";
 import Link from "next/link";
 
@@ -8,7 +9,7 @@ export default function Home() {
   const latestPosts = getAllPosts().slice(0, 4);
 
   return (
-    <main className="min-h-screen">
+    <main className="min-h-screen pr-16 sm:pr-24">
       <Container>
         <header className="py-20">
           <h1 className="text-5xl md:text-7xl font-bold tracking-tighter">
@@ -20,6 +21,7 @@ export default function Home() {
           </p>
         </header>
 
+        <SocialSidebar />
         <section className="pb-20" aria-labelledby="latest-posts-title">
           <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
             <h2 id="latest-posts-title" className="text-3xl font-bold">
