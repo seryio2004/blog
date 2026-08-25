@@ -341,6 +341,168 @@ body > main.min-h-screen section time {
   animation: liquid-shadow-flow 25s ease-in-out -7s infinite alternate;
 }
 
+.post-liquid-bubbles {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  contain: strict;
+}
+
+.post-liquid-bubble {
+  --bubble-size: 8rem;
+  --bubble-opacity: 0.58;
+  --bubble-duration: 18s;
+  --bubble-delay: 0s;
+  --bubble-x-mid: 4rem;
+  --bubble-y-mid: -3rem;
+  --bubble-x-end: -2rem;
+  --bubble-y-end: 5rem;
+  --bubble-x-finish: 2rem;
+  --bubble-y-finish: -2rem;
+
+  position: absolute;
+  width: var(--bubble-size);
+  aspect-ratio: 1;
+  border: 1px solid rgba(125, 211, 252, 0.12);
+  border-radius: 52% 48% 45% 55% / 48% 54% 46% 52%;
+  opacity: var(--bubble-opacity);
+  background:
+    radial-gradient(
+      circle at 30% 26%,
+      rgba(224, 242, 254, 0.62) 0 2%,
+      rgba(125, 211, 252, 0.32) 9%,
+      rgba(14, 165, 233, 0.22) 34%,
+      rgba(2, 132, 199, 0.1) 56%,
+      transparent 72%
+    ),
+    radial-gradient(
+      circle at 66% 72%,
+      rgba(3, 105, 161, 0.2),
+      transparent 54%
+    );
+  box-shadow:
+    inset 1rem 1rem 2.4rem rgba(186, 230, 253, 0.06),
+    inset -1.2rem -1.5rem 2.8rem rgba(3, 105, 161, 0.2),
+    0 0 2.8rem rgba(14, 165, 233, 0.15);
+  mix-blend-mode: screen;
+  will-change: transform, border-radius;
+  animation: liquid-bubble-drift var(--bubble-duration)
+    cubic-bezier(0.45, 0, 0.55, 1) var(--bubble-delay) infinite alternate;
+}
+
+.post-liquid-bubble:nth-child(1) {
+  --bubble-size: clamp(5rem, 9vw, 9rem);
+  --bubble-opacity: 0.64;
+  --bubble-duration: 16s;
+  --bubble-delay: -11s;
+  --bubble-x-mid: 4rem;
+  --bubble-y-mid: 3rem;
+  --bubble-x-end: -2rem;
+  --bubble-y-end: -5rem;
+  --bubble-x-finish: 3rem;
+  --bubble-y-finish: -2rem;
+
+  top: 20%;
+  left: 8%;
+}
+
+.post-liquid-bubble:nth-child(2) {
+  --bubble-size: clamp(7rem, 14vw, 14rem);
+  --bubble-opacity: 0.46;
+  --bubble-duration: 22s;
+  --bubble-delay: -5s;
+  --bubble-x-mid: -6rem;
+  --bubble-y-mid: 4rem;
+  --bubble-x-end: 3rem;
+  --bubble-y-end: -5rem;
+  --bubble-x-finish: -2rem;
+  --bubble-y-finish: 6rem;
+
+  top: 29%;
+  right: 7%;
+}
+
+.post-liquid-bubble:nth-child(3) {
+  --bubble-size: clamp(3.5rem, 6vw, 6rem);
+  --bubble-opacity: 0.76;
+  --bubble-duration: 13s;
+  --bubble-delay: -8s;
+  --bubble-x-mid: 7rem;
+  --bubble-y-mid: -4rem;
+  --bubble-x-end: -4rem;
+  --bubble-y-end: 5rem;
+  --bubble-x-finish: 5rem;
+  --bubble-y-finish: 2rem;
+
+  top: 39%;
+  left: 32%;
+}
+
+.post-liquid-bubble:nth-child(4) {
+  --bubble-size: clamp(6rem, 10vw, 10rem);
+  --bubble-opacity: 0.58;
+  --bubble-duration: 19s;
+  --bubble-delay: -14s;
+  --bubble-x-mid: -6rem;
+  --bubble-y-mid: -5rem;
+  --bubble-x-end: 3rem;
+  --bubble-y-end: 6rem;
+  --bubble-x-finish: -4rem;
+  --bubble-y-finish: 2rem;
+
+  top: 49%;
+  right: 19%;
+}
+
+.post-liquid-bubble:nth-child(5) {
+  --bubble-size: clamp(9rem, 16vw, 16rem);
+  --bubble-opacity: 0.4;
+  --bubble-duration: 26s;
+  --bubble-delay: -18s;
+  --bubble-x-mid: 5rem;
+  --bubble-y-mid: -4rem;
+  --bubble-x-end: -3rem;
+  --bubble-y-end: 7rem;
+  --bubble-x-finish: 4rem;
+  --bubble-y-finish: -3rem;
+
+  top: 59%;
+  left: 2%;
+}
+
+.post-liquid-bubble:nth-child(6) {
+  --bubble-size: clamp(3rem, 5vw, 5rem);
+  --bubble-opacity: 0.8;
+  --bubble-duration: 15s;
+  --bubble-delay: -3s;
+  --bubble-x-mid: -4rem;
+  --bubble-y-mid: 6rem;
+  --bubble-x-end: 5rem;
+  --bubble-y-end: -3rem;
+  --bubble-x-finish: -3rem;
+  --bubble-y-finish: -5rem;
+
+  top: 69%;
+  right: 37%;
+}
+
+.post-liquid-bubble:nth-child(7) {
+  --bubble-size: clamp(6rem, 11vw, 11rem);
+  --bubble-opacity: 0.5;
+  --bubble-duration: 21s;
+  --bubble-delay: -9s;
+  --bubble-x-mid: -6rem;
+  --bubble-y-mid: -3rem;
+  --bubble-x-end: 2.5rem;
+  --bubble-y-end: 7rem;
+  --bubble-x-finish: -4rem;
+  --bubble-y-finish: 3rem;
+
+  top: 78%;
+  right: 3%;
+}
+
 .post-page > :not(.post-liquid-scroll) {
   position: relative;
   z-index: 1;
@@ -471,6 +633,42 @@ body > main.min-h-screen section time {
   }
 }
 
+@keyframes liquid-bubble-drift {
+  0% {
+    border-radius: 52% 48% 45% 55% / 48% 54% 46% 52%;
+    transform: translate3d(0, 0, 0) rotate(-6deg) scale(0.9);
+  }
+
+  38% {
+    border-radius: 43% 57% 58% 42% / 56% 42% 58% 44%;
+    transform: translate3d(
+        var(--bubble-x-mid),
+        var(--bubble-y-mid),
+        0
+      )
+      rotate(5deg) scale(1.08);
+  }
+
+  72% {
+    border-radius: 58% 42% 47% 53% / 44% 58% 42% 56%;
+    transform: translate3d(
+        var(--bubble-x-end),
+        var(--bubble-y-end),
+        0
+      )
+      rotate(-3deg) scale(0.96);
+  }
+
+  100% {
+    border-radius: 47% 53% 55% 45% / 58% 46% 54% 42%;
+    transform: translate3d(
+        var(--bubble-x-finish),
+        var(--bubble-y-finish),
+        0
+      )
+      rotate(4deg) scale(1.03);
+  }
+}
 
 @media (max-width: 640px) {
   .post-page article {
@@ -485,7 +683,9 @@ body > main.min-h-screen section time {
   }
 
   .post-liquid-blob--blue,
-  .post-liquid-blob--shadow {
+  .post-liquid-blob--shadow,
+  .post-liquid-bubble {
     animation: none;
+    will-change: auto;
   }
 }

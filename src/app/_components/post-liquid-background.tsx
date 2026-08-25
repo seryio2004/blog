@@ -70,6 +70,15 @@ export function PostLiquidBackground() {
     <div ref={layerRef} className="post-liquid-scroll" aria-hidden="true">
       <div className="post-liquid-blob post-liquid-blob--blue" />
       <div className="post-liquid-blob post-liquid-blob--shadow" />
+      <div className="post-liquid-bubbles">
+        <span className="post-liquid-bubble" />
+        <span className="post-liquid-bubble" />
+        <span className="post-liquid-bubble" />
+        <span className="post-liquid-bubble" />
+        <span className="post-liquid-bubble" />
+        <span className="post-liquid-bubble" />
+        <span className="post-liquid-bubble" />
+      </div>
     </div>
   );
 }
