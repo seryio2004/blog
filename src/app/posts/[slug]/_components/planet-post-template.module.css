@@ -48,7 +48,7 @@
   border-radius: 1.5rem;
   background:
     radial-gradient(circle at 86% 8%, rgba(30, 64, 175, 0.12), transparent 28rem),
-    linear-gradient(145deg, rgba(1, 7, 18, 0.9), rgba(3, 15, 34, 0.82));
+    linear-gradient(145deg, rgba(1, 7, 18, 0.68), rgba(3, 15, 34, 0.58));
   box-shadow:
     0 2rem 7rem rgba(0, 0, 0, 0.36),
     inset 0 1px rgba(224, 242, 254, 0.035);
@@ -134,8 +134,8 @@
     border-radius: 1rem;
     background: linear-gradient(
       145deg,
-      rgba(1, 7, 18, 0.95),
-      rgba(3, 15, 34, 0.91)
+      rgba(1, 7, 18, 0.8),
+      rgba(3, 15, 34, 0.72)
     );
     backdrop-filter: blur(12px);
   }

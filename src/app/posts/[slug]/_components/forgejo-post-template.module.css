@@ -50,7 +50,7 @@
   background:
     radial-gradient(circle at 88% 6%, rgba(16, 185, 129, 0.12), transparent 27rem),
     radial-gradient(circle at 5% 92%, rgba(21, 128, 61, 0.09), transparent 24rem),
-    linear-gradient(145deg, rgba(1, 17, 10, 0.91), rgba(3, 28, 17, 0.84));
+    linear-gradient(145deg, rgba(1, 17, 10, 0.68), rgba(3, 28, 17, 0.6));
   box-shadow:
     0 2rem 7rem rgba(0, 0, 0, 0.42),
     0 0 4rem rgba(16, 185, 129, 0.04),
@@ -142,8 +142,8 @@
     border-radius: 1rem;
     background: linear-gradient(
       145deg,
-      rgba(1, 17, 10, 0.96),
-      rgba(3, 28, 17, 0.92)
+      rgba(1, 17, 10, 0.8),
+      rgba(3, 28, 17, 0.73)
     );
     backdrop-filter: blur(12px);
   }

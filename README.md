@@ -1,24 +1,25 @@
-# Type shit — guía editorial y técnica
+# Continuous Desintegration — guía editorial y técnica
 
-Este proyecto es un blog estático construido con Next.js, React, TypeScript,
-Tailwind CSS y artículos en Markdown. Este documento explica cómo mantener el
-contenido sin necesidad de conocer toda la aplicación y describe técnicamente
-las funcionalidades incorporadas el 25 de agosto de 2026.
+Blog estático construido con Next.js, React, TypeScript, Tailwind CSS y artículos
+en Markdown. Este documento describe el flujo editorial, la arquitectura y las
+funcionalidades disponibles en el estado actual del proyecto.
 
 ## Funcionalidades documentadas
 
-- Fondo líquido azul de los artículos con más burbujas y movimiento ligado al
-  scroll.
-- Plantilla alternativa de artículo con planetas azules, algunos con anillos,
-  aplicada únicamente a <code>hello-world</code>.
-- Tarjetas de artículos del inicio reducidas al 90 % de su tamaño original.
+- Artículos Markdown agrupados automáticamente por sección y autor.
+- Etiqueta de idioma obligatoria para distinguir contenido en español e inglés.
+- Tres temas de artículo: líquido predeterminado, planetas azules y espacio
+  verde de Forgejo.
+- Selección automática del tema visual según la sección del artículo.
+- Tarjetas compactas en el inicio y distintivos visibles de sección e idioma.
 - Perfiles de autor con biografía y listado automático de publicaciones.
-- Nombre y fotografía del autor convertidos en enlaces a su perfil.
-- Barra de contacto vertical, fija y situada a la derecha del inicio.
+- Barra horizontal de redes sociales situada bajo la descripción del blog.
+- Exportación estática compatible con GitHub Pages y rutas con
+  <code>basePath</code>.
 
 ## Puesta en marcha
 
-Se recomienda Node.js 20 o superior.
+Se requiere Node.js 20.9 o superior.
 
 ~~~bash
 npm install
@@ -58,6 +59,7 @@ Plantilla de frontmatter:
 ---
 title: "Título visible del artículo"
 section: "Nombre de la sección"
+language: "es"
 excerpt: "Resumen breve que aparecerá en las tarjetas"
 coverImage: "/assets/blog/mi-primer-articulo/cover.jpg"
 date: "2026-08-25T10:00:00.000Z"
@@ -74,7 +76,8 @@ Contenido del artículo en Markdown.
 | Campo | Qué controla | Observaciones |
 | --- | --- | --- |
 | <code>title</code> | Título del artículo, tarjetas y metadatos | Se recomienda escribirlo entre comillas |
-| <code>section</code> | Agrupación y URL de sección | Es obligatorio; una sección nueva se crea automáticamente |
+| <code>section</code> | Agrupación, URL y tema visual de la sección | Es obligatorio; una sección nueva se crea automáticamente |
+| <code>language</code> | Idioma del artículo y distintivo visible | Obligatorio: usa únicamente <code>es</code> o <code>en</code> |
 | <code>excerpt</code> | Resumen de las tarjetas | Debe ser breve y descriptivo |
 | <code>coverImage</code> | Imagen principal y miniatura | Ruta pública que comienza por <code>/assets/</code> |
 | <code>date</code> | Orden cronológico y fecha visible | Formato ISO; los artículos se ordenan del más reciente al más antiguo |
@@ -115,6 +118,18 @@ Las secciones no tienen un fichero de configuración separado. El valor de
 Para evitar secciones duplicadas, utiliza siempre la misma escritura y
 capitalización.
 
+### Idiomas
+
+Cada artículo debe declarar <code>language: "es"</code> o
+<code>language: "en"</code>. [src/lib/api.ts](./src/lib/api.ts) valida el valor
+durante la lectura y detiene la compilación si falta o no es válido.
+
+[LanguageBadge](./src/app/_components/language-badge.tsx) muestra
+<code>ES · Español</code> en ámbar o <code>EN · English</code> en cian. La
+etiqueta aparece en tarjetas y cabeceras, y el atributo HTML <code>lang</code>
+se aplica al contenido para mejorar accesibilidad y pronunciación en lectores
+de pantalla.
+
 ### Autores y biografías
 
 El nombre y la fotografía se definen en el frontmatter de cada artículo. La
@@ -148,27 +163,46 @@ Comportamiento automático:
 - Si un autor deja de tener artículos, su página deja de generarse en la
   exportación estática.
 
-### Elegir la plantilla de un artículo
+### Temas visuales por sección
 
-La plantilla normal continúa siendo la opción predeterminada. La plantilla de
-planetas está aislada y actualmente se aplica solo al artículo cuyo archivo es
-<code>_posts/hello-world.md</code>.
-
-La selección se controla mediante esta constante en
-[src/app/posts/[slug]/page.tsx](./src/app/posts/%5Bslug%5D/page.tsx):
+La plantilla se decide en
+[src/app/posts/[slug]/page.tsx](./src/app/posts/%5Bslug%5D/page.tsx). El estado
+actual define tres temas y asigna dos de ellos por sección:
 
 ~~~ts
-const PLANET_TEMPLATE_SLUG = "hello-world";
+type PostTheme = "liquid" | "planets" | "forgejo";
+
+const SECTION_THEMES: Partial<Record<string, PostTheme>> = {
+  python: "planets",
+  forgejo: "forgejo",
+};
 ~~~
 
-Para probarla con otro artículo, cambia el valor por el nombre de su archivo sin
-<code>.md</code>. Este mecanismo acepta un único slug. Si se necesitan varios
-artículos con esta plantilla, puede sustituirse la comparación por un conjunto
-de slugs o añadirse un campo de plantilla al frontmatter.
+- <code>Python</code> utiliza la plantilla de planetas azules.
+- <code>Forgejo</code> utiliza la plantilla espacial verde.
+- Cualquier sección sin asignación utiliza el fondo líquido predeterminado.
 
-### Modificar los enlaces de contacto
+Las claves son slugs normalizados: por ejemplo, <code>Forgejo</code> se
+convierte en <code>forgejo</code>. Para asignar un tema existente a otra
+sección solo hay que añadir una entrada a <code>SECTION_THEMES</code>.
 
-Los enlaces mostrados en la barra fija del inicio están en el array
+Para crear un tema nuevo:
+
+1. Amplía la unión <code>PostTheme</code>.
+2. Crea su plantilla, fondo y CSS Module dentro de
+   <code>posts/[slug]/_components/</code>.
+3. Importa la plantilla en <code>posts/[slug]/page.tsx</code>.
+4. Añade una rama de renderizado para el nuevo valor.
+5. Asocia las secciones deseadas en <code>SECTION_THEMES</code>.
+
+La constante heredada <code>PLANET_TEMPLATE_SLUG</code> conserva la posibilidad
+de forzar la plantilla planetaria para un slug concreto, además de la selección
+por sección.
+
+### Modificar los enlaces sociales
+
+Los enlaces mostrados en la barra horizontal bajo la descripción del inicio
+están en el array
 <code>socialLinks</code> de
 [src/app/_components/social-sidebar.tsx](./src/app/_components/social-sidebar.tsx):
 
@@ -211,7 +245,10 @@ Antes de publicar un artículo:
 - Comprueba que el nombre del archivo produce la URL deseada.
 - Revisa que <code>section</code> no esté vacío y coincida con una sección
   existente si corresponde.
-- Confirma fecha, resumen, portada y <code>ogImage</code>.
+- Declara <code>language: "es"</code> o <code>language: "en"</code>.
+- Confirma que portada, imágenes internas y <code>ogImage</code> existen
+  realmente dentro de <code>public/</code>.
+- Confirma fecha y resumen.
 - Usa el mismo nombre y fotografía que en los demás artículos del autor.
 - Añade o actualiza la biografía en <code>src/lib/authors.ts</code>.
 - Revisa el resultado en móvil y escritorio con <code>npm run dev</code>.
@@ -224,18 +261,21 @@ Antes de publicar un artículo:
 ~~~text
 _posts/*.md
   └─ gray-matter separa frontmatter y contenido
-      └─ src/lib/api.ts crea objetos Post y los ordena por fecha
+      └─ src/lib/api.ts valida section y language, crea objetos Post
           ├─ home y /articulos
           ├─ /secciones/[section]
           ├─ /autores/[slug]
           └─ /posts/[slug]
-              ├─ plantilla líquida predeterminada
-              └─ plantilla planetaria para hello-world
+              └─ getPostThemeBySection(section)
+                  ├─ Python  → plantilla de planetas
+                  ├─ Forgejo → plantilla espacial verde
+                  └─ resto   → plantilla líquida
 ~~~
 
 [src/lib/api.ts](./src/lib/api.ts) es la capa de acceso a contenido. Lee el
-sistema de archivos durante la compilación, valida <code>section</code>, crea
-slugs, ordena publicaciones y construye las agrupaciones de secciones y autores.
+sistema de archivos durante la compilación, valida <code>section</code> y
+<code>language</code>, crea slugs, ordena publicaciones y construye las
+agrupaciones de secciones y autores.
 
 ### Fondo líquido predeterminado
 
@@ -270,9 +310,9 @@ regla <code>nth-child</code> correspondiente. Los usuarios con
 <code>prefers-reduced-motion: reduce</code> no reciben el movimiento de scroll
 ni las animaciones continuas.
 
-### Plantilla planetaria alternativa
+### Plantilla de planetas
 
-La nueva plantilla está completamente separada de la plantilla normal:
+La sección <code>Python</code> utiliza una plantilla separada de la normal:
 
 - [planet-post-template.tsx](./src/app/posts/%5Bslug%5D/_components/planet-post-template.tsx)
   compone cabecera, artículo y fondo.
@@ -291,8 +331,27 @@ cada cuerpo por separado mediante variables CSS como
 <code>--delay</code>.
 
 Los CSS Modules mantienen estos estilos encapsulados y evitan alterar la
-plantilla normal. También existen ajustes para móvil y para usuarios que
-prefieren movimiento reducido.
+plantilla normal. El panel de lectura es translúcido para dejar visible el fondo.
+También existen ajustes para móvil y para usuarios que prefieren movimiento
+reducido.
+
+### Plantilla espacial de Forgejo
+
+La sección <code>Forgejo</code> utiliza un segundo tema aislado:
+
+- [forgejo-post-template.tsx](./src/app/posts/%5Bslug%5D/_components/forgejo-post-template.tsx)
+  compone el artículo y aplica semántica de idioma.
+- [forgejo-post-template.module.css](./src/app/posts/%5Bslug%5D/_components/forgejo-post-template.module.css)
+  define la gama verde espacial y el panel translúcido.
+- [forgejo-post-background.tsx](./src/app/posts/%5Bslug%5D/_components/forgejo-post-background.tsx)
+  declara seis mundos, lunas, anillos y un cometa.
+- [forgejo-post-background.module.css](./src/app/posts/%5Bslug%5D/_components/forgejo-post-background.module.css)
+  diferencia planetas gaseosos, cristalinos, ácidos, forestales, nocturnos y
+  musgosos mediante gradientes y animaciones propias.
+
+El fondo se adapta a móvil, reduce el número de cuerpos visibles en pantallas
+pequeñas y desactiva animaciones cuando el usuario solicita movimiento
+reducido.
 
 ### Tarjetas compactas del inicio
 
@@ -331,18 +390,17 @@ autor. El componente <code>Avatar</code> utiliza
 <code>getAuthorSlug</code> para enlazar foto y nombre desde cualquier tarjeta o
 cabecera.
 
-### Barra de contacto
+### Barra de redes sociales
 
 [social-sidebar.tsx](./src/app/_components/social-sidebar.tsx) contiene datos,
 iconos SVG, navegación y estilos. Solo se importa desde
 [src/app/page.tsx](./src/app/page.tsx), por lo que no aparece en artículos ni en
 otras rutas.
 
-La barra usa <code>position: fixed</code>, se centra verticalmente en el lateral
-derecho y no se desplaza con el documento. El <code>padding-right</code> del
-elemento <code>main</code> reserva espacio para que no tape el contenido. Los
-tooltips se abren hacia la izquierda porque la barra está pegada al borde
-derecho.
+Aunque el nombre histórico del componente conserva <code>sidebar</code>, ahora
+es una barra horizontal integrada en el encabezado, justo debajo de la
+descripción del blog. Participa en el flujo normal del documento, no reserva
+espacio lateral y los tooltips se abren debajo de cada icono.
 
 La navegación incluye etiquetas ocultas para lectores de pantalla, estados de
 foco visibles y <code>aria-hidden</code> en los iconos decorativos.
@@ -351,32 +409,30 @@ foco visibles y <code>aria-hidden</code> en los iconos decorativos.
 
 ~~~text
 blog/
-├── _posts/
-│   └── hello-world.md                 # Artículo que prueba la plantilla planetaria
-├── public/assets/blog/                # Portadas, imágenes y avatares
+├── _posts/                            # Artículos Markdown
+├── public/assets/blog/                # Portadas, capturas y avatares
 └── src/
     ├── app/
     │   ├── _components/
-    │   │   ├── avatar.tsx             # Enlace al autor y variante compacta
+    │   │   ├── language-badge.tsx     # Etiqueta ES/EN
     │   │   ├── post-liquid-background.tsx
-    │   │   │                          # Fondo líquido y parallax de artículos
     │   │   ├── post-preview.tsx       # Tarjeta normal/compacta
-    │   │   └── social-sidebar.tsx     # Barra fija de contacto del inicio
-    │   ├── autores/
-    │   │   └── [slug]/page.tsx        # Perfil y publicaciones del autor
-    │   ├── posts/
-    │   │   └── [slug]/
-    │   │       ├── page.tsx           # Selección de plantilla por slug
-    │   │       └── _components/
-    │   │           ├── planet-post-background.module.css
-    │   │           ├── planet-post-background.tsx
-    │   │           ├── planet-post-template.module.css
-    │   │           └── planet-post-template.tsx
-    │   ├── globals.css                # Tema líquido y burbujas
-    │   └── page.tsx                   # Home, compactación y barra de contacto
+    │   │   └── social-sidebar.tsx     # Barra horizontal del inicio
+    │   ├── articulos/page.tsx
+    │   ├── autores/[slug]/page.tsx
+    │   ├── secciones/[section]/page.tsx
+    │   ├── posts/[slug]/
+    │   │   ├── page.tsx               # Selección de tema por sección
+    │   │   └── _components/
+    │   │       ├── planet-post-*
+    │   │       └── forgejo-post-*
+    │   ├── globals.css                # Tema líquido y estilos globales
+    │   └── page.tsx                   # Inicio y barra social
+    ├── interfaces/post.ts             # Post y PostLanguage
     └── lib/
-        ├── api.ts                     # Posts, secciones y agrupación de autores
-        └── authors.ts                 # Slugs y biografías de autores
+        ├── api.ts                     # Lectura, validación y agrupaciones
+        ├── authors.ts                 # Slugs y biografías
+        └── paths.ts                   # Compatibilidad con basePath
 ~~~
 
 ## Mapa rápido: qué archivo editar
@@ -386,13 +442,15 @@ blog/
 | Crear o editar un artículo | <code>_posts/&lt;slug&gt;.md</code> |
 | Cambiar portada o imágenes | <code>public/assets/blog/</code> y frontmatter del artículo |
 | Cambiar sección | Campo <code>section</code> del Markdown |
+| Cambiar idioma | Campo <code>language</code> del Markdown |
 | Cambiar nombre o avatar | Campos <code>author</code> del Markdown |
 | Cambiar biografía o URL de autor | <code>src/lib/authors.ts</code> |
 | Cambiar GitHub, X o correo | <code>src/app/_components/social-sidebar.tsx</code> |
-| Mover o rediseñar la barra de contacto | <code>social-sidebar.tsx</code> y padding del <code>main</code> en <code>src/app/page.tsx</code> |
-| Elegir el post con planetas | Constante <code>PLANET_TEMPLATE_SLUG</code> en <code>posts/[slug]/page.tsx</code> |
-| Cambiar planetas o anillos | <code>planet-post-background.tsx</code> y su CSS Module |
-| Cambiar el panel de la plantilla planetaria | <code>planet-post-template.module.css</code> |
+| Mover o rediseñar la barra social | <code>social-sidebar.tsx</code> y <code>src/app/page.tsx</code> |
+| Asignar un tema a una sección | <code>SECTION_THEMES</code> en <code>posts/[slug]/page.tsx</code> |
+| Cambiar planetas azules o anillos | <code>planet-post-background.tsx</code> y su CSS Module |
+| Cambiar el tema verde de Forgejo | Archivos <code>forgejo-post-*</code> |
+| Cambiar los paneles de lectura | CSS Modules <code>*-post-template.module.css</code> |
 | Cambiar burbujas del fondo normal | <code>post-liquid-background.tsx</code> y <code>globals.css</code> |
 | Cambiar el 90 % de las tarjetas del home | <code>post-preview.tsx</code> y <code>avatar.tsx</code> |
 
@@ -401,10 +459,27 @@ blog/
 Después de cualquier cambio editorial o técnico:
 
 ~~~bash
+npx tsc --noEmit
 npm run dev
 npm run build
 ~~~
 
 El build es especialmente importante porque las páginas de posts, secciones y
-autores se generan de forma estática y algunos errores de metadatos solo se
-detectan durante esa fase.
+autores se generan de forma estática. Los metadatos <code>section</code> y
+<code>language</code> se validan durante la lectura, pero las rutas de imágenes
+también deben comprobarse visualmente porque su existencia no se valida desde
+el frontmatter.
+
+## Despliegue en GitHub Pages
+
+El workflow
+[deploy-pages.yml](./.github/workflows/deploy-pages.yml) se ejecuta al hacer
+push a <code>main</code> o manualmente mediante <code>workflow_dispatch</code>.
+Usa Node.js 20, instala con <code>npm ci</code>, genera la exportación estática
+en <code>out/</code> y la publica con GitHub Pages.
+
+<code>NEXT_PUBLIC_BASE_PATH</code> procede de
+<code>actions/configure-pages</code>. [next.config.ts](./next.config.ts) lo
+aplica a Next.js y [markdownToHtml.ts](./src/lib/markdownToHtml.ts) reescribe
+rutas absolutas de imágenes y enlaces Markdown para que funcionen tanto en
+local como bajo el subdirectorio de Pages.
