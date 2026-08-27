@@ -54,6 +54,7 @@ export default async function SectionPage({ params }: Props) {
                 excerpt={post.excerpt}
                 author={post.author}
                 slug={post.slug}
+                language={post.language}
               />
             ))}
           </div>

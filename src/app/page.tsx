@@ -9,19 +9,19 @@ export default function Home() {
   const latestPosts = getAllPosts().slice(0, 4);
 
   return (
-    <main className="min-h-screen pr-16 sm:pr-24">
+    <main className="min-h-screen">
       <Container>
         <header className="py-20">
           <h1 className="text-5xl md:text-7xl font-bold tracking-tighter">
-            Type shit
+            Continuous Desintegration
           </h1>
           <p className="mt-6 max-w-2xl text-xl text-neutral-600">
             Artículos sobre programación, electrónica, diseño web y todas las
             paridas que hacemos los informáticos.
           </p>
+          <SocialSidebar />
         </header>
 
-        <SocialSidebar />
         <section className="pb-20" aria-labelledby="latest-posts-title">
           <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
             <h2 id="latest-posts-title" className="text-3xl font-bold">
@@ -46,6 +46,7 @@ export default function Home() {
                 excerpt={post.excerpt}
                 author={post.author}
                 slug={post.slug}
+                language={post.language}
                 section={post.section}
                 sectionSlug={getSectionSlug(post.section)}
                 compact
@@ -97,6 +98,7 @@ export default function Home() {
                   excerpt={post.excerpt}
                   author={post.author}
                   slug={post.slug}
+                  language={post.language}
                   compact
                 />
               </div>

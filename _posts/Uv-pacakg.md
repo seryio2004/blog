@@ -1,6 +1,7 @@
 ---
 title: "Uv pacakage manager"
 section: "Python"
+language: "en"
 excerpt: "En este articulo se explicara brevemente la herramienta uv, si usas o conoces pip este articulo te sera muy util"
 coverImage: "/assets/blog/guia_runners/runner.jpg"
 date: "2026-08-20T05:35:07.322Z"

@@ -7,7 +7,7 @@ import { PostPreview } from "./post-preview";
 
 type ArticleListPost = Pick<
   Post,
-  "slug" | "title" | "coverImage" | "date" | "excerpt" | "author"
+  "slug" | "title" | "coverImage" | "date" | "excerpt" | "author" | "language"
 >;
 
 type ArticleOrder = "recientes" | "antiguos";
@@ -57,6 +57,7 @@ export function ArticlesList({ posts }: Props) {
             excerpt={post.excerpt}
             author={post.author}
             slug={post.slug}
+            language={post.language}
           />
         ))}
       </div>

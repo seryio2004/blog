@@ -78,6 +78,7 @@ export default async function AuthorPage({ params }: Props) {
                 excerpt={post.excerpt}
                 author={post.author}
                 slug={post.slug}
+                language={post.language}
                 section={post.section}
                 sectionSlug={getSectionSlug(post.section)}
               />

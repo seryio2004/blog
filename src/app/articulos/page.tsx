@@ -5,13 +5,14 @@ import Link from "next/link";
 
 export default function ArticlesPage() {
   const posts = getAllPosts().map(
-    ({ slug, title, coverImage, date, excerpt, author }) => ({
+    ({ slug, title, coverImage, date, excerpt, author, language }) => ({
       slug,
       title,
       coverImage,
       date,
       excerpt,
       author,
+      language,
     }),
   );
 

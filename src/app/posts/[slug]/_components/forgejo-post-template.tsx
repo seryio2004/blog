@@ -4,23 +4,23 @@ import Header from "@/app/_components/header";
 import { PostBody } from "@/app/_components/post-body";
 import { PostHeader } from "@/app/_components/post-header";
 import { type Post } from "@/interfaces/post";
-import { PlanetPostBackground } from "./planet-post-background";
-import styles from "./planet-post-template.module.css";
+import { ForgejoPostBackground } from "./forgejo-post-background";
+import styles from "./forgejo-post-template.module.css";
 
-type PlanetPost = Pick<
+type ForgejoPost = Pick<
   Post,
   "title" | "coverImage" | "date" | "author" | "preview" | "language"
 >;
 
 type Props = {
-  post: PlanetPost;
+  post: ForgejoPost;
   content: string;
 };
 
-export function PlanetPostTemplate({ post, content }: Props) {
+export function ForgejoPostTemplate({ post, content }: Props) {
   return (
     <main className={styles.page}>
-      <PlanetPostBackground />
+      <ForgejoPostBackground />
 
       <div className={styles.notice}>
         <Alert preview={post.preview} />

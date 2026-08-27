@@ -70,10 +70,10 @@ function SocialIcon({ name }: { name: SocialIconName }) {
 export default function SocialSidebar() {
   return (
     <aside
-      className="fixed right-2 top-1/2 z-20 -translate-y-1/2 rounded-2xl border border-sky-300/15 bg-slate-950/70 p-2 shadow-[0_1.5rem_4rem_rgba(2,6,23,0.38)] backdrop-blur-xl sm:right-4 sm:p-3"
+      className="mt-8 w-fit rounded-2xl border border-sky-300/15 bg-slate-950/70 px-3 py-2 shadow-[0_1.5rem_4rem_rgba(2,6,23,0.38)] backdrop-blur-xl sm:p-3"
       aria-labelledby="social-links-title"
     >
-      <div className="flex flex-col items-center gap-2">
+      <div className="flex items-center gap-3">
         <h2
           id="social-links-title"
           className="text-[0.55rem] font-semibold uppercase tracking-[0.16em] text-sky-200/60 sm:text-[0.65rem] sm:tracking-[0.2em]"
@@ -82,11 +82,11 @@ export default function SocialSidebar() {
         </h2>
         <span
           aria-hidden="true"
-          className="block h-px w-8 bg-gradient-to-r from-transparent via-sky-300/40 to-transparent"
+          className="block h-8 w-px bg-gradient-to-b from-transparent via-sky-300/40 to-transparent"
         />
 
         <nav aria-label="Enlaces del blog">
-          <ul className="flex flex-col gap-2">
+          <ul className="flex gap-2">
             {socialLinks.map((link) => (
               <li key={link.label}>
                 <a
@@ -99,7 +99,7 @@ export default function SocialSidebar() {
                   <span className="sr-only">{link.label}</span>
                   <span
                     aria-hidden="true"
-                    className="pointer-events-none absolute right-full z-30 mr-3 block whitespace-nowrap rounded-lg border border-sky-300/15 bg-slate-950/95 px-3 py-2 text-xs font-medium text-sky-100 opacity-0 shadow-xl transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100"
+                    className="pointer-events-none absolute left-1/2 top-full z-30 mt-3 block -translate-x-1/2 whitespace-nowrap rounded-lg border border-sky-300/15 bg-slate-950/95 px-3 py-2 text-xs font-medium text-sky-100 opacity-0 shadow-xl transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100"
                   >
                     {link.label}
                   </span>

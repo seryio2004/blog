@@ -46,9 +46,16 @@ export function getPostBySlug(slug: string) {
     );
   }
 
+  if (data.language !== "es" && data.language !== "en") {
+    throw new Error(
+      `El artículo "${realSlug}" debe incluir "language: es" o "language: en".`,
+    );
+  }
+
   return {
     ...data,
     section: data.section.trim(),
+    language: data.language,
     slug: realSlug,
     content,
   } as Post;
