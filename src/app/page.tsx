@@ -1,118 +1,53 @@
 import Container from "@/app/_components/container";
 import { PostPreview } from "@/app/_components/post-preview";
 import SocialSidebar from "@/app/_components/social-sidebar";
+import { OrbitArcade } from "@/app/_components/orbit-arcade";
 import { getAllPosts, getSectionSlug, getSections } from "@/lib/api";
 import Link from "next/link";
 
 export default function Home() {
   const sections = getSections();
-  const latestPosts = getAllPosts().slice(0, 4);
+  const posts = getAllPosts();
 
   return (
-    <main className="min-h-screen">
+    <main>
       <Container>
-        <header className="py-20">
-          <h1 className="text-5xl md:text-7xl font-bold tracking-tighter">
-            Continuous Desintegration
-          </h1>
-          <p className="mt-6 max-w-2xl text-xl text-neutral-600">
-            Artículos sobre programación, electrónica, diseño web y todas las
-            paridas que hacemos los informáticos.
-          </p>
-          <SocialSidebar />
-        </header>
+        <div className="index-strip"><span>INDEPENDENT TECH JOURNAL <span className="index-strip__spark">✳</span> EST. 2026</span><span>INDEX / 001 — <span className="index-strip__muted">EXPLORANDO LO QUE VIENE</span></span></div>
 
-        <section className="pb-20" aria-labelledby="latest-posts-title">
-          <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
-            <h2 id="latest-posts-title" className="text-3xl font-bold">
-              Últimos artículos
-            </h2>
-            <Link
-              href="/articulos"
-              className="inline-flex items-center gap-2 text-sm font-medium text-violet-100/80 hover:text-white"
-            >
-              Ver todos
-              <span aria-hidden="true">→</span>
-            </Link>
+        <section className="home-hero" aria-labelledby="home-title">
+          <div className="home-hero__copy">
+            <p className="eyebrow"><span className="eyebrow__square" /> UN ESPACIO PARA PENSAR EN VOZ ALTA</p>
+            <h1 id="home-title">Continuous<br /><span>Disintegration</span><b aria-hidden="true">_</b></h1>
+            <p className="home-hero__lead">Ideas sobre programación, electrónica y diseño digital. Apuntes desde el laboratorio de quienes no pueden dejar de experimentar.</p>
+            <div className="home-hero__actions"><Link href="/articulos" className="button button--dark">Explorar artículos <span aria-hidden="true">↗</span></Link><a href="#secciones" className="text-link">Ver secciones <span aria-hidden="true">↓</span></a></div>
           </div>
-
-          <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-            {latestPosts.map((post) => (
-              <PostPreview
-                key={post.slug}
-                title={post.title}
-                coverImage={post.coverImage}
-                date={post.date}
-                excerpt={post.excerpt}
-                author={post.author}
-                slug={post.slug}
-                language={post.language}
-                section={post.section}
-                sectionSlug={getSectionSlug(post.section)}
-                compact
-              />
-            ))}
+          <div className="hero-terminal" aria-label="Temas del blog">
+            <div className="hero-terminal__bar"><span><i /><i /><i /></span><span>~/continuous-disintegration</span><span>×</span></div>
+            <div className="hero-terminal__body">
+              <p className="hero-terminal__prompt">$ cat manifiesto.txt<span className="hero-terminal__cursor">_</span></p>
+              <div className="hero-terminal__ascii" aria-hidden="true"><span>┌────────────────────┐</span><span>│  C / D     ◎  01   │</span><span>│   ▒▒▒▒▒▒▒▒▒▒▒▒    │</span><span>│   BUILD / BREAK    │</span><span>└────────────────────┘</span></div>
+              <p className="hero-terminal__comment">// Temas en el radar</p>
+              <ul>{sections.map((section, index) => <li key={section.slug}><span>0{index + 1}</span> <Link href={`/secciones/${section.slug}`}>{section.name.toLowerCase()}<span aria-hidden="true">↗</span></Link></li>)}</ul>
+              <p className="hero-terminal__end">// SIGUE EXPLORANDO_</p>
+            </div>
           </div>
         </section>
 
-        <section className="pb-20" aria-labelledby="sections-title">
-          <h2 id="sections-title" className="mb-8 text-3xl font-bold">
-            Explora por secciones
-          </h2>
-          <nav className="mt-10" aria-label="Secciones del blog">
-            <ul className="flex flex-wrap gap-3">
-              {sections.map((section) => (
-                <li key={section.slug}>
-                  <Link
-                    href={`/secciones/${section.slug}`}
-                    className="inline-flex rounded-full border border-violet-300/20 bg-violet-950/30 px-4 py-2 text-sm font-medium text-violet-100/80 transition-colors hover:border-violet-300/40 hover:text-white"
-                  >
-                    {section.name}
-                  </Link>
-                </li>
-              ))}
-              <li>
-                <Link
-                  href="/articulos"
-                  className="inline-flex rounded-full border border-violet-300/20 bg-violet-950/30 px-4 py-2 text-sm font-medium text-violet-100/80 transition-colors hover:border-violet-300/40 hover:text-white"
-                >
-                  Todos los artículos
-                </Link>
-              </li>
-            </ul>
-          </nav>
+        <div className="signal-strip"><span>✳ &nbsp; CURIOSIDAD EN MODO CONTINUO</span><span>ARTÍCULOS {String(posts.length).padStart(2, "0")}</span><span>SECCIONES {String(sections.length).padStart(2, "0")}</span><span>DESPLÁZATE PARA EXPLORAR ↓</span></div>
+
+        <section className="content-section" aria-labelledby="latest-title">
+          <div className="section-heading"><div><p className="eyebrow">01 / RECIÉN PUBLICADO</p><h2 id="latest-title">En el <em>archivo</em><span className="heading-star">✳</span></h2></div><Link href="/articulos" className="text-link">Todos los artículos <span aria-hidden="true">↗</span></Link></div>
+          <div className="post-grid">{posts.slice(0, 4).map((post) => <PostPreview key={post.slug} {...post} sectionSlug={getSectionSlug(post.section)} />)}</div>
         </section>
 
-        {sections.map((section) => {
-          const post = section.latestPost;
+        <OrbitArcade />
 
-          return (
-            <section key={section.slug} className="pb-20">
-              <h2 className="mb-10 text-3xl font-bold">{section.name}</h2>
+        <section className="content-section section-browser" id="secciones" aria-labelledby="sections-title">
+          <div className="section-heading"><div><p className="eyebrow">02 / RUTAS DE EXPLORACIÓN</p><h2 id="sections-title">Por <em>secciones</em><span className="heading-star">✳</span></h2></div><p className="section-heading__note">Un índice abierto de ideas, herramientas y experimentos.</p></div>
+          <div className="section-browser__list">{sections.map((section, index) => <Link key={section.slug} href={`/secciones/${section.slug}`} className="section-row"><span className="section-row__number">/{String(index + 1).padStart(2, "0")}</span><span className="section-row__name">{section.name}</span><span className="section-row__count">{String(section.posts.length).padStart(2, "0")} ARTÍCULOS</span><span className="section-row__arrow" aria-hidden="true">↗</span></Link>)}</div>
+        </section>
 
-              <div className="grid max-w-3xl grid-cols-1 gap-8">
-                <PostPreview
-                  title={post.title}
-                  coverImage={post.coverImage}
-                  date={post.date}
-                  excerpt={post.excerpt}
-                  author={post.author}
-                  slug={post.slug}
-                  language={post.language}
-                  compact
-                />
-              </div>
-
-              <Link
-                href={`/secciones/${section.slug}`}
-                className="mt-8 inline-flex items-center gap-2 rounded-lg border border-violet-300/20 bg-violet-950/30 px-4 py-2 text-sm font-medium text-violet-100/80 transition-colors hover:border-violet-300/40 hover:text-white"
-              >
-                Ver más sobre {section.name}
-                <span aria-hidden="true">→</span>
-              </Link>
-            </section>
-          );
-        })}
+        <section className="about-band"><div><p className="eyebrow">// DETRÁS DE LA PANTALLA</p><h2>Siempre hay algo<br />nuevo que <em>desmontar.</em></h2></div><div><p>Este blog reúne notas, guías y pruebas sobre las tecnologías que usamos todos los días. Escribimos para aprender, compartir y seguir haciéndonos preguntas.</p><SocialSidebar /></div></section>
       </Container>
     </main>
   );

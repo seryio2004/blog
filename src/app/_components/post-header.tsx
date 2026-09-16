@@ -1,45 +1,42 @@
 import Avatar from "./avatar";
-import CoverImage from "./cover-image";
 import DateFormatter from "./date-formatter";
 import { LanguageBadge } from "./language-badge";
 import { PostTitle } from "@/app/_components/post-title";
 import { type Author } from "@/interfaces/author";
 import { type PostLanguage } from "@/interfaces/post";
+import { TechnicalCover } from "./technical-cover";
+import Link from "next/link";
 
 type Props = {
   title: string;
-  coverImage: string;
   date: string;
   author: Author;
   language: PostLanguage;
+  section?: string;
+  sectionSlug?: string;
+  readingMinutes: number;
 };
 
 export function PostHeader({
   title,
-  coverImage,
   date,
   author,
   language,
+  section,
+  sectionSlug,
+  readingMinutes,
 }: Props) {
   return (
-    <>
+    <header className="article-header">
+      <Link href="/articulos" className="breadcrumb">← VOLVER AL ARCHIVO</Link>
+      <div className="article-header__meta">
+        {section && sectionSlug ? <Link href={`/secciones/${sectionSlug}`} className="section-tag">{section}</Link> : null}
+        <DateFormatter dateString={date} /><LanguageBadge language={language} />
+      </div>
       <PostTitle>{title}</PostTitle>
-      <div className="hidden md:block md:mb-12">
-        <Avatar name={author.name} picture={author.picture} />
-      </div>
-
-      <div className="mb-8 w-full md:mb-16">
-        <CoverImage title={title} src={coverImage} />
-      </div>
-      <div className="w-full">
-        <div className="block md:hidden mb-6">
-          <Avatar name={author.name} picture={author.picture} />
-        </div>
-        <div className="mb-6 flex flex-wrap items-center gap-3 text-lg">
-          <DateFormatter dateString={date} />
-          <LanguageBadge language={language} />
-        </div>
-      </div>
-    </>
+      <p className="article-header__kicker">IDEAS / CÓDIGO / PROCESO <span>✳</span></p>
+      <div className="article-header__byline"><Avatar name={author.name} picture={author.picture} /><span>TIEMPO DE LECTURA / {String(readingMinutes).padStart(2, "0")} MIN</span></div>
+      <TechnicalCover title={title} section={section} large />
+    </header>
   );
 }

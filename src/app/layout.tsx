@@ -1,14 +1,18 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import { withBasePath } from "@/lib/paths";
+import Header from "./_components/header";
+import Footer from "./_components/footer";
 
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
-
 export const metadata: Metadata = {
-  title: "Blog",
-  description: "Blog",
+  metadataBase: new URL(
+    new URL(
+      process.env.NEXT_PUBLIC_SITE_URL ?? "https://seryio2004.github.io",
+    ).origin,
+  ),
+  title: { default: "Continuous Disintegration — Ideas, código y otras cosas", template: "%s | Continuous Disintegration" },
+  description: "Un archivo independiente de programación, electrónica, diseño web e ideas en construcción.",
 };
 
 export default function RootLayout({
@@ -54,14 +58,14 @@ export default function RootLayout({
           name="msapplication-config"
           content={withBasePath("/favicon/browserconfig.xml")}
         />
-        <meta name="theme-color" content="#000" />
+        <meta name="theme-color" content="#f4f3ed" />
         <link
           rel="alternate"
           type="application/rss+xml"
           href={withBasePath("/feed.xml")}
         />
       </head>
-      <body className={inter.className}>{children}</body>
+      <body id="top"><Header />{children}<Footer /></body>
     </html>
   );
 }

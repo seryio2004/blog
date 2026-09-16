@@ -7,8 +7,8 @@ import { PostPreview } from "./post-preview";
 
 type ArticleListPost = Pick<
   Post,
-  "slug" | "title" | "coverImage" | "date" | "excerpt" | "author" | "language"
->;
+  "slug" | "title" | "date" | "excerpt" | "author" | "language" | "section"
+> & { sectionSlug: string };
 
 type ArticleOrder = "recientes" | "antiguos";
 
@@ -42,22 +42,23 @@ export function ArticlesList({ posts }: Props) {
 
   return (
     <>
-      <div className="mb-10 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <h2 className="text-3xl font-bold">Artículos</h2>
+      <div className="archive-section__heading">
+        <p className="eyebrow">/ ÍNDICE DE PUBLICACIONES</p>
         <ArticleSortSelect value={order} onChange={changeOrder} />
       </div>
 
-      <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+      <div className="post-grid">
         {orderedPosts.map((post) => (
           <PostPreview
             key={post.slug}
             title={post.title}
-            coverImage={post.coverImage}
             date={post.date}
             excerpt={post.excerpt}
             author={post.author}
             slug={post.slug}
             language={post.language}
+            section={post.section}
+            sectionSlug={post.sectionSlug}
           />
         ))}
       </div>

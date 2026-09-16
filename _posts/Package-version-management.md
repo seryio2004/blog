@@ -3,13 +3,13 @@ title: "Package-version-management"
 section: "Python"
 language: "en"
 excerpt: "En este articulo se explicara brevemente la herramienta uv, si usas o conoces pip este articulo te sera muy util"
-coverImage: "/assets/blog/guia_runners/runner.jpg"
+coverImage: "/assets/blog/editorial-cover.png"
 date: "2026-08-26T05:35:07.322Z"
 author:
   name: Nigi nigez
   picture: "/assets/blog/authors/jj.jpeg"
 ogImage:
-  url: "/assets/blog/dynamic-routing/cover.jpg"
+  url: "/assets/blog/editorial-cover.png"
 ---
 
 

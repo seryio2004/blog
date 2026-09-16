@@ -6,8 +6,6 @@
     "start": "next start"
   },
   "dependencies": {
-    "classnames": "^2.5.1",
-    "date-fns": "^3.6.0",
     "gray-matter": "^4.0.3",
     "next": "latest",
     "react": "^19.2.8",

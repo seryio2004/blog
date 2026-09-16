@@ -3,13 +3,13 @@ title: "Create and upload a package in forgejo"
 section: "Forgejo"
 language: "en"
 excerpt: "En esta guía se explicara el proceso para generar codigo empaquetado a raiz de un repositorio, para asi poder usarlo como modulo estable y mejorar la trazabilidad."
-coverImage: "/assets/blog/guia_runners/runner.jpg"
+coverImage: "/assets/blog/editorial-cover.png"
 date: "2026-08-27T05:35:07.322Z"
 author:
   name: Nigi nigez
   picture: "/assets/blog/authors/jj.jpeg"
 ogImage:
-  url: "/assets/blog/dynamic-routing/cover.jpg"
+  url: "/assets/blog/editorial-cover.png"
 ---
 
 # Create and upload a package

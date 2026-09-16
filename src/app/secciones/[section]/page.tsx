@@ -5,81 +5,32 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-type Props = {
-  params: Promise<{
-    section: string;
-  }>;
-};
+type Props = { params: Promise<{ section: string }> };
 
 export default async function SectionPage({ params }: Props) {
-  const { section: sectionSlug } = await params;
-  const section = getSectionBySlug(sectionSlug);
-
-  if (!section) {
-    notFound();
-  }
+  const { section: slug } = await params;
+  const section = getSectionBySlug(slug);
+  if (!section) notFound();
+  const sections = getSections();
+  const index = sections.findIndex(item => item.slug === section.slug) + 1;
 
   return (
-    <main className="min-h-screen">
-      <Container>
-        <header className="py-20">
-          <Link
-            href="/"
-            className="mb-8 inline-flex items-center gap-2 rounded-lg border border-violet-300/20 bg-violet-950/30 px-4 py-2 text-sm text-violet-100/80 transition-colors hover:border-violet-300/40 hover:text-white"
-          >
-            <span aria-hidden="true">←</span>
-            Volver al inicio
-          </Link>
-
-          <h1 className="text-5xl font-bold tracking-tighter md:text-7xl">
-            {section.name}
-          </h1>
-          <p className="mt-6 text-lg text-violet-100/70">
-            {section.posts.length === 1
-              ? "1 artículo en esta sección"
-              : `${section.posts.length} artículos en esta sección`}
-          </p>
-        </header>
-
-        <section className="pb-24">
-          <h2 className="mb-10 text-3xl font-bold">Todos los artículos</h2>
-
-          <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-            {section.posts.map((post) => (
-              <PostPreview
-                key={post.slug}
-                title={post.title}
-                coverImage={post.coverImage}
-                date={post.date}
-                excerpt={post.excerpt}
-                author={post.author}
-                slug={post.slug}
-                language={post.language}
-              />
-            ))}
-          </div>
-        </section>
-      </Container>
-    </main>
+    <main><Container>
+      <div className="page-intro page-intro--section">
+        <Link href="/articulos" className="breadcrumb">← VOLVER AL ARCHIVO</Link>
+        <div className="page-intro__grid"><div><p className="eyebrow">SECCIÓN / {String(index).padStart(2, "0")} — ARCHIVO TEMÁTICO</p><h1>{section.name}<span className="heading-star">✳</span></h1></div><div className="page-intro__side"><span>RUTA / {section.slug.toUpperCase()}</span><p>Artículos, guías y notas reunidos alrededor de {section.name}.</p><span className="page-intro__count">{String(section.posts.length).padStart(2, "0")} PUBLICACIONES ↘</span></div></div>
+      </div>
+      <div className="filter-strip"><span>OTRAS SECCIONES</span><nav aria-label="Otras secciones"><Link href="/articulos" className="filter-chip">TODO</Link>{sections.map(item => <Link key={item.slug} href={`/secciones/${item.slug}`} className={`filter-chip ${item.slug === section.slug ? "filter-chip--active" : ""}`}>{item.name.toUpperCase()} <sup>{item.posts.length}</sup></Link>)}</nav></div>
+      <section className="archive-section"><div className="archive-section__heading"><p className="eyebrow">/ ARTÍCULOS EN ESTA SECCIÓN</p><span>ORDENADOS POR FECHA ↓</span></div><div className="post-grid">{section.posts.map(post => <PostPreview key={post.slug} {...post} sectionSlug={section.slug} />)}</div></section>
+    </Container></main>
   );
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { section: sectionSlug } = await params;
-  const section = getSectionBySlug(sectionSlug);
-
-  if (!section) {
-    notFound();
-  }
-
-  return {
-    title: `${section.name} | Blog`,
-    description: `Artículos de la sección ${section.name}.`,
-  };
+  const { section: slug } = await params;
+  const section = getSectionBySlug(slug);
+  if (!section) notFound();
+  return { title: section.name, description: `Artículos de ${section.name} en Continuous Disintegration.` };
 }
 
-export function generateStaticParams() {
-  return getSections().map((section) => ({
-    section: section.slug,
-  }));
-}
+export function generateStaticParams() { return getSections().map(section => ({ section: section.slug })); }

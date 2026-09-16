@@ -3,13 +3,13 @@ title: "Guia runners"
 section: "Forgejo"
 language: "es"
 excerpt: "Esta guia toma como base el la maquina ubuntu desplegada junto con un primer runner funcional."
-coverImage: "/assets/blog/guia_runners/runner.jpg"
+coverImage: "/assets/blog/editorial-cover.png"
 date: "2026-08-16T05:35:07.322Z"
 author:
   name: Nigi nigez
   picture: "/assets/blog/authors/jj.jpeg"
 ogImage:
-  url: "/assets/blog/dynamic-routing/cover.jpg"
+  url: "/assets/blog/editorial-cover.png"
 ---
 
 
