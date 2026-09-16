@@ -64,6 +64,7 @@ a { color: inherit; text-decoration: none; }
 @keyframes blink { 50% { opacity: 0; } }
 
 .signal-strip { min-height: 48px; margin-inline: calc((100vw - min(100vw - 40px, 1340px)) / -2); padding-inline: max(20px, calc((100vw - 1340px) / 2)); border-top: 1px solid var(--ink); background: var(--acid); }
+.signal-strip__mobile { display: none; }
 .content-section, .archive-section { padding: 105px 0 125px; }
 .section-heading { margin-bottom: 48px; display: flex; align-items: flex-end; justify-content: space-between; gap: 30px; }
 .section-heading h2, .about-band h2 { margin: 0; font-size: clamp(48px, 5.5vw, 78px); line-height: .92; letter-spacing: -.07em; font-weight: 900; }
@@ -149,8 +150,8 @@ a { color: inherit; text-decoration: none; }
 @keyframes target-lock { from { scale: 1.8; opacity: 0; } to { scale: 1; opacity: 1; } }
 @keyframes arcade-ship { 50% { transform: translateY(-5px); } }
 @keyframes arcade-thruster { 50% { width: 8px; opacity: .45; } }
-@keyframes arcade-meteor { 0% { left: var(--start-x); top: var(--start-y); transform: rotate(0); opacity: 0; } 7% { opacity: 1; } 67% { left: var(--end-x); top: var(--end-y); transform: rotate(310deg); opacity: 1; } 68%, 100% { left: var(--end-x); top: var(--end-y); transform: rotate(310deg) scale(.1); opacity: 0; } }
-@keyframes arcade-meteor-manual { from { left: var(--start-x); top: var(--start-y); transform: rotate(0); opacity: 1; } to { left: var(--end-x); top: var(--end-y); transform: rotate(310deg); opacity: 1; } }
+@keyframes arcade-meteor { 0% { left: var(--start-x); top: var(--start-y); transform: rotate(0); opacity: 0; } 7% { opacity: 1; } 67% { left: var(--end-x); top: var(--end-y); transform: rotate(var(--meteor-spin, 310deg)); opacity: 1; } 68%, 100% { left: var(--end-x); top: var(--end-y); transform: rotate(var(--meteor-spin, 310deg)) scale(.1); opacity: 0; } }
+@keyframes arcade-meteor-manual { from { left: var(--start-x); top: var(--start-y); transform: rotate(0); opacity: 1; } to { left: var(--end-x); top: var(--end-y); transform: rotate(var(--meteor-spin, 310deg)); opacity: 1; } }
 @keyframes arcade-laser { 0%, 49% { opacity: 0; stroke-dashoffset: 0; } 50% { opacity: 1; stroke-dashoffset: 0; } 66% { opacity: 1; stroke-dashoffset: -92; } 68%, 100% { opacity: 0; stroke-dashoffset: -92; } }
 @keyframes arcade-manual-shot { to { stroke-dashoffset: 0; } }
 @keyframes arcade-manual-impact { from { scale: .5; opacity: 1; } to { scale: 1.8; opacity: 0; } }
@@ -191,8 +192,9 @@ a { color: inherit; text-decoration: none; }
   .hero-terminal { margin-top: 60px; transform: none; box-shadow: 6px 6px 0 var(--acid); }
   .hero-terminal__body { min-height: 440px; padding: 22px 20px; }
   .index-strip span:last-child { display: none; }
-  .signal-strip { margin-inline: -14px; padding-inline: 14px; overflow: hidden; gap: 30px; white-space: nowrap; }
-  .signal-strip span:nth-child(2), .signal-strip span:nth-child(3) { display: none; }
+  .signal-strip { margin-inline: -14px; padding-inline: 14px; justify-content: center; font-size: 9px; line-height: 1.3; letter-spacing: .04em; text-align: center; }
+  .signal-strip__desktop { display: none; }
+  .signal-strip__mobile { display: block; }
   .content-section, .archive-section { padding: 75px 0 90px; }
   .section-heading { align-items: flex-start; flex-direction: column; }
   .section-heading h2, .about-band h2 { font-size: clamp(42px, 13vw, 60px); overflow-wrap: anywhere; }
@@ -209,9 +211,6 @@ a { color: inherit; text-decoration: none; }
   .orbit-game__incident small { font-size: 8px; line-height: 1.35; }
   .orbit-game__message { left: 14px; }
   .orbit-game__planet { right: -115px; }
-  .orbit-game__meteor--two { width: 36px; }
-  .orbit-game__meteor--four { width: 32px; }
-  .is-active .orbit-game__meteor { animation-duration: 10s; }
   .orbit-feature__copy h2 { font-size: clamp(40px, 13vw, 48px); overflow-wrap: anywhere; }
   .orbit-feature__status { flex-wrap: wrap; }
   .section-row { min-height: 95px; grid-template-columns: 55px minmax(0, 1fr) 35px; }

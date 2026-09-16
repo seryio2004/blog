@@ -1,8 +1,10 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { type CSSProperties, useEffect, useRef, useState } from "react";
 
 const meteorites = ["one", "two", "three", "four"] as const;
+type MeteorName = typeof meteorites[number];
+
 const alerts = [
   "PUSH A MASTER EN VIERNES",
   "DEPLOY SIN TESTS",
@@ -11,6 +13,48 @@ const alerts = [
   "SECRETOS EN EL COMMIT",
   "DEPENDENCIA SIN FIJAR",
 ] as const;
+
+type MeteorConfig = {
+  generation: number;
+  startX: number;
+  startY: number;
+  endX: number;
+  endY: number;
+  size: number;
+  duration: number;
+  delay: number;
+  spin: number;
+  alert: number;
+};
+
+type MeteorStyle = CSSProperties & Record<`--${string}`, string>;
+
+const initialMeteors: Record<MeteorName, MeteorConfig> = {
+  one: { generation: 0, startX: 110, startY: 20, endX: 61, endY: 35, size: 44, duration: 7.2, delay: -1.2, spin: 310, alert: 0 },
+  two: { generation: 0, startX: 110, startY: 49, endX: 65, endY: 57, size: 36, duration: 8.1, delay: -3, spin: -280, alert: 1 },
+  three: { generation: 0, startX: 49, startY: -10, endX: 49, endY: 25, size: 52, duration: 8.8, delay: -4.8, spin: 340, alert: 2 },
+  four: { generation: 0, startX: 110, startY: 7, endX: 70, endY: 29, size: 32, duration: 6.7, delay: -6.1, spin: -320, alert: 3 },
+};
+
+const randomBetween = (min: number, max: number) => min + Math.random() * (max - min);
+
+function createRandomMeteor(generation: number, stagger = false): MeteorConfig {
+  const entersFromTop = Math.random() < 0.38;
+  const duration = randomBetween(6.4, 10.2);
+
+  return {
+    generation,
+    startX: entersFromTop ? randomBetween(30, 92) : randomBetween(106, 116),
+    startY: entersFromTop ? randomBetween(-16, -8) : randomBetween(8, 67),
+    endX: randomBetween(49, 73),
+    endY: randomBetween(24, 61),
+    size: randomBetween(32, 56),
+    duration,
+    delay: stagger ? -randomBetween(0, duration) : randomBetween(0.25, 1.4),
+    spin: randomBetween(-420, 420),
+    alert: Math.floor(Math.random() * alerts.length),
+  };
+}
 
 type Shot = {
   id: number;
@@ -36,9 +80,16 @@ export function OrbitArcade() {
   const [intercepts, setIntercepts] = useState(0);
   const [destroyed, setDestroyed] = useState<string[]>([]);
   const [shots, setShots] = useState<Shot[]>([]);
+  const [meteorConfigs, setMeteorConfigs] = useState(initialMeteors);
 
   useEffect(() => () => {
     timersRef.current.forEach(window.clearTimeout);
+  }, []);
+
+  useEffect(() => {
+    setMeteorConfigs(Object.fromEntries(
+      meteorites.map(name => [name, createRandomMeteor(1, true)]),
+    ) as Record<MeteorName, MeteorConfig>);
   }, []);
 
   useEffect(() => {
@@ -88,6 +139,13 @@ export function OrbitArcade() {
     timersRef.current.push(window.setTimeout(callback, delay));
   };
 
+  const regenerateMeteor = (name: MeteorName, stagger = false) => {
+    setMeteorConfigs(current => ({
+      ...current,
+      [name]: createRandomMeteor(current[name].generation + 1, stagger),
+    }));
+  };
+
   const fire = (clientX?: number, clientY?: number) => {
     const game = gameRef.current;
     const ship = game?.querySelector<HTMLElement>(".orbit-game__ship");
@@ -133,9 +191,10 @@ export function OrbitArcade() {
       if (hitMeteor) {
         setDestroyed(current => [...current, hitMeteor]);
         setIntercepts(value => value + 1);
-        setAlertIndex(meteorites.indexOf(hitMeteor));
+        setAlertIndex(meteorConfigs[hitMeteor].alert);
 
         schedule(() => {
+          regenerateMeteor(hitMeteor);
           destroyedRef.current.delete(hitMeteor);
           setDestroyed(current => current.filter(name => name !== hitMeteor));
         }, 1500);
@@ -240,29 +299,66 @@ export function OrbitArcade() {
           <div className="orbit-game__planet" aria-hidden="true"><span className="orbit-game__ring" /></div>
           <div className="orbit-game__ship" aria-hidden="true"><span className="orbit-game__thruster" /></div>
 
-          {meteorites.map((meteorite, index) => (
-            <span
-              key={meteorite}
-              ref={element => { meteorRefs.current[meteorite] = element; }}
-              className={`orbit-game__meteor orbit-game__meteor--${meteorite} ${destroyed.includes(meteorite) ? "is-destroyed" : ""}`}
-              aria-hidden="true"
-              data-threat={alerts[index]}
-            >
-              <i /><i /><i />
-            </span>
-          ))}
+          {meteorites.map(meteorite => {
+            const config = meteorConfigs[meteorite];
+            const style: MeteorStyle = {
+              "--start-x": `${config.startX}%`,
+              "--start-y": `${config.startY}%`,
+              "--end-x": `${config.endX}%`,
+              "--end-y": `${config.endY}%`,
+              "--meteor-spin": `${config.spin}deg`,
+              width: `${config.size}px`,
+              animationDuration: `${config.duration}s`,
+              animationDelay: `${config.delay}s`,
+            };
+
+            return (
+              <span
+                key={`${meteorite}-${config.generation}`}
+                ref={element => { meteorRefs.current[meteorite] = element; }}
+                className={`orbit-game__meteor orbit-game__meteor--${meteorite} ${destroyed.includes(meteorite) ? "is-destroyed" : ""}`}
+                style={style}
+                aria-hidden="true"
+                data-threat={alerts[config.alert]}
+                onAnimationIteration={() => {
+                  if (!destroyedRef.current.has(meteorite)) regenerateMeteor(meteorite);
+                }}
+              >
+                <i /><i /><i />
+              </span>
+            );
+          })}
 
           <svg className="orbit-game__lasers" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-            <line className="orbit-game__laser orbit-game__laser--one" x1="21" y1="71" x2="61" y2="35" pathLength="100" />
-            <line className="orbit-game__laser orbit-game__laser--two" x1="21" y1="71" x2="65" y2="57" pathLength="100" />
-            <line className="orbit-game__laser orbit-game__laser--three" x1="21" y1="71" x2="49" y2="25" pathLength="100" />
-            <line className="orbit-game__laser orbit-game__laser--four" x1="21" y1="71" x2="70" y2="29" pathLength="100" />
+            {meteorites.map(meteorite => {
+              const config = meteorConfigs[meteorite];
+              return <line
+                key={`${meteorite}-${config.generation}`}
+                className={`orbit-game__laser orbit-game__laser--${meteorite}`}
+                x1="21"
+                y1="71"
+                x2={config.endX}
+                y2={config.endY}
+                pathLength="100"
+                style={{ animationDuration: `${config.duration}s`, animationDelay: `${config.delay}s` }}
+              />;
+            })}
           </svg>
 
-          <span className="orbit-game__blast orbit-game__blast--one" aria-hidden="true"><i /><i /><i /><i /></span>
-          <span className="orbit-game__blast orbit-game__blast--two" aria-hidden="true"><i /><i /><i /><i /></span>
-          <span className="orbit-game__blast orbit-game__blast--three" aria-hidden="true"><i /><i /><i /><i /></span>
-          <span className="orbit-game__blast orbit-game__blast--four" aria-hidden="true"><i /><i /><i /><i /></span>
+          {meteorites.map(meteorite => {
+            const config = meteorConfigs[meteorite];
+            return <span
+              key={`${meteorite}-${config.generation}`}
+              className={`orbit-game__blast orbit-game__blast--${meteorite}`}
+              style={{
+                left: `${config.endX}%`,
+                top: `${config.endY}%`,
+                animationDuration: `${config.duration}s`,
+                animationDelay: `${config.delay}s`,
+              }}
+              aria-hidden="true"
+            ><i /><i /><i /><i /></span>;
+          })}
 
           <svg className="orbit-game__manual-shots" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
             {shots.filter(shot => !shot.impact).map(shot => (

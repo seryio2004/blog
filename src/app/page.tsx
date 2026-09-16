@@ -33,7 +33,13 @@ export default function Home() {
           </div>
         </section>
 
-        <div className="signal-strip"><span>* &nbsp; CURIOSIDAD EN MODO CONTINUO</span><span>ARTÍCULOS {String(posts.length).padStart(2, "0")}</span><span>SECCIONES {String(sections.length).padStart(2, "0")}</span><span>DESPLÁZATE PARA EXPLORAR v</span></div>
+        <div className="signal-strip">
+          <span className="signal-strip__desktop">* &nbsp; SEGUIMOS TRASTEANDO</span>
+          <span className="signal-strip__desktop">ARTÍCULOS {String(posts.length).padStart(2, "0")}</span>
+          <span className="signal-strip__desktop">SECCIONES {String(sections.length).padStart(2, "0")}</span>
+          <span className="signal-strip__desktop">BAJA Y ECHA UN OJO v</span>
+          <span className="signal-strip__mobile">* SEGUIMOS TRASTEANDO. BAJA Y ECHA UN OJO v</span>
+        </div>
 
         <section className="content-section" aria-labelledby="latest-title">
           <div className="section-heading"><div><p className="eyebrow">01 / RECIÉN PUBLICADO</p><h2 id="latest-title">En el <em>archivo</em><span className="heading-star">*</span></h2></div><Link href="/articulos" className="text-link">Todos los artículos <span aria-hidden="true">-&gt;</span></Link></div>
