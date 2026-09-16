@@ -5,7 +5,7 @@ type Props = { title: string; section?: string; slug?: string; large?: boolean }
 export function TechnicalCover({ title, section = "Editorial", slug, large = false }: Props) {
   const visual = (
     <div className={`technical-cover ${large ? "technical-cover--large" : ""}`} data-section={section.toLowerCase()} aria-hidden="true">
-      <div className="technical-cover__top"><span>CD / VISUAL SYSTEM</span><span>FIG. 001 ↗</span></div>
+      <div className="technical-cover__top"><span>CD / VISUAL SYSTEM</span><span>FIG. 001 -&gt;</span></div>
       <div className="technical-cover__diagram">
         <span className="technical-cover__orbit technical-cover__orbit--one" />
         <span className="technical-cover__orbit technical-cover__orbit--two" />

@@ -9,7 +9,7 @@ export default function Avatar({ name, picture }: Props) {
     <Link href={`/autores/${getAuthorSlug(name)}`} className="author-link" aria-label={`Ver perfil de ${name}`}>
       <img src={withBasePath(picture)} alt="" width="32" height="32" />
       <span>{name}</span>
-      <span aria-hidden="true">↗</span>
+      <span aria-hidden="true">-&gt;</span>
     </Link>
   );
 }

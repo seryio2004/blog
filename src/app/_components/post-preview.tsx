@@ -20,9 +20,9 @@ export function PostPreview({ title, date, excerpt, author, slug, language, sect
           {section && sectionSlug ? <Link href={`/secciones/${sectionSlug}`} className="section-tag">{section}</Link> : <span className="section-tag">EDITORIAL</span>}
           <span className="meta-separator">/</span><DateFormatter dateString={date} /><LanguageBadge language={language} />
         </div>
-        <h3><Link href={`/posts/${slug}`}>{title}<span aria-hidden="true" className="post-card__title-arrow">↗</span></Link></h3>
+        <h3><Link href={`/posts/${slug}`}>{title}<span aria-hidden="true" className="post-card__title-arrow">-&gt;</span></Link></h3>
         <p className="post-card__excerpt">{excerpt}</p>
-        <div className="post-card__footer"><Avatar name={author.name} picture={author.picture} /><span className="post-card__read">LEER ARTÍCULO <span aria-hidden="true">↗</span></span></div>
+        <div className="post-card__footer"><Avatar name={author.name} picture={author.picture} /><span className="post-card__read">LEER ARTÍCULO <span aria-hidden="true">-&gt;</span></span></div>
       </div>
     </article>
   );

@@ -17,11 +17,11 @@ export default async function SectionPage({ params }: Props) {
   return (
     <main><Container>
       <div className="page-intro page-intro--section">
-        <Link href="/articulos" className="breadcrumb">← VOLVER AL ARCHIVO</Link>
-        <div className="page-intro__grid"><div><p className="eyebrow">SECCIÓN / {String(index).padStart(2, "0")} — ARCHIVO TEMÁTICO</p><h1>{section.name}<span className="heading-star">✳</span></h1></div><div className="page-intro__side"><span>RUTA / {section.slug.toUpperCase()}</span><p>Artículos, guías y notas reunidos alrededor de {section.name}.</p><span className="page-intro__count">{String(section.posts.length).padStart(2, "0")} PUBLICACIONES ↘</span></div></div>
+        <Link href="/articulos" className="breadcrumb">&lt;- VOLVER AL ARCHIVO</Link>
+        <div className="page-intro__grid"><div><p className="eyebrow">SECCIÓN / {String(index).padStart(2, "0")} — ARCHIVO TEMÁTICO</p><h1>{section.name}<span className="heading-star">*</span></h1></div><div className="page-intro__side"><span>RUTA / {section.slug.toUpperCase()}</span><p>Artículos, guías y notas reunidos alrededor de {section.name}.</p><span className="page-intro__count">{String(section.posts.length).padStart(2, "0")} PUBLICACIONES -&gt;</span></div></div>
       </div>
       <div className="filter-strip"><span>OTRAS SECCIONES</span><nav aria-label="Otras secciones"><Link href="/articulos" className="filter-chip">TODO</Link>{sections.map(item => <Link key={item.slug} href={`/secciones/${item.slug}`} className={`filter-chip ${item.slug === section.slug ? "filter-chip--active" : ""}`}>{item.name.toUpperCase()} <sup>{item.posts.length}</sup></Link>)}</nav></div>
-      <section className="archive-section"><div className="archive-section__heading"><p className="eyebrow">/ ARTÍCULOS EN ESTA SECCIÓN</p><span>ORDENADOS POR FECHA ↓</span></div><div className="post-grid">{section.posts.map(post => <PostPreview key={post.slug} {...post} sectionSlug={section.slug} />)}</div></section>
+      <section className="archive-section"><div className="archive-section__heading"><p className="eyebrow">/ ARTÍCULOS EN ESTA SECCIÓN</p><span>ORDENADOS POR FECHA v</span></div><div className="post-grid">{section.posts.map(post => <PostPreview key={post.slug} {...post} sectionSlug={section.slug} />)}</div></section>
     </Container></main>
   );
 }

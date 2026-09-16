@@ -96,7 +96,7 @@ a { color: inherit; text-decoration: none; }
 .orbit-feature { padding: 35px 0 125px; display: grid; grid-template-columns: minmax(0, 1.12fr) minmax(320px, .88fr); align-items: center; gap: clamp(55px, 9vw, 130px); border-bottom: 1px solid var(--ink); }
 .orbit-terminal { min-width: 0; border: 1px solid var(--ink); color: #eff0e7; background: var(--terminal); box-shadow: 10px 10px 0 var(--acid); transform: rotate(-.55deg); transition: transform 180ms ease, box-shadow 180ms ease; }
 .orbit-terminal.is-active { box-shadow: 14px 14px 0 var(--acid); transform: rotate(0) translate(-2px, -2px); }
-.orbit-game { --target-x: 50%; --target-y: 50%; --ship-offset-y: 0px; position: relative; min-height: 440px; overflow: hidden; isolation: isolate; cursor: crosshair; background: #0d0f0b; font-family: "Courier New", monospace; outline: none; }
+.orbit-game { --target-x: 50%; --target-y: 50%; --ship-offset-y: 0px; position: relative; min-height: 440px; overflow: hidden; isolation: isolate; cursor: crosshair; touch-action: pan-y; user-select: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent; background: #0d0f0b; font-family: "Courier New", monospace; outline: none; }
 .orbit-game:focus-visible { box-shadow: inset 0 0 0 2px var(--acid); }
 .orbit-game::before { content: ""; position: absolute; inset: 0; z-index: 9; pointer-events: none; opacity: .2; background: repeating-linear-gradient(to bottom, transparent 0 3px, #000 4px); }
 .orbit-game__hud { position: absolute; z-index: 10; top: 18px; left: 20px; right: 20px; display: flex; justify-content: space-between; padding-bottom: 9px; border-bottom: 1px solid #46513b; color: #9aab8b; font-size: 9px; letter-spacing: .1em; }
@@ -179,7 +179,92 @@ a { color: inherit; text-decoration: none; }
 }
 
 @media (max-width: 760px) {
-  .container { width: min(100% - 28px, 1340px); }.site-header__inner { min-height: 72px; gap: 8px; }.site-nav { gap: 0; font-size: 8px; }.site-nav a { padding: 9px 6px; }.site-nav a:first-child { display: none; }.home-hero { display: block; min-height: 0; padding: 60px 0; }.home-hero__lead { font-size: 18px; }.hero-terminal { margin-top: 60px; transform: none; box-shadow: 6px 6px 0 var(--acid); }.hero-terminal__body { min-height: 440px; padding: 22px 20px; }.index-strip span:last-child { display: none; }.signal-strip { margin-inline: -14px; padding-inline: 14px; overflow: hidden; gap: 30px; white-space: nowrap; }.signal-strip span:nth-child(2), .signal-strip span:nth-child(3) { display: none; }.content-section, .archive-section { padding: 75px 0 90px; }.section-heading { align-items: flex-start; flex-direction: column; }.post-grid { grid-template-columns: 1fr; }.orbit-feature { padding: 5px 0 90px; grid-template-columns: 1fr; gap: 60px; }.orbit-terminal { transform: none; box-shadow: 6px 6px 0 var(--acid); }.orbit-game { min-height: 380px; }.orbit-game__hud { left: 14px; right: 14px; font-size: 7px; }.orbit-game__message { left: 14px; }.orbit-game__planet { right: -115px; }.orbit-feature__copy h2 { font-size: 48px; }.section-row { min-height: 95px; grid-template-columns: 55px 1fr 35px; }.section-row__count { display: none; }.section-row__name { font-size: 38px; }.about-band { margin-bottom: 70px; padding: 35px 25px; grid-template-columns: 1fr; gap: 10px; }.about-band > div:last-child { padding-top: 20px; }.page-intro { padding-bottom: 60px; }.breadcrumb { margin-bottom: 55px; }.page-intro__grid { grid-template-columns: 1fr; gap: 50px; }.page-intro__side { justify-self: start; }.filter-strip { padding: 18px 0; align-items: flex-start; flex-direction: column; }.author-intro__grid { grid-template-columns: 1fr; gap: 55px; }.author-intro__portrait { max-width: 250px; }.article-title { font-size: clamp(45px, 15vw, 72px); }.article-layout { grid-template-columns: 1fr; padding-top: 55px; }.article-aside { display: none; }.site-footer__top { align-items: flex-start; flex-direction: column; gap: 40px; }.site-footer__bottom { gap: 15px; flex-direction: column; }.post-card__read { display: none; }
+  .container { width: min(100% - 28px, 1340px); }
+  .site-header__inner { min-height: 72px; gap: 8px; }
+  .site-nav { gap: 0; font-size: 8px; }
+  .site-nav a { padding: 9px 6px; }
+  .site-nav a:first-child { display: none; }
+  .home-hero { display: block; min-height: 0; padding: 60px 0; }
+  .home-hero h1, .page-intro h1, .author-intro h1 { font-size: clamp(44px, 14vw, 64px); overflow-wrap: anywhere; }
+  .home-hero__lead { font-size: 18px; }
+  .home-hero__actions { flex-wrap: wrap; gap: 20px; }
+  .hero-terminal { margin-top: 60px; transform: none; box-shadow: 6px 6px 0 var(--acid); }
+  .hero-terminal__body { min-height: 440px; padding: 22px 20px; }
+  .index-strip span:last-child { display: none; }
+  .signal-strip { margin-inline: -14px; padding-inline: 14px; overflow: hidden; gap: 30px; white-space: nowrap; }
+  .signal-strip span:nth-child(2), .signal-strip span:nth-child(3) { display: none; }
+  .content-section, .archive-section { padding: 75px 0 90px; }
+  .section-heading { align-items: flex-start; flex-direction: column; }
+  .section-heading h2, .about-band h2 { font-size: clamp(42px, 13vw, 60px); overflow-wrap: anywhere; }
+  .post-grid { grid-template-columns: minmax(0, 1fr); }
+  .post-card, .post-card__content, .technical-cover__link { min-width: 0; }
+  .post-card .technical-cover { min-height: clamp(230px, 76vw, 310px); }
+  .technical-cover__top span, .technical-cover__bottom span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .orbit-feature { padding: 5px 0 90px; grid-template-columns: minmax(0, 1fr); gap: 60px; }
+  .orbit-terminal { transform: none; box-shadow: 6px 6px 0 var(--acid); }
+  .orbit-terminal.is-active { transform: none; box-shadow: 6px 6px 0 var(--acid); }
+  .orbit-game { min-height: 380px; }
+  .orbit-game__hud { left: 14px; right: 14px; font-size: 7px; }
+  .orbit-game__incident { right: 14px; left: 14px; max-width: none; }
+  .orbit-game__incident small { font-size: 8px; line-height: 1.35; }
+  .orbit-game__message { left: 14px; }
+  .orbit-game__planet { right: -115px; }
+  .orbit-game__meteor--two { width: 36px; }
+  .orbit-game__meteor--four { width: 32px; }
+  .is-active .orbit-game__meteor { animation-duration: 10s; }
+  .orbit-feature__copy h2 { font-size: clamp(40px, 13vw, 48px); overflow-wrap: anywhere; }
+  .orbit-feature__status { flex-wrap: wrap; }
+  .section-row { min-height: 95px; grid-template-columns: 55px minmax(0, 1fr) 35px; }
+  .section-row__count { display: none; }
+  .section-row__name { min-width: 0; font-size: clamp(32px, 11vw, 38px); overflow-wrap: anywhere; }
+  .about-band { margin-bottom: 70px; padding: 35px 25px; grid-template-columns: minmax(0, 1fr); gap: 10px; }
+  .about-band > div:last-child { padding-top: 20px; }
+  .page-intro { padding-bottom: 60px; }
+  .breadcrumb { margin-bottom: 55px; }
+  .page-intro__grid { grid-template-columns: minmax(0, 1fr); gap: 50px; }
+  .page-intro__grid > *, .author-intro__grid > *, .article-layout > * { min-width: 0; }
+  .page-intro__side { width: 100%; justify-self: start; }
+  .filter-strip { padding: 18px 0; align-items: flex-start; flex-direction: column; }
+  .author-intro__grid { grid-template-columns: minmax(0, 1fr); gap: 55px; }
+  .author-intro__portrait { max-width: min(250px, calc(100% - 8px)); }
+  .author-intro__details { flex-wrap: wrap; gap: 14px; }
+  .article-header { padding-bottom: 55px; }
+  .article-header__meta, .article-header__kicker, .article-header__byline { flex-wrap: wrap; row-gap: 12px; }
+  .article-title { max-width: 100%; font-size: clamp(40px, 13vw, 64px); overflow-wrap: anywhere; }
+  .technical-cover--large { min-height: clamp(290px, 94vw, 430px); }
+  .technical-cover--large .technical-cover__diagram { min-height: 190px; }
+  .article-layout { grid-template-columns: minmax(0, 1fr); padding-top: 55px; }
+  .article-aside { display: none; }
+  .archive-section__heading { align-items: flex-start; flex-direction: column; gap: 16px; }
+  .site-footer__top { align-items: flex-start; flex-direction: column; gap: 40px; }
+  .site-footer__statement { overflow-wrap: anywhere; }
+  .site-footer__bottom { gap: 15px; flex-direction: column; }
+  .post-card__read { display: none; }
+}
+
+@media (max-width: 360px) {
+  .container { width: min(100% - 22px, 1340px); }
+  .signal-strip { margin-inline: -11px; padding-inline: 11px; }
+  .brand { gap: 7px; }
+  .brand__name { font-size: 11px; }
+  .site-nav a { padding-inline: 5px; }
+  .home-hero { padding-block: 48px; }
+  .home-hero h1, .page-intro h1, .author-intro h1 { font-size: clamp(40px, 13.5vw, 49px); }
+  .home-hero__actions { align-items: stretch; flex-direction: column; }
+  .home-hero__actions .button, .home-hero__actions .text-link { width: 100%; justify-content: space-between; }
+  .hero-terminal__body { min-height: 400px; padding-inline: 14px; font-size: 11px; }
+  .technical-cover { padding: 11px; }
+  .post-card__content { padding: 22px 18px; }
+  .orbit-game { min-height: 350px; }
+  .orbit-game__hud span:nth-child(3) { display: none; }
+  .orbit-game__hud { font-size: 8px; }
+  .orbit-game__incident { top: 62px; }
+  .orbit-game__message { right: 14px; font-size: 7px; }
+  .section-row { grid-template-columns: 42px minmax(0, 1fr) 24px; }
+  .about-band { padding: 30px 20px; }
+  .article-title { font-size: clamp(38px, 13vw, 47px); }
+  .article-header__byline { align-items: flex-start; flex-direction: column; padding-block: 18px; }
+  .technical-cover--large { min-height: 280px; }
 }
 
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; }.hero-terminal__cursor, .orbit-game__stars, .orbit-game__ship, .orbit-game__thruster, .orbit-game__meteor, .orbit-game__laser, .orbit-game__blast, .orbit-game__message b, .orbit-game__scanline, .orbit-game__target, .orbit-game__manual-shots line, .orbit-game__manual-impact, .is-active .orbit-game__incident strong { animation: none; }.orbit-game__meteor { opacity: .75; left: var(--end-x); top: var(--end-y); }.orbit-game__manual-shots line { stroke-dashoffset: 0; }.orbit-game__scanline { display: none; } }

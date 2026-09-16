@@ -7,7 +7,7 @@ const links = [
 export default function SocialSidebar() {
   return (
     <nav className="social-links" aria-label="Enlaces sociales">
-      {links.map(([icon, label, href]) => <a key={label} href={href} target={href.startsWith("http") ? "_blank" : undefined} rel={href.startsWith("http") ? "noreferrer" : undefined}><span aria-hidden="true">{icon}</span>{label}<b aria-hidden="true">↗</b></a>)}
+      {links.map(([icon, label, href]) => <a key={label} href={href} target={href.startsWith("http") ? "_blank" : undefined} rel={href.startsWith("http") ? "noreferrer" : undefined}><span aria-hidden="true">{icon}</span>{label}<b aria-hidden="true">-&gt;</b></a>)}
     </nav>
   );
 }

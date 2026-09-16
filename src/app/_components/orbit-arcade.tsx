@@ -29,7 +29,9 @@ export function OrbitArcade() {
   const timersRef = useRef<number[]>([]);
   const nextShotId = useRef(0);
   const targetRef = useRef({ x: 0.5, y: 0.5 });
+  const pointerStartRef = useRef<{ id: number; x: number; y: number } | null>(null);
   const [active, setActive] = useState(false);
+  const [touchMode, setTouchMode] = useState(false);
   const [alertIndex, setAlertIndex] = useState(0);
   const [intercepts, setIntercepts] = useState(0);
   const [destroyed, setDestroyed] = useState<string[]>([]);
@@ -37,6 +39,17 @@ export function OrbitArcade() {
 
   useEffect(() => () => {
     timersRef.current.forEach(window.clearTimeout);
+  }, []);
+
+  useEffect(() => {
+    const coarsePointer = window.matchMedia("(hover: none), (pointer: coarse)");
+    const syncInputMode = () => {
+      setTouchMode(coarsePointer.matches);
+      setActive(coarsePointer.matches);
+    };
+    syncInputMode();
+    coarsePointer.addEventListener("change", syncInputMode);
+    return () => coarsePointer.removeEventListener("change", syncInputMode);
   }, []);
 
   useEffect(() => {
@@ -146,13 +159,45 @@ export function OrbitArcade() {
           className="orbit-game"
           role="button"
           tabIndex={0}
-          aria-label={`Defensa orbital interactiva. Apunta con el ratón y haz clic para disparar. Con teclado, usa las flechas y pulsa Intro. ${intercepts} interceptados.`}
-          onPointerEnter={() => setActive(true)}
-          onPointerLeave={() => setActive(false)}
-          onPointerMove={event => updatePointer(event.clientX, event.clientY)}
-          onClick={event => fire(event.clientX, event.clientY)}
+          aria-label={`Defensa orbital interactiva. ${touchMode ? "Toca un meteorito para disparar." : "Apunta con el ratón y haz clic para disparar."} Con teclado, usa las flechas y pulsa Intro. ${intercepts} interceptados.`}
+          onPointerEnter={event => {
+            if (event.pointerType === "mouse") setActive(true);
+          }}
+          onPointerLeave={event => {
+            if (event.pointerType === "mouse") setActive(false);
+          }}
+          onPointerDown={event => {
+            updatePointer(event.clientX, event.clientY);
+            pointerStartRef.current = {
+              id: event.pointerId,
+              x: event.clientX,
+              y: event.clientY,
+            };
+            if (event.pointerType !== "mouse") {
+              setTouchMode(true);
+              setActive(true);
+            }
+          }}
+          onPointerMove={event => {
+            if (event.pointerType === "mouse" || pointerStartRef.current?.id === event.pointerId) {
+              updatePointer(event.clientX, event.clientY);
+            }
+          }}
+          onPointerUp={event => {
+            const start = pointerStartRef.current;
+            pointerStartRef.current = null;
+            if (!start || start.id !== event.pointerId) return;
+            const moved = Math.hypot(event.clientX - start.x, event.clientY - start.y);
+            if (event.pointerType === "mouse" || moved <= 12) {
+              updatePointer(event.clientX, event.clientY);
+              fire(event.clientX, event.clientY);
+            }
+          }}
+          onPointerCancel={() => { pointerStartRef.current = null; }}
           onFocus={() => setActive(true)}
-          onBlur={() => setActive(false)}
+          onBlur={() => {
+            if (!touchMode) setActive(false);
+          }}
           onKeyDown={event => {
             const movement: Record<string, [number, number]> = {
               ArrowUp: [0, -20],
@@ -183,9 +228,12 @@ export function OrbitArcade() {
           </div>
 
           <div className="orbit-game__incident" aria-live="polite">
-            <span>⚠ INCIDENTE #{String(alertIndex + 1).padStart(2, "0")}</span>
+            <span>[!] INCIDENTE #{String(alertIndex + 1).padStart(2, "0")}</span>
             <strong>{alerts[alertIndex]}</strong>
-            <small>{active ? "APUNTA AL METEORITO · CLIC PARA DISPARAR" : "PASA EL CURSOR PARA ACTIVAR DEFENSA"}</small>
+            <small>{active
+              ? touchMode ? "TOCA UN METEORITO / DISPARAR" : "APUNTA AL METEORITO / CLIC PARA DISPARAR"
+              : touchMode ? "TOCA EL RADAR PARA ACTIVAR DEFENSA" : "PASA EL CURSOR PARA ACTIVAR DEFENSA"}
+            </small>
           </div>
 
           <div className="orbit-game__stars" aria-hidden="true" />
@@ -227,7 +275,7 @@ export function OrbitArcade() {
               className={`orbit-game__manual-impact ${shot.hit ? "orbit-game__manual-impact--hit" : ""}`}
               style={{ left: `${shot.toX}%`, top: `${shot.toY}%` }}
               aria-hidden="true"
-            >✳</span>
+            >*</span>
           ))}
 
           {active && <span key={intercepts} className="orbit-game__target" aria-hidden="true"><i /><i /></span>}
@@ -239,7 +287,7 @@ export function OrbitArcade() {
 
       <div className="orbit-feature__copy">
         <p className="eyebrow">// IDEAS EN CONSTRUCCIÓN</p>
-        <h2 id="orbit-feature-title">Todo sistema<br />merece una <em>segunda vida.</em><span className="heading-star">✳</span></h2>
+        <h2 id="orbit-feature-title">Todo sistema<br />merece una <em>segunda vida.</em><span className="heading-star">*</span></h2>
         <p>Construir, romper y volver a intentarlo. Cada proyecto deja aprendizajes que vale la pena documentar y compartir.</p>
         <div className="orbit-feature__status"><span><i /> ARCHIVO ACTIVO</span><span>IDEAS / PROCESO / CÓDIGO</span></div>
       </div>
