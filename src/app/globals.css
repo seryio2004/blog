@@ -74,15 +74,24 @@ a { color: inherit; text-decoration: none; }
 .post-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-top: 1px solid var(--ink); border-left: 1px solid var(--ink); }
 .post-card { min-width: 0; display: grid; grid-template-columns: .85fr 1.15fr; border-right: 1px solid var(--ink); border-bottom: 1px solid var(--ink); background: var(--paper); }
 .technical-cover__link { display: block; min-height: 100%; }
-.technical-cover { position: relative; min-height: 100%; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; padding: 14px; border-right: 1px solid var(--ink); background-color: #d7d6cf; background-image: linear-gradient(rgba(17,17,15,.09) 1px, transparent 1px), linear-gradient(90deg, rgba(17,17,15,.09) 1px, transparent 1px); background-size: 18px 18px; }
-.technical-cover[data-section*="python"] { background-color: #aeb3b0; }.technical-cover[data-section*="forgejo"] { background-color: #c1c8b2; }
-.technical-cover__top, .technical-cover__bottom { z-index: 2; display: flex; justify-content: space-between; gap: 10px; font: 700 7px/1.2 "Courier New", monospace; text-transform: uppercase; }
-.technical-cover__bottom { padding-top: 12px; border-top: 1px solid var(--ink); }
-.technical-cover__diagram { position: relative; min-height: 160px; flex: 1; display: grid; place-items: center; }
-.technical-cover__diagram::before, .technical-cover__diagram::after { content: ""; position: absolute; background: var(--ink); opacity: .55; }.technical-cover__diagram::before { width: 1px; height: 90%; }.technical-cover__diagram::after { width: 90%; height: 1px; }
-.technical-cover__orbit { position: absolute; width: 67%; aspect-ratio: 1; border: 1px solid var(--ink); border-radius: 50%; }.technical-cover__orbit--two { width: 45%; transform: rotate(50deg) scaleY(.42); }.technical-cover__orbit--one { transform: rotate(-25deg) scaleY(.66); }
-.technical-cover__core { z-index: 2; width: 54px; aspect-ratio: 1; display: grid; place-items: center; border: 1px solid var(--ink); background: var(--acid); font: 800 18px/1 "Courier New", monospace; transform: rotate(-5deg); }
-.technical-cover__cross { position: absolute; font: 18px/1 "Courier New", monospace; }.technical-cover__cross--one { top: 16%; left: 12%; }.technical-cover__cross--two { right: 9%; bottom: 20%; }
+.technical-cover { position: relative; min-height: 100%; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; padding: 14px; border-right: 1px solid var(--cover-ink); color: var(--cover-ink); background-color: var(--cover-paper); background-image: linear-gradient(rgba(17,17,15,.09) 1px, transparent 1px), linear-gradient(90deg, rgba(17,17,15,.09) 1px, transparent 1px); background-size: 18px 18px; }
+.technical-cover__top, .technical-cover__bottom { z-index: 2; display: flex; justify-content: space-between; gap: 10px; font: 700 8px/1.2 "Courier New", monospace; letter-spacing: .04em; text-transform: uppercase; }
+.technical-cover__top span:last-child, .technical-cover__bottom span:last-child { flex: none; white-space: nowrap; }
+.technical-cover__bottom { padding-top: 12px; border-top: 1px solid var(--cover-ink); }
+.technical-cover__bottom span:first-child { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.technical-cover__diagram { position: relative; min-height: 160px; flex: 1; display: grid; place-items: center; isolation: isolate; }
+.technical-cover__diagram svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.technical-cover__axis, .technical-cover__registration, .technical-cover__trace { fill: none; stroke: var(--cover-ink); vector-effect: non-scaling-stroke; }
+.technical-cover__axis { opacity: .28; stroke-width: 1; }
+.technical-cover__registration { opacity: .7; stroke-width: 1.5; }
+.technical-cover__trace { stroke-width: 1.7; }
+.technical-cover__trace--thin { opacity: .62; stroke-width: 1; }
+.technical-cover__trace--bold { stroke-width: 2.5; }
+.technical-cover__node { fill: var(--cover-paper); stroke: var(--cover-ink); stroke-width: 2; }
+.technical-cover__accent { fill: var(--cover-accent); stroke: var(--cover-ink); stroke-width: 2; }
+.technical-cover__accent--outline { fill: var(--cover-accent); }
+.technical-cover__core { position: relative; z-index: 2; width: clamp(62px, 8vw, 92px); aspect-ratio: 1; display: grid; place-items: center; border: 2px solid var(--cover-ink); background: var(--cover-accent); box-shadow: 5px 5px 0 var(--cover-ink); font: 800 clamp(19px, 2.4vw, 27px)/1 "Courier New", monospace; letter-spacing: -.07em; transform: rotate(-5deg); }
+.technical-cover__diagram-label { position: absolute; z-index: 2; left: 3px; bottom: 7px; max-width: calc(100% - 6px); overflow: hidden; font: 700 7px/1 "Courier New", monospace; letter-spacing: .08em; text-overflow: ellipsis; white-space: nowrap; }
 .post-card__content { padding: 24px 25px; display: flex; flex-direction: column; }
 .post-card__meta { min-height: 24px; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; color: var(--muted); font: 700 8px/1 "Courier New", monospace; text-transform: uppercase; letter-spacing: .08em; }
 .section-tag, .language-badge { padding: 5px 7px; border: 1px solid var(--ink); background: var(--acid); color: var(--ink); font: 700 8px/1 "Courier New", monospace; text-transform: uppercase; }
@@ -234,7 +243,7 @@ a { color: inherit; text-decoration: none; }
   .technical-cover--large .technical-cover__diagram { min-height: 190px; }
   .article-layout { grid-template-columns: minmax(0, 1fr); padding-top: 55px; }
   .article-aside { display: none; }
-  .archive-section__heading { align-items: flex-start; flex-direction: column; gap: 16px; }
+  .archive-section__heading { align-items: flex-start; flex-direction: column; gap: 16px; margin-bottom: 18px; }
   .site-footer__top { align-items: flex-start; flex-direction: column; gap: 40px; }
   .site-footer__statement { overflow-wrap: anywhere; }
   .site-footer__bottom { gap: 15px; flex-direction: column; }
