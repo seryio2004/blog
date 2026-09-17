@@ -30,6 +30,11 @@ export default function RootLayout({
         />
         <link
           rel="icon"
+          type="image/svg+xml"
+          href={withBasePath("/favicon/favicon.svg")}
+        />
+        <link
+          rel="icon"
           type="image/png"
           sizes="32x32"
           href={withBasePath("/favicon/favicon-32x32.png")}
