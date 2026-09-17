@@ -1,4 +1,5 @@
 import Container from "@/app/_components/container";
+import { ArchiveGridFiller } from "@/app/_components/archive-grid-filler";
 import { PostPreview } from "@/app/_components/post-preview";
 import { getSectionBySlug, getSections } from "@/lib/api";
 import type { Metadata } from "next";
@@ -21,7 +22,7 @@ export default async function SectionPage({ params }: Props) {
         <div className="page-intro__grid"><div><p className="eyebrow">SECCIÓN / {String(index).padStart(2, "0")} — ARCHIVO TEMÁTICO</p><h1>{section.name}<span className="heading-star">*</span></h1></div><div className="page-intro__side"><span>RUTA / {section.slug.toUpperCase()}</span><p>Artículos, guías y notas reunidos alrededor de {section.name}.</p><span className="page-intro__count">{String(section.posts.length).padStart(2, "0")} PUBLICACIONES -&gt;</span></div></div>
       </div>
       <div className="filter-strip"><span>OTRAS SECCIONES</span><nav aria-label="Otras secciones"><Link href="/articulos" className="filter-chip">TODO</Link>{sections.map(item => <Link key={item.slug} href={`/secciones/${item.slug}`} className={`filter-chip ${item.slug === section.slug ? "filter-chip--active" : ""}`}>{item.name.toUpperCase()} <sup>{item.posts.length}</sup></Link>)}</nav></div>
-      <section className="archive-section"><div className="archive-section__heading"><p className="eyebrow">/ ARTÍCULOS EN ESTA SECCIÓN</p><span>ORDENADOS POR FECHA v</span></div><div className="post-grid">{section.posts.map(post => <PostPreview key={post.slug} {...post} sectionSlug={section.slug} />)}</div></section>
+      <section className="archive-section"><div className="archive-section__heading"><p className="eyebrow">/ ARTÍCULOS EN ESTA SECCIÓN</p><span>ORDENADOS POR FECHA v</span></div><div className="post-grid">{section.posts.map(post => <PostPreview key={post.slug} {...post} sectionSlug={section.slug} />)}{section.posts.length % 2 === 1 ? <ArchiveGridFiller context={section.slug} /> : null}</div></section>
     </Container></main>
   );
 }

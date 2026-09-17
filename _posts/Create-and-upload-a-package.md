@@ -6,7 +6,7 @@ excerpt: "En esta guía se explicara el proceso para generar codigo empaquetado 
 coverImage: "/assets/blog/editorial-cover.png"
 date: "2026-08-27T05:35:07.322Z"
 author:
-  name: Nigi nigez
+  name: Sergio Rodriguez
   picture: "/assets/blog/authors/jj.jpeg"
 ogImage:
   url: "/assets/blog/editorial-cover.png"
@@ -316,4 +316,3 @@ uv sync
 ```
 
 If you have any questions about this guide, you can ask me at my personal email:
-

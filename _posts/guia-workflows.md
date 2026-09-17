@@ -6,7 +6,7 @@ excerpt: "En esta guía se aprendera como crear workflows basicos para la ejecuc
 coverImage: "/assets/blog/editorial-cover.png"
 date: "2026-08-18T05:35:07.322Z"
 author:
-  name: TypeShit
+  name: Sergio Rodriguez
   picture: "/assets/blog/authors/jj.jpeg"
 ogImage:
   url: "/assets/blog/editorial-cover.png"

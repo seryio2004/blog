@@ -2,6 +2,7 @@
 
 import type { Post } from "@/interfaces/post";
 import { useEffect, useState } from "react";
+import { ArchiveGridFiller } from "./archive-grid-filler";
 import { ArticleSortSelect } from "./article-sort-select";
 import { PostPreview } from "./post-preview";
 
@@ -61,6 +62,7 @@ export function ArticlesList({ posts }: Props) {
             sectionSlug={post.sectionSlug}
           />
         ))}
+        {orderedPosts.length % 2 === 1 ? <ArchiveGridFiller context="índice" /> : null}
       </div>
     </>
   );

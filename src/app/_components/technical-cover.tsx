@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { CSSProperties, ReactNode } from "react";
 
 type Props = { title: string; section?: string; slug?: string; large?: boolean };
-type Motif = "orbit" | "branch" | "signal" | "circuit" | "stack" | "constellation";
+type Motif = "orbit" | "branch" | "signal" | "circuit" | "stack" | "constellation" | "network";
 type Palette = { paper: string; ink: string; accent: string };
 type CoverStyle = CSSProperties & {
   "--cover-paper": string;
@@ -24,6 +24,7 @@ const palettes: Palette[] = [
 const namedSections: Record<string, { motif: Motif; palette: Palette }> = {
   python: { motif: "orbit", palette: { paper: "#bdcbd0", ink: "#172329", accent: "#300a24" } },
   forgejo: { motif: "branch", palette: { paper: "#d3ccbb", ink: "#292119", accent: "#ffa86a" } },
+  infraestructura: { motif: "network", palette: { paper: "#c6d3d8", ink: "#172a32", accent: "#a7e7c7" } },
 };
 
 function sectionKey(section: string) {
@@ -106,6 +107,23 @@ function Diagram({ motif, seed }: { motif: Motif; seed: number }) {
       </g>;
       break;
     }
+    case "network":
+      drawing = <g>
+        <path className="technical-cover__trace technical-cover__trace--thin" d="M118 163 V231 H226 M442 163 V231 H334 M280 163 V195" />
+        <path className="technical-cover__trace" d="M178 126 H226 M334 126 H382 M280 260 V287" />
+        <rect className="technical-cover__trace" x="58" y="78" width="120" height="85" rx="4" />
+        <path className="technical-cover__trace technical-cover__trace--thin" d="M78 99 H158 M78 116 H138 M100 182 H136 M118 163 V182" />
+        <rect className="technical-cover__trace" x="382" y="78" width="120" height="85" rx="4" />
+        <path className="technical-cover__trace technical-cover__trace--thin" d="M402 99 H482 M402 116 H462 M424 182 H460 M442 163 V182" />
+        <rect className="technical-cover__trace" x="226" y="195" width="108" height="65" rx="4" />
+        <path className="technical-cover__trace technical-cover__trace--thin" d="M244 215 H316 M244 237 H292" />
+        <circle className="technical-cover__accent" cx="310" cy="237" r="5" />
+        <circle className="technical-cover__node" cx="118" cy="231" r="6" />
+        <circle className="technical-cover__accent" cx="280" cy="163" r="10" />
+        <circle className="technical-cover__node" cx="442" cy="231" r="6" />
+        <path className="technical-cover__trace technical-cover__trace--thin" d="M466 56 A30 30 0 0 1 492 82 M476 44 A47 47 0 0 1 504 72" />
+      </g>;
+      break;
   }
 
   return <svg viewBox="0 0 560 340" preserveAspectRatio="xMidYMid meet" aria-hidden="true">

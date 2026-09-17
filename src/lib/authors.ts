@@ -4,25 +4,9 @@ type AuthorProfile = {
 };
 
 const authorProfiles: Record<string, AuthorProfile> = {
-  "nigi nigez": {
-    slug: "nigi-nigez",
-    bio: "Comparte guías prácticas sobre Python, automatización y la infraestructura que sostiene los proyectos de desarrollo.",
-  },
-  typeshit: {
-    slug: "typeshit",
-    bio: "Perfil editorial del blog, dedicado a compartir flujos de trabajo, herramientas y experiencias del día a día en desarrollo.",
-  },
-  "jj kasper": {
-    slug: "jj-kasper",
-    bio: "Escribe sobre desarrollo web moderno, arquitectura de aplicaciones y patrones de enrutado con Next.js.",
-  },
-  "tim neutkens": {
-    slug: "tim-neutkens",
-    bio: "Publica introducciones prácticas a Next.js, renderizado y generación estática de páginas.",
-  },
-  "joe haddad": {
-    slug: "joe-haddad",
-    bio: "Comparte contenidos sobre previsualización, gestión de contenido y experiencias de desarrollo con Next.js.",
+  "sergio rodriguez": {
+    slug: "sergio-rodriguez",
+    bio: "Comparte guías prácticas, herramientas y experiencias sobre desarrollo e infraestructura.",
   },
 };
 

@@ -6,7 +6,7 @@ excerpt: "En este articulo se explicara brevemente la herramienta uv, si usas o 
 coverImage: "/assets/blog/editorial-cover.png"
 date: "2026-08-26T05:35:07.322Z"
 author:
-  name: Nigi nigez
+  name: Sergio Rodriguez
   picture: "/assets/blog/authors/jj.jpeg"
 ogImage:
   url: "/assets/blog/editorial-cover.png"

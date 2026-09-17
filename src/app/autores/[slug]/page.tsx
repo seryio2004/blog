@@ -1,4 +1,5 @@
 import Container from "@/app/_components/container";
+import { ArchiveGridFiller } from "@/app/_components/archive-grid-filler";
 import { PostPreview } from "@/app/_components/post-preview";
 import { getAuthorBySlug, getAuthors, getSectionSlug } from "@/lib/api";
 import { withBasePath } from "@/lib/paths";
@@ -17,9 +18,10 @@ export default async function AuthorPage({ params }: Props) {
     <main><Container>
       <div className="page-intro author-intro">
         <Link href="/articulos" className="breadcrumb">&lt;- VOLVER AL ARCHIVO</Link>
-        <div className="author-intro__grid"><div className="author-intro__portrait"><img src={withBasePath(author.picture)} alt={`Retrato de ${author.name}`} /><span>COLABORADOR / CD</span></div><div className="author-intro__content"><p className="eyebrow"><span className="eyebrow__square" /> PERFIL DE AUTOR</p><h1>{author.name}<span className="heading-star">*</span></h1><p className="author-intro__bio">{author.bio}</p><div className="author-intro__details"><span>{String(author.posts.length).padStart(2, "0")} ARTÍCULOS PUBLICADOS</span><span>DESDE EL LABORATORIO -&gt;</span></div></div></div>
+        <div className="author-intro__grid"><div className="author-intro__portrait"><img src={withBasePath(author.picture)} alt={`Retrato de ${author.name}`} /><span>CREADOR / CD</span></div><div className="author-intro__content"><p className="eyebrow"><span className="eyebrow__square" /> PERFIL DE AUTOR</p><h1>{author.name}<span className="heading-star">*</span></h1><p className="author-intro__bio">{author.bio}</p><div className="author-intro__details"><span>{String(author.posts.length).padStart(2, "0")} ARTÍCULOS PUBLICADOS</span><span>DESDE EL LABORATORIO -&gt;</span></div></div></div>
       </div>
-      <section className="archive-section"><div className="section-heading"><div><p className="eyebrow">PUBLICACIONES / {author.name.toUpperCase()}</p><h2>Sus <em>artículos</em><span className="heading-star">*</span></h2></div></div><div className="post-grid">{author.posts.map(post => <PostPreview key={post.slug} {...post} sectionSlug={getSectionSlug(post.section)} />)}</div></section>
+      <div className="filter-strip author-filter-strip"><span>ARCHIVO DEL CREADOR</span><span>{String(author.posts.length).padStart(2, "0")} PUBLICACIONES</span></div>
+      <section className="archive-section" aria-labelledby="author-posts-title"><div className="section-heading"><div><p className="eyebrow">PUBLICACIONES / {author.name.toUpperCase()}</p><h2 id="author-posts-title">Sus <em>artículos</em><span className="heading-star">*</span></h2></div></div><div className="post-grid">{author.posts.map(post => <PostPreview key={post.slug} {...post} sectionSlug={getSectionSlug(post.section)} />)}{author.posts.length % 2 === 1 ? <ArchiveGridFiller context="autor" /> : null}</div></section>
     </Container></main>
   );
 }

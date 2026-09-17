@@ -6,7 +6,7 @@ excerpt: "Esta guia toma como base el la maquina ubuntu desplegada junto con un 
 coverImage: "/assets/blog/editorial-cover.png"
 date: "2026-08-16T05:35:07.322Z"
 author:
-  name: Nigi nigez
+  name: Sergio Rodriguez
   picture: "/assets/blog/authors/jj.jpeg"
 ogImage:
   url: "/assets/blog/editorial-cover.png"
