@@ -8,6 +8,7 @@ type CoverStyle = CSSProperties & {
   "--cover-paper": string;
   "--cover-ink": string;
   "--cover-accent": string;
+  "--cover-accent-ink": string;
 };
 
 const motifs: Motif[] = ["orbit", "branch", "signal", "circuit", "stack", "constellation"];
@@ -15,13 +16,13 @@ const palettes: Palette[] = [
   { paper: "#c8d1d0", ink: "#182422", accent: "#a9e9dd" },
   { paper: "#d9d1c1", ink: "#282018", accent: "#f6aa72" },
   { paper: "#c9c9d6", ink: "#222037", accent: "#d1bdff" },
-  { paper: "#d3d4bc", ink: "#262919", accent: "#c7ff22" },
+  { paper: "#d3d4bc", ink: "#262919", accent: "#300a24" },
   { paper: "#c6d0dc", ink: "#1b2732", accent: "#a8d9ff" },
   { paper: "#d9c9c5", ink: "#30211f", accent: "#ffb6a2" },
 ];
 
 const namedSections: Record<string, { motif: Motif; palette: Palette }> = {
-  python: { motif: "orbit", palette: { paper: "#bdcbd0", ink: "#172329", accent: "#c7ff22" } },
+  python: { motif: "orbit", palette: { paper: "#bdcbd0", ink: "#172329", accent: "#300a24" } },
   forgejo: { motif: "branch", palette: { paper: "#d3ccbb", ink: "#292119", accent: "#ffa86a" } },
 };
 
@@ -126,6 +127,7 @@ export function TechnicalCover({ title, section = "Editorial", slug, large = fal
     "--cover-paper": identity.palette.paper,
     "--cover-ink": identity.palette.ink,
     "--cover-accent": identity.palette.accent,
+    "--cover-accent-ink": identity.palette.accent === "#300a24" ? "#fbfaf4" : identity.palette.ink,
   };
   const plate = String(seed % 900 + 100);
 

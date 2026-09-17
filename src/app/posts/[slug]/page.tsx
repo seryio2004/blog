@@ -22,7 +22,17 @@ export default async function Post({ params }: Params) {
         <article lang={post.language}>
           <PostHeader title={post.title} date={post.date} author={post.author} language={post.language} section={post.section} sectionSlug={getSectionSlug(post.section)} readingMinutes={readingMinutes} />
           <div className="article-layout">
-            <aside className="article-aside"><span>CONTENIDO / 001</span><p>Notas de campo, decisiones técnicas y aprendizajes del proceso.</p><span className="article-aside__line" /><span>CD_ARCHIVE</span></aside>
+            <aside className="article-aside">
+              <span>DESDE EL TALLER / 001</span>
+              <p>Aquí voy dejando lo que aprendo, lo que rompo y cómo termino arreglándolo.</p>
+              <span className="article-aside__line" />
+              <span>¿HABLAMOS?</span>
+              <nav className="article-aside__contacts" aria-label="Datos de contacto">
+                <a href="https://x.com/seryio2004" target="_blank" rel="noreferrer"><span>X</span><span>@seryio2004</span></a>
+                <a href="mailto:rodriguezsergiomartinez@gmail.com"><span>CORREO</span><span>rodriguezsergiomartinez@gmail.com</span></a>
+                <a href="https://github.com/seryio2004" target="_blank" rel="noreferrer"><span>GITHUB</span><span>@seryio2004</span></a>
+              </nav>
+            </aside>
             <PostBody content={content} />
           </div>
         </article>

@@ -13,13 +13,13 @@
 .markdown h1 { margin: 2em 0 .7em; font-size: 42px; line-height: 1; }
 .markdown h2, .markdown h3, .markdown h4 { color: #11110f; font-family: Arial, Helvetica, sans-serif; letter-spacing: -.045em; }
 .markdown h2 { margin: 2.2em 0 .7em; padding-top: .6em; border-top: 1px solid #11110f; font-size: 38px; line-height: 1; }
-.markdown h2::before { content: "// "; color: #91bd00; font: 700 .38em/1 "Courier New", monospace; vertical-align: middle; }
+.markdown h2::before { content: "// "; color: var(--accent); font: 700 .38em/1 "Courier New", monospace; vertical-align: middle; }
 .markdown h3 { margin: 2em 0 .6em; font-size: 26px; line-height: 1.1; }
-.markdown a { text-decoration: underline; text-decoration-color: #91bd00; text-decoration-thickness: 2px; text-underline-offset: 3px; }
-.markdown a:hover { background: #c7ff22; }
-.markdown blockquote { margin-inline: 0; padding: 18px 24px; border: 1px solid #11110f; border-left: 8px solid #c7ff22; background: #e5e4dc; font-style: italic; }
+.markdown a { text-decoration: underline; text-decoration-color: var(--accent); text-decoration-thickness: 2px; text-underline-offset: 3px; }
+.markdown a:hover { color: #fbfaf4; background: var(--accent); }
+.markdown blockquote { margin-inline: 0; padding: 18px 24px; border: 1px solid #11110f; border-left: 8px solid var(--accent); background: #e5e4dc; font-style: italic; }
 .markdown code { max-width: 100%; padding: .15em .35em; border: 1px solid #c9c8bf; background: #e5e4dc; font: .83em/1.4 "Courier New", monospace; overflow-wrap: anywhere; }
-.markdown pre { width: 100%; max-width: 100%; overflow-x: auto; margin: 2em 0; padding: 24px; border: 1px solid #11110f; color: #e7e8df; background: #161714; box-shadow: 6px 6px 0 #c7ff22; font-size: 14px; line-height: 1.65; overscroll-behavior-inline: contain; }
+.markdown pre { width: 100%; max-width: 100%; overflow-x: auto; margin: 2em 0; padding: 24px; border: 1px solid #5e2750; color: #fbfaf4; background: var(--terminal); box-shadow: 6px 6px 0 var(--accent); font-size: 14px; line-height: 1.65; overscroll-behavior-inline: contain; }
 .markdown pre code { padding: 0; border: 0; color: inherit; background: transparent; }
 .markdown pre code { overflow-wrap: normal; }
 .markdown img { display: block; width: auto; max-width: 100%; height: auto; margin: 2.2em auto; border: 1px solid #11110f; object-fit: contain; filter: saturate(.75); }
@@ -28,7 +28,7 @@
 .markdown iframe, .markdown video { display: block; width: 100%; max-width: 100%; aspect-ratio: 16 / 9; height: auto; border: 1px solid #11110f; }
 .markdown hr { margin: 3em 0; border: 0; border-top: 1px solid #11110f; }
 .markdown table { display: block; width: 100%; max-width: 100%; overflow-x: auto; margin: 2em 0; border-collapse: collapse; font: 13px/1.5 "Courier New", monospace; overscroll-behavior-inline: contain; }
-.markdown th, .markdown td { padding: 12px; border: 1px solid #11110f; text-align: left; }.markdown th { background: #c7ff22; }
+.markdown th, .markdown td { padding: 12px; border: 1px solid #11110f; text-align: left; }.markdown th { color: #fbfaf4; background: var(--accent); }
 
 @media (max-width: 640px) {
   .markdown { font-size: 17px; line-height: 1.7; }
@@ -36,6 +36,6 @@
   .markdown h2 { font-size: clamp(28px, 9vw, 32px); }
   .markdown h3 { font-size: 23px; }
   .markdown blockquote { padding: 15px 17px; border-left-width: 6px; }
-  .markdown pre { margin-inline: 0; padding: 16px; font-size: 12px; box-shadow: 4px 4px 0 #c7ff22; }
+  .markdown pre { margin-inline: 0; padding: 16px; font-size: 12px; box-shadow: 4px 4px 0 var(--accent); }
   .markdown img { margin-block: 1.7em; }
 }

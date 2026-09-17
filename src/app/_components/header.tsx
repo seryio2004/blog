@@ -12,7 +12,7 @@ export default function Header() {
           </Link>
           <nav className="site-nav" aria-label="Navegación principal">
             <Link href="/">Inicio</Link>
-            <Link href="/articulos">Artículos <span aria-hidden="true">-&gt;</span></Link>
+            <Link href="/articulos">Artículos</Link>
             <Link href="/#secciones">Secciones</Link>
           </nav>
           <div className="site-header__status"><span className="status-led" /> SISTEMA ACTIVO <span className="site-header__version">/ V.01</span></div>
