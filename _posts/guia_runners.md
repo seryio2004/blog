@@ -13,9 +13,9 @@ ogImage:
 ---
 
 
-# Guía v4
+# Guía de runners
 
-esta guia es para los nuevos repos en la maquina existente 
+esta guia es para añadir un runner a un nuevo repositorio en una máquina donde ya funciona otro. Los nombres de proyectos, rutas y dirección del servidor que aparecen abajo son ejemplos; cámbialos por los de tu instalación.
 
 ### Crear directorio del nuevo repo
 
@@ -32,12 +32,12 @@ en esta carpeta se encuentran las carpetas de los distintos repos
 creamos la nueva carpeta para el nuevo repo
 
 ```bash
-mkdir repoxxxxxx
+mkdir proyecto-nuevo
 ```
 
 ### Clonar los archivos base de otro repo
 
-en este paso usaremos como referencia los archivos de nexus-ci2
+en este paso usaremos como referencia los archivos de un repositorio de ejemplo llamado `proyecto-base`
 
 copiaremos el archivo compose.yml y el runner-config, este ultimo ira dentro de la carpeta data 
 
@@ -50,35 +50,36 @@ de momento crea manualmente las carpetas con mkdir
 ```bash
 /srv/forgejo-runners
 
-	/nexus-ci2
+	/proyecto-base
 		compose.yml
 		/data
 			runner-config.yml
-		/data-nexus 
+		/data-proyecto-base
 			archivos de la carpeta data necesarios para los test
 
-	/repoxxxx
+	/proyecto-nuevo
 		compose.yml
 		/data
 			runner-config.yml
-		/data-repoxxxx
+		/data-proyecto-nuevo
 			archivos de la carpeta data necesarios para los test
 		
 		
-	/repoyyyyy
+	/otro-proyecto
 		.................................
 ```
 
 los comandos para copiar estos archivos pueden ser varios,  como ejemplo tomaremos: 
 
 ```bash
-sudo cp nexus-ci2/compose.yml repoxxxx/compose.yml
+sudo cp proyecto-base/compose.yml proyecto-nuevo/compose.yml
 ```
 
 y 
 
 ```bash
-sudo cp nexus-ci2/data/runner-config.yml repoxxxx/data/runner-config.yml
+sudo mkdir -p proyecto-nuevo/data
+sudo cp proyecto-base/data/runner-config.yml proyecto-nuevo/data/runner-config.yml
 
 ```
 
@@ -93,19 +94,20 @@ con nano compose.yml en la ubicación del archivo se tendrán que modificar los 
 en dind
 
 volumes:
-      - dind-data-ci2:/var/lib/docker
-      - /srv/forgejo-shared/data:/shared/data:ro
+      - dind-data-proyecto-base:/var/lib/docker
+      - /srv/forgejo-runners/shared/data:/shared/data:ro
       - type: bind
-        source: ./data-nexus
-        target: /srv/forgejo-runners/nexus-ci2/data-nexus
+        source: ./data-proyecto-base
+        target: /srv/forgejo-runners/proyecto-base/data-proyecto-base
         read_only: true
         
 cambia las siguientes lineas 
-			- dind-data-ci2:/var/lib/docker por dind-data-repoxxx
+			- dind-data-proyecto-base:/var/lib/docker por dind-data-proyecto-nuevo:/var/lib/docker
 			..
 			..
 			..
-				target: /srv/forgejo-runners/nexus-ci2/data-nexus  por la nueva ruta de la carpeta data del repo xxx
+				source: ./data-proyecto-base por source: ./data-proyecto-nuevo
+				target: /srv/forgejo-runners/proyecto-base/data-proyecto-base por la nueva ruta de la carpeta data del proyecto
 	 
 ```
 
@@ -113,18 +115,18 @@ si bajamos al final del archivo nos encontramos con:
 
 ```bash
 volumes:
-  dind-data-ci2:
-    name: forgejo_nexus_ci2_dind-data
+  dind-data-proyecto-base:
+    name: forgejo_proyecto_base_dind-data
     
-    cambia el nombre por un nombre descriptivo del volumen
+    cambia la clave y el nombre por unos descriptivos para el nuevo volumen
 ```
 
 para validar estos cambios usa:
 
 ```bash
-cd /opt/forgejo-runners/repoxxxx
+cd /srv/forgejo-runners/proyecto-nuevo
 
-sudo docker compose -p nombreDelContedorXXXx config
+sudo docker compose -p proyecto-nuevo config
 ```
 
 ### Runner-config.yml
@@ -138,7 +140,7 @@ Abre el repositorio.
 Entra en Settings.
 Entra en Actions → Nodos/runners(dependera del idioma).
 Selecciona Create new runner.
-Nombre: nombreDescriptivo 
+Nombre: runner-proyecto-nuevo
 Guarda por separado:
 URL de Forgejo.
 UUID.
@@ -156,7 +158,7 @@ bajamos hasta encontrar:
 
 ```bash
 labels:
-    - python-unit:docker://docker.io/library/node:22-bookworm
+    - python-unit:docker://docker.io/library/python:3.12
     
     cambiamos solo la primera parte python-unit: por el nombre que le queramos 
     poner a la etiqueta de este runner
@@ -166,38 +168,39 @@ si bajamos mas encontraremos en el apartado **container:**
 
 ```bash
  options: >-
-    --volume /srv/forgejo-runners/nexus-ci2/data-nexus:/nexus-data:ro
+    --volume /srv/forgejo-runners/proyecto-base/data-proyecto-base:/test-data:ro
     --memory=16g
     --memory-swap=16g
     --cpus=2
     --pids-limit=256
-    --add-host=repos.internal:192.168.30.250
+    --add-host=forgejo.example.com:192.0.2.10
     
     
     
     cambiaremos la primera ruta por la ruta de la nueva carpeta data
     
+    el dominio y la IP de `--add-host` son ejemplos; usa los de tu servidor solo si necesitas resolverlo de esta forma
+
     los siguientes parametros son de LIMITES de uso del runner
     las cpus tal como corren los test se podrian dejar en 1
     
     si bajamos mas nos encontramos con:
     
     valid_volumes:
-    - /srv/forgejo-runners/nexus-ci2/data-nexus
+    - /srv/forgejo-runners/proyecto-base/data-proyecto-base
     
-    aqui volveremos a poner la nueva ruta de la carpeta data-repoxxxx
+    aqui volveremos a poner la nueva ruta de la carpeta data-proyecto-nuevo
     
     y por ultimo al final del todo nos encontraremos con:
     
     connections:
-    repositorio-CI_CD_Tests:
-      url: https://repos.internal/
-      uuid: "xxxxxxxxxxxxxxxxxxxxx"
-      token: "xxxxxxxxxxxxxxxxxxxxxxxxx"
+    proyecto-nuevo:
+      url: https://forgejo.example.com/
+      uuid: "UUID_DEL_RUNNER"
+      token: "TOKEN_DEL_RUNNER"
       
       
-      aqui cambiaremos los datos por el nombre del repo y el toke y uuid generados anteriormente
-      la url se mantiene
+      aqui cambiaremos el nombre, la URL, el UUID y el token por los datos generados anteriormente
       
       
 ```
@@ -208,34 +211,30 @@ Desde la maquina donde tengamos la carpeta data
 
 ```bash
 rsync -avh --progress \
-  ~/real/nexus_CI/data/ \
-  kreios@IP_MAQUINA:/srv/nexus-data/
-  
-  la primera ubicacion es la carpeta en nuestro pc y la segunda es donde la queremos pegar
- 
-
+  ./data/ \
+  usuario@SERVIDOR:/srv/forgejo-runners/proyecto-nuevo/data-proyecto-nuevo/
 ```
+
+la primera ubicación es la carpeta en nuestro PC y la segunda es donde la queremos copiar. Sustituye `usuario` y `SERVIDOR` por tus datos de acceso.
 
 ## Arrancar el runner
 
 con: 
 
 ```bash
-cd /srv/forgejo-runners/repoxxxx
+cd /srv/forgejo-runners/proyecto-nuevo
 
-sudo docker compose -p nombreContenedor up -d
+sudo docker compose -p proyecto-nuevo up -d
 ```
 
 comprobamos el estado:
 
 ```bash
-sudo docker compose -p nombreContenedor ps
+sudo docker compose -p proyecto-nuevo ps
 ```
 
 vemos los logs por si sucedió algún error:
 
 ```bash
-sudo docker compose -p nombreContenedor logs --tail=100
+sudo docker compose -p proyecto-nuevo logs --tail=100
 ```
-
-[Guia-v4-GPU](https://app.notion.com/p/Guia-v4-GPU-3bb5e432a97e804a8045e29dd9602b38?pvs=21)

@@ -124,11 +124,11 @@ git push origin v0.2.0
 
 # How to specify dependencies
 
-You can pin an exact version such as: `"kreios-environment==0.3.1"`
+You can pin an exact version such as: `"example-package==0.3.1"`
 
 But this format will not automatically receive bug fixes.
 
-So it is much more recommended to use MINOR version ranges, e.g.: `"kreios-environment>=0.3.1,<0.4"`
+So it is much more recommended to use MINOR version ranges, e.g.: `"example-package>=0.3.1,<0.4"`
 
 # Changelog
 

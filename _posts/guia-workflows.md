@@ -15,7 +15,7 @@ ogImage:
 
 # Guía workflows
 
-En todo repo que se quiera implementar CI/CD se debe de crear la carpeta .`forgejo`  que a su vez contendrá  la carpeta `workflows`  en esta carpeta existirán los archivos `unit-test.ym` los cuales especifican los pasos que deben seguir los runner para poder ejecutar los test o realizar diferentes acciones.
+En todo repo que se quiera implementar CI/CD se debe de crear la carpeta `.forgejo`, que a su vez contendrá la carpeta `workflows`. En esta carpeta existirán archivos como `unit-test.yml`, que especifican los pasos que deben seguir los runners para poder ejecutar los test o realizar diferentes acciones.
 
 Los workflows están compuestos de diferentes pasos secuenciales que realizara el runner cuando detecte una acción especificada de antemano(push, pull request , etc) estos pasos pueden variar dependiendo de las características de cada test y cada repositorio.
 
@@ -23,8 +23,10 @@ Los workflows tienen acceso a variables privadas registradas en forgejo llamadas
 
 # Ejemplo de workflow que usaremos como referencia
 
+El dominio `forgejo.example.com`, la etiqueta `python-tests` y las rutas de `tests` son ejemplos. Ajústalos a tu servidor y a la estructura de tu repositorio.
+
 ```bash
-name: Tests del interpolador aerodinamico
+name: Tests del proyecto
 
 on:
   push:
@@ -32,9 +34,9 @@ on:
   workflow_dispatch:
 
 jobs:
-  interpolator-tests:
-    name: Generar datos y comparar interpoladores
-    runs-on: gpu-test
+  project-tests:
+    name: Preparar datos y ejecutar tests
+    runs-on: python-tests
     timeout-minutes: 360
 
     steps:
@@ -58,7 +60,7 @@ jobs:
             python3 \
             git \
             curl \
-            openssh-client \/
+            openssh-client \
             ca-certificates
 
           rm -rf /var/lib/apt/lists/*
@@ -73,8 +75,8 @@ jobs:
 
           test -n "$INTERNAL_CA_CERT"
           printf '%s\n' "$INTERNAL_CA_CERT" \
-            > /usr/local/share/ca-certificates/kreios-internal-ca.crt
-          chmod 644 /usr/local/share/ca-certificates/kreios-internal-ca.crt
+            > /usr/local/share/ca-certificates/forgejo-ca.crt
+          chmod 644 /usr/local/share/ca-certificates/forgejo-ca.crt
           update-ca-certificates
           test -s /etc/ssl/certs/ca-certificates.crt
 
@@ -85,7 +87,7 @@ jobs:
               --show-error \
               --output /dev/null \
               --write-out '%{http_code}' \
-              https://repos.internal/
+              https://forgejo.example.com/
           )"
           echo "Forgejo respondio con HTTP $HTTP_CODE"
 
@@ -115,7 +117,7 @@ jobs:
 
     
 
-      - name: Generar base e interpolador nuevos
+      - name: Preparar datos de prueba
         shell: bash
         working-directory: ${{ github.workspace }}
         env:
@@ -124,10 +126,9 @@ jobs:
           set -euo pipefail
 
           PYTHON="$GITHUB_WORKSPACE/.venv/bin/python"
-          "$PYTHON" tests/interpolator/prepare_test_data.py
+          "$PYTHON" tests/prepare_data.py
 
-          test -s tests/interpolator/data/benchmark_new.h5
-          test -s tests/interpolator/benchmark_new.npz
+          test -d tests/data
 
       - name: Ejecutar tests funcionales
         shell: bash
@@ -157,10 +158,6 @@ jobs:
             find "$GITHUB_WORKSPACE/tests" \
               -type f \
               \( -name "main.py" -o -name "main_*.py" \) \
-              ! -path "$GITHUB_WORKSPACE/tests/sparta_comparison_4/*" \
-              ! -path "$GITHUB_WORKSPACE/tests/sparta_comparison_6/*" \
-              ! -path "$GITHUB_WORKSPACE/tests/sparta_comparison_7/*" \
-              ! -path "$GITHUB_WORKSPACE/tests/clausing_benchmark/*" \
               -print0 |
             sort -z
           )
@@ -252,13 +249,13 @@ Un job es una unidad de trabajo completa que forgejo entrega un a un runner, Den
 
 ```bash
 jobs:
-  interpolator-tests:
-    name: Generar datos y comparar interpoladores
-    runs-on: gpu-test
+  project-tests:
+    name: Preparar datos y ejecutar tests
+    runs-on: python-tests
     timeout-minutes: 360
 ```
 
-donde; `interpolator-tests`  es el identificador interno del job
+donde; `project-tests` es el identificador interno del job
 
 `name:`  es el nombre que aparece en forgejo
 
@@ -368,10 +365,6 @@ Los primeros pasos para los trabajos de testing siempre son iguales
             find "$GITHUB_WORKSPACE/tests" \
               -type f \
               \( -name "main.py" -o -name "main_*.py" \) \
-              ! -path "$GITHUB_WORKSPACE/tests/sparta_comparison_4/*" \
-              ! -path "$GITHUB_WORKSPACE/tests/sparta_comparison_6/*" \
-              ! -path "$GITHUB_WORKSPACE/tests/sparta_comparison_7/*" \
-              ! -path "$GITHUB_WORKSPACE/tests/clausing_benchmark/*" \
               -print0 |
             sort -z
           )
@@ -390,4 +383,4 @@ Los primeros pasos para los trabajos de testing siempre son iguales
           fi
 ```
 
-Este script busca dentro de la carpeta tests(excluyendo ciertos test que no están terminados), después dentro de sus subcarpetas y por ultimo los main_1, main_2 ….
+Este script busca dentro de la carpeta `tests` y sus subcarpetas los archivos `main.py`, `main_1.py`, `main_2.py`… Si algún proyecto necesita excluir pruebas concretas, se pueden añadir filtros `! -path` al comando `find`.

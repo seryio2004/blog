@@ -26,7 +26,7 @@ If your computer does not have this certificate installed, ask the administrator
 
 ```bash
 python3 -m venv .venv
-v
+source .venv/bin/activate
 ```
 
 ## Install the required tools:
@@ -59,29 +59,31 @@ ls -lh dist/
 #### You should see something like:
 
 dist/
-├── kreios_adbsat-0.1.0-py3-none-any.whl
-└── kreios_adbsat-0.1.0.tar.gz
+├── example_package-0.1.0-py3-none-any.whl
+└── example_package-0.1.0.tar.gz
 
-## Configure the variables used to upload the package (by default it must be uploaded under a user; to upload it at the administration level you need write/admin permissions on the Kreios space)
+## Configure the variables used to upload the package
+
+The package can belong to a user or an organization. To publish under an organization, your account needs permission to write packages there.
 
 ```bash
-export FORGEJO_URL="https://repos.internal"
-export FORGEJO_USER="package.admin"
-export OWNER="$FORGEJO_USER"
-export TOKEN="token"
+export FORGEJO_URL="https://forgejo.example.com"
+export FORGEJO_USER="YOUR_USER"
+export OWNER="YOUR_OWNER"
+export TOKEN="YOUR_TOKEN"
 ```
 
-Replace the user and token values with your own.
+Replace these example values with your own server, user, package owner and token. If you are publishing under your own account, set `OWNER="$FORGEJO_USER"`.
 
 #### To create the token:
 
-If you want to upload using the package.admin user, it is best to reuse the existing token (ask the administrator).
+Create a token for your own account with permission to read and write packages. If your Forgejo instance uses a shared publishing account, ask its administrator how to obtain access.
 
 ```bash
-Perfil->Configuración->aplicaciones->nuevo token de acceso->packege:write 	and read
+Profile → Settings → Applications → New access token
 ```
 
-Give the token a descriptive name.
+Give the token a descriptive name and the permissions needed to read and write packages.
 
 Write this token down; once you leave this menu it cannot be viewed again.
 
@@ -98,10 +100,10 @@ python -m twine upload \
 If everything went well, you should see something like:
 
 ```bash
-Uploading distributions to https://repos.internal/api/packages/USR FORGEJO/pypi
-Uploading kreios_adbsat-0.1.0-py3-none-any.whl
+Uploading distributions to https://forgejo.example.com/api/packages/YOUR_OWNER/pypi
+Uploading example_package-0.1.0-py3-none-any.whl
 100% ...
-Uploading kreios_adbsat-0.1.0.tar.gz
+Uploading example_package-0.1.0.tar.gz
 100% ...
 ```
 
@@ -116,7 +118,7 @@ This package can now be installed as a dependency of other packages with a stabl
 ## Clear the environment variables
 
 ```
-unset FORGEJO_URLunset FORGEJO_USERunset OWNERunset TOKEN
+unset FORGEJO_URL FORGEJO_USER OWNER TOKEN
 ```
 
 ## Where to view the package
@@ -157,7 +159,7 @@ source .venv/bin/activate
 
 ### Define optional dependencies
 
-Dependencies that are not required for every user can be separated into an optional group in `pyproject.toml`. For example, the packages hosted in Forgejo can be grouped under an extra called `kreios`:
+Dependencies that are not required for every user can be separated into an optional group in `pyproject.toml`. For example, the packages hosted in Forgejo can be grouped under an extra called `private`:
 
 ```toml
 [project]
@@ -169,22 +171,22 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-kreios = [
-    "kreios-environment==0.1.1",
-    "kreios-geometry==0.1.0",
+private = [
+    "example-package==0.1.0",
+    "example-tools==0.1.0",
 ]
 
 [tool.uv.sources]
-kreios-environment = { index = "forgejo" }
-kreios-geometry = { index = "forgejo" }
+example-package = { index = "forgejo" }
+example-tools = { index = "forgejo" }
 
 [[tool.uv.index]]
 name = "forgejo"
-url = "https://repos.internal/api/packages/package.admin/pypi/simple"
+url = "https://forgejo.example.com/api/packages/YOUR_OWNER/pypi/simple"
 explicit = true
 ```
 
-With this configuration, a normal installation does not install the `kreios` extra:
+With this configuration, a normal installation does not install the `private` extra:
 
 ```bash
 uv sync
@@ -192,14 +194,14 @@ uv sync
 
 ### Install a specific optional dependency group
 
-To install the normal dependencies together with the optional `kreios` dependencies, configure the credentials for the private index and enable the extra:
+To install the normal dependencies together with the optional `private` dependencies, configure the credentials for the private index and enable the extra:
 
 ```bash
 export UV_INDEX_FORGEJO_USERNAME="YOUR_USER"
 export UV_INDEX_FORGEJO_PASSWORD="YOUR_TOKEN"
 export UV_SYSTEM_CERTS="true"
 
-uv sync --extra kreios
+uv sync --extra private
 ```
 
 The name after `--extra` must match the name declared in `[project.optional-dependencies]`.
@@ -208,16 +210,16 @@ For example:
 
 ```toml
 [project.optional-dependencies]
-kreios = [
-    "kreios-environment==0.1.1",
-    "kreios-geometry==0.1.0",
+private = [
+    "example-package==0.1.0",
+    "example-tools==0.1.0",
 ]
 ```
 
 is installed with:
 
 ```bash
-uv sync --extra kreios
+uv sync --extra private
 ```
 
 ### Install all optional dependencies
@@ -249,7 +251,7 @@ export UV_INDEX_FORGEJO_USERNAME="YOUR_USER"
 export UV_INDEX_FORGEJO_PASSWORD="YOUR_TOKEN"
 export UV_SYSTEM_CERTS="true"
 
-uv sync --extra kreios --locked
+uv sync --extra private --locked
 ```
 
 After installation, commands can be executed without activating the environment:
@@ -270,22 +272,22 @@ dependencies = [
     "trimesh>=4.8,<5",
     "PyYAML>=6,<7",
 
-    "kreios-environment==0.1.1", <------------
-    "kreios-geometry==0.1.0", <---------------
+    "example-package==0.1.0",
+    "example-tools==0.1.0",
 ]
 
 [tool.uv.sources]
-kreios-environment = { index = "forgejo" }
-kreios-geometry = { index = "forgejo" }
+example-package = { index = "forgejo" }
+example-tools = { index = "forgejo" }
 
 [[tool.uv.index]]
 name = "forgejo"
-url = "https://repos.internal/api/packages/package.admin/pypi/simple"<----------
+url = "https://forgejo.example.com/api/packages/YOUR_OWNER/pypi/simple"
 explicit = true
 
 ```
 
-The URL changes depending on who creates these packages, so it is recommended to always use the package.admin user to manage packages and thus keep a simple, easy-to-trace structure.
+The URL changes depending on the package owner. Use the same owner in the publishing URL and in the package index so the setup stays easy to trace.
 
 ### How to specify it in the workflow
 
@@ -314,5 +316,3 @@ To manage these packages you must install the uv tool and then provide, via Forg
 ```bash
 uv sync
 ```
-
-If you have any questions about this guide, you can ask me at my personal email:

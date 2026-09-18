@@ -309,7 +309,7 @@ uv pip install .
 ### Install the project with extras
 
 ```bash
-uv pip install ".[kreios]"
+uv pip install ".[private]"
 ```
 
 ## Use uv as a project manager
@@ -319,7 +319,7 @@ uv pip install ".[kreios]"
 If we want an extra (optional dependencies), we use:
 
 ```bash
-uv sync --extra kreios
+uv sync --extra private
 ```
 
 `uv add` adds a dependency to the project, for example:
