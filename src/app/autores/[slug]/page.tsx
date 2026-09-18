@@ -3,6 +3,7 @@ import { ArchiveGridFiller } from "@/app/_components/archive-grid-filler";
 import { PostPreview } from "@/app/_components/post-preview";
 import { getAuthorBySlug, getAuthors, getSectionSlug } from "@/lib/api";
 import { withBasePath } from "@/lib/paths";
+import { canonicalUrl } from "@/lib/site";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -30,7 +31,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const author = getAuthorBySlug(slug);
   if (!author) notFound();
-  return { title: author.name, description: author.bio };
+  return { title: author.name, description: author.bio, alternates: { canonical: canonicalUrl(`/autores/${author.slug}/`) } };
 }
 
 export function generateStaticParams() { return getAuthors().map(author => ({ slug: author.slug })); }

@@ -2,8 +2,9 @@ import Container from "@/app/_components/container";
 import { ArticlesList } from "@/app/_components/articles-list";
 import { getAllPosts, getSectionSlug, getSections } from "@/lib/api";
 import Link from "next/link";
+import { canonicalUrl } from "@/lib/site";
 
-export const metadata = { title: "Todos los artículos", description: "Archivo completo de artículos de Continuous Disintegration." };
+export const metadata = { title: "Todos los artículos", description: "Archivo completo de artículos de Continuous Disintegration.", alternates: { canonical: canonicalUrl("/articulos/") } };
 
 export default function ArticlesPage() {
   const posts = getAllPosts().map(post => ({

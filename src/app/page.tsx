@@ -4,13 +4,24 @@ import SocialSidebar from "@/app/_components/social-sidebar";
 import { OrbitArcade } from "@/app/_components/orbit-arcade";
 import { getAllPosts, getSectionSlug, getSections } from "@/lib/api";
 import Link from "next/link";
+import { canonicalUrl } from "@/lib/site";
 
 export default function Home() {
   const sections = getSections();
   const posts = getAllPosts();
+  const websiteSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "Continuous Disintegration",
+    url: canonicalUrl("/"),
+  };
 
   return (
     <main>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema).replace(/</g, "\\u003c") }}
+      />
       <Container>
         <div className="index-strip"><span>INDEPENDENT TECH JOURNAL <span className="index-strip__spark">*</span> EST. 2026</span><span>INDEX / 001 — <span className="index-strip__muted">EXPLORANDO LO QUE VIENE</span></span></div>
 

@@ -2,6 +2,7 @@ import Container from "@/app/_components/container";
 import { ArchiveGridFiller } from "@/app/_components/archive-grid-filler";
 import { PostPreview } from "@/app/_components/post-preview";
 import { getSectionBySlug, getSections } from "@/lib/api";
+import { canonicalUrl } from "@/lib/site";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -31,7 +32,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { section: slug } = await params;
   const section = getSectionBySlug(slug);
   if (!section) notFound();
-  return { title: section.name, description: `Artículos de ${section.name} en Continuous Disintegration.` };
+  return { title: section.name, description: `Artículos de ${section.name} en Continuous Disintegration.`, alternates: { canonical: canonicalUrl(`/secciones/${section.slug}/`) } };
 }
 
 export function generateStaticParams() { return getSections().map(section => ({ section: section.slug })); }

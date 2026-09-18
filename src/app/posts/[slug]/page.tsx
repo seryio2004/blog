@@ -6,6 +6,7 @@ import Container from "@/app/_components/container";
 import { PostBody } from "@/app/_components/post-body";
 import { PostHeader } from "@/app/_components/post-header";
 import { withBasePath } from "@/lib/paths";
+import { canonicalUrl } from "@/lib/site";
 
 type Params = { params: Promise<{ slug: string }> };
 
@@ -45,7 +46,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { slug } = await params;
   const post = getPostBySlug(slug);
   if (!post) notFound();
-  return { title: post.title, description: post.excerpt, openGraph: { title: post.title, description: post.excerpt, images: [withBasePath(post.ogImage.url)] } };
+  return { title: post.title, description: post.excerpt, alternates: { canonical: canonicalUrl(`/posts/${encodeURIComponent(post.slug)}/`) }, openGraph: { title: post.title, description: post.excerpt, images: [withBasePath(post.ogImage.url)] } };
 }
 
 export function generateStaticParams() { return getAllPosts().map(post => ({ slug: post.slug })); }

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { withBasePath } from "@/lib/paths";
+import { canonicalSiteUrl, canonicalUrl } from "@/lib/site";
 import Header from "./_components/header";
 import Footer from "./_components/footer";
 
@@ -7,10 +8,11 @@ import "./globals.css";
 
 const siteUrl =
   process.env.NEXT_PUBLIC_SITE_URL?.trim() ||
-  "https://seryio2004.github.io";
+  canonicalSiteUrl;
 
 export const metadata: Metadata = {
-  metadataBase: new URL(siteUrl),
+  metadataBase: new URL(new URL(siteUrl).origin),
+  alternates: { canonical: canonicalUrl("/") },
   title: {
     default: "Continuous Disintegration — Ideas, código y otras cosas",
     template: "%s | Continuous Disintegration",

@@ -1,10 +1,9 @@
 import { getAllPosts } from "@/lib/api";
+import { canonicalSiteUrl } from "@/lib/site";
 
 export const dynamic = "force-static";
 
-const siteUrl = (
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://seryio2004.github.io/blog"
-).replace(/\/$/, "");
+const siteUrl = canonicalSiteUrl;
 
 function escapeXml(value: string) {
   return value

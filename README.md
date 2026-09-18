@@ -102,9 +102,9 @@ componentes y estilos sin uso entren en conflicto con el sistema actual.
 ## RSS y metadatos
 
 [`src/app/feed.xml/route.ts`](./src/app/feed.xml/route.ts) genera el feed RSS
-durante la exportación estática. Los metadatos absolutos usan
-`NEXT_PUBLIC_SITE_URL`; en desarrollo, si no existe, se usa
-`https://seryio2004.github.io/blog`.
+durante la exportación estática y enlaza al dominio principal. Los metadatos de
+imágenes usan `NEXT_PUBLIC_SITE_URL` para apuntar a los archivos del despliegue
+correspondiente; en desarrollo se usa `https://continuousdisintegration.com`.
 
 ## GitHub Pages
 
@@ -120,13 +120,28 @@ del destino.
 
 [`wrangler.jsonc`](./wrangler.jsonc) publica la exportación estática de `out/`
 en la raíz del Worker. El workflow compila de nuevo con `NEXT_PUBLIC_BASE_PATH`
-vacío, de modo que las rutas no incluyen el subdirectorio de GitHub Pages.
+vacío y `NEXT_PUBLIC_SITE_URL=https://continuousdisintegration.com`, de modo
+que las rutas no incluyen el subdirectorio de GitHub Pages.
 
-Configura la variable de GitHub Actions `CLOUDFLARE_SITE_URL` con la URL pública
-completa del Worker (por ejemplo, `https://blog.example.com`). Se usa durante
-la compilación para los enlaces del feed y los metadatos sociales. El workflow
-necesita también los secretos `CLOUDFLARE_API_TOKEN` y
+El workflow necesita los secretos `CLOUDFLARE_API_TOKEN` y
 `CLOUDFLARE_ACCOUNT_ID` para publicar.
+
+## SEO y Google Search Console
+
+La URL principal es `https://continuousdisintegration.com/`.
+[`src/app/sitemap.ts`](./src/app/sitemap.ts) genera `/sitemap.xml` con las
+páginas y artículos del dominio principal; [`src/app/robots.ts`](./src/app/robots.ts)
+lo anuncia a los buscadores. Las páginas publicadas también en GitHub Pages
+indican mediante `rel="canonical"` que la versión preferida es la de Cloudflare.
+La portada incluye datos estructurados `WebSite` con el nombre del blog.
+
+Para registrar el dominio en [Google Search Console](https://search.google.com/search-console):
+
+1. Selecciona **Añadir propiedad** y el tipo **Dominio**. Introduce `continuousdisintegration.com` sin `https://` ni `www`.
+2. Copia el registro TXT de verificación que te entregue Google y añádelo en el DNS del dominio (en Cloudflare, **DNS → Records → Add record**, tipo **TXT**, nombre `@`). Conserva el valor exacto proporcionado por Google.
+3. Vuelve a Search Console y pulsa **Verificar**. La propagación del DNS puede tardar.
+4. En **Sitemaps**, envía `https://continuousdisintegration.com/sitemap.xml`.
+5. Usa **Inspección de URLs** con `https://continuousdisintegration.com/` para comprobar su indexación y, si hace falta, solicitarla.
 
 Antes de publicar un artículo, comprueba que:
 

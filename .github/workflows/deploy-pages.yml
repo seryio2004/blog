@@ -100,7 +100,8 @@ jobs:
         run: npm run build
         env:
           NEXT_PUBLIC_BASE_PATH: ""
-          
+          NEXT_PUBLIC_SITE_URL: https://continuousdisintegration.com
+
       - name: Desplegar en Cloudflare
         uses: cloudflare/wrangler-action@v4
         with:
