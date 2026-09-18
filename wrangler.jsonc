@@ -12,6 +12,10 @@
     {
       "pattern": "continuousdisintegration.com",
       "custom_domain": true
+    },
+    {
+      "pattern": "www.continuousdisintegration.com",
+      "custom_domain": true
     }
   ]
 }
