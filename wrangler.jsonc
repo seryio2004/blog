@@ -2,8 +2,16 @@
   "$schema": "./node_modules/wrangler/config-schema.json",
   "name": "blog",
   "compatibility_date": "2026-09-18",
+
   "assets": {
     "directory": "./out",
     "html_handling": "force-trailing-slash"
-  }
+  },
+
+  "routes": [
+    {
+      "pattern": "continuousdisintegration.com",
+      "custom_domain": true
+    }
+  ]
 }
