@@ -5,14 +5,18 @@ import Footer from "./_components/footer";
 
 import "./globals.css";
 
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL?.trim() ||
+  "https://seryio2004.github.io";
+
 export const metadata: Metadata = {
-  metadataBase: new URL(
-    new URL(
-      process.env.NEXT_PUBLIC_SITE_URL ?? "https://seryio2004.github.io",
-    ).origin,
-  ),
-  title: { default: "Continuous Disintegration — Ideas, código y otras cosas", template: "%s | Continuous Disintegration" },
-  description: "Un archivo independiente de programación, electrónica, diseño web e ideas en construcción.",
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: "Continuous Disintegration — Ideas, código y otras cosas",
+    template: "%s | Continuous Disintegration",
+  },
+  description:
+    "Un archivo independiente de programación, electrónica, diseño web e ideas en construcción.",
 };
 
 export default function RootLayout({
