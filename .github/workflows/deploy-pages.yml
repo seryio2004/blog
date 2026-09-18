@@ -96,15 +96,6 @@ jobs:
       - name: Instalar dependencias
         run: npm ci
 
-      - name: Comprobar URL pública de Cloudflare
-        env:
-          CLOUDFLARE_SITE_URL: ${{ vars.CLOUDFLARE_SITE_URL }}
-        run: |
-          if [ -z "$CLOUDFLARE_SITE_URL" ]; then
-            echo "::error::Configura la variable CLOUDFLARE_SITE_URL con la URL pública del Worker."
-            exit 1
-          fi
-
       - name: Compilar para Cloudflare
         run: npm run build
         env:
