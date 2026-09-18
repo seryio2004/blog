@@ -112,7 +112,9 @@ El workflow [`deploy-pages.yml`](./.github/workflows/deploy-pages.yml) ejecuta
 `npm ci` y `npm run build`. `NEXT_PUBLIC_BASE_PATH` procede de
 `actions/configure-pages` y `NEXT_PUBLIC_SITE_URL` de su URL pública.
 [`src/lib/paths.ts`](./src/lib/paths.ts) adapta las rutas públicas al
-subdirectorio del sitio.
+subdirectorio del sitio. La configuración de Next.js se mantiene en
+[`next.config.ts`](./next.config.ts); `configure-pages` solo obtiene los datos
+del destino.
 
 ## Cloudflare Workers
 

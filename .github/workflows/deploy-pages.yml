@@ -37,8 +37,6 @@ jobs:
       - name: Configurar GitHub Pages
         id: pages
         uses: actions/configure-pages@v5
-        with:
-          static_site_generator: next
 
       - name: Instalar dependencias
         run: npm ci
