@@ -69,7 +69,7 @@ frontmatter o el cuerpo Markdown empiezan por `/assets/`:
 ![Descripción de la captura](/assets/blog/mi-articulo/captura.png)
 ```
 
-Las rutas Markdown se adaptan automáticamente al `basePath` de GitHub Pages.
+Las rutas Markdown se adaptan automáticamente al `basePath` de cada despliegue.
 
 ## Secciones
 
@@ -103,15 +103,28 @@ componentes y estilos sin uso entren en conflicto con el sistema actual.
 
 [`src/app/feed.xml/route.ts`](./src/app/feed.xml/route.ts) genera el feed RSS
 durante la exportación estática. Los metadatos absolutos usan
-`NEXT_PUBLIC_SITE_URL`; si no existe, se usa
+`NEXT_PUBLIC_SITE_URL`; en desarrollo, si no existe, se usa
 `https://seryio2004.github.io/blog`.
 
 ## GitHub Pages
 
 El workflow [`deploy-pages.yml`](./.github/workflows/deploy-pages.yml) ejecuta
 `npm ci` y `npm run build`. `NEXT_PUBLIC_BASE_PATH` procede de
-`actions/configure-pages`, y [`src/lib/paths.ts`](./src/lib/paths.ts) adapta las
-rutas públicas al subdirectorio del sitio.
+`actions/configure-pages` y `NEXT_PUBLIC_SITE_URL` de su URL pública.
+[`src/lib/paths.ts`](./src/lib/paths.ts) adapta las rutas públicas al
+subdirectorio del sitio.
+
+## Cloudflare Workers
+
+[`wrangler.jsonc`](./wrangler.jsonc) publica la exportación estática de `out/`
+en la raíz del Worker. El workflow compila de nuevo con `NEXT_PUBLIC_BASE_PATH`
+vacío, de modo que las rutas no incluyen el subdirectorio de GitHub Pages.
+
+Configura la variable de GitHub Actions `CLOUDFLARE_SITE_URL` con la URL pública
+completa del Worker (por ejemplo, `https://blog.example.com`). Se usa durante
+la compilación para los enlaces del feed y los metadatos sociales. El workflow
+necesita también los secretos `CLOUDFLARE_API_TOKEN` y
+`CLOUDFLARE_ACCOUNT_ID` para publicar.
 
 Antes de publicar un artículo, comprueba que:
 

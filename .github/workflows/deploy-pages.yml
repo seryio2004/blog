@@ -47,6 +47,7 @@ jobs:
         run: npm run build
         env:
           NEXT_PUBLIC_BASE_PATH: ${{ steps.pages.outputs.base_path }}
+          NEXT_PUBLIC_SITE_URL: ${{ steps.pages.outputs.base_url }}
 
       - name: Subir artifact de GitHub Pages
         uses: actions/upload-pages-artifact@v4
@@ -97,8 +98,20 @@ jobs:
       - name: Instalar dependencias
         run: npm ci
 
+      - name: Comprobar URL pública de Cloudflare
+        env:
+          CLOUDFLARE_SITE_URL: ${{ vars.CLOUDFLARE_SITE_URL }}
+        run: |
+          if [ -z "$CLOUDFLARE_SITE_URL" ]; then
+            echo "::error::Configura la variable CLOUDFLARE_SITE_URL con la URL pública del Worker."
+            exit 1
+          fi
+
       - name: Compilar para Cloudflare
         run: npm run build
+        env:
+          NEXT_PUBLIC_BASE_PATH: ""
+          NEXT_PUBLIC_SITE_URL: ${{ vars.CLOUDFLARE_SITE_URL }}
 
       - name: Desplegar en Cloudflare
         uses: cloudflare/wrangler-action@v4
