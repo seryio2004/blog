@@ -4,6 +4,8 @@ import { getAuthorProfile } from "@/lib/authors";
 import fs from "fs";
 import matter from "gray-matter";
 import { join } from "path";
+import { existsSync } from "fs";
+import type { Locale } from "@/lib/i18n";
 
 const postsDirectory = join(process.cwd(), "_posts");
 
@@ -31,12 +33,21 @@ export function getSectionSlug(section: string) {
 }
 
 export function getPostSlugs() {
-  return fs.readdirSync(postsDirectory);
+  return fs.readdirSync(postsDirectory).filter((file) =>
+    file.endsWith(".md") &&
+    !/\.(?:es|en)\.md$/.test(file) &&
+    fs.readFileSync(join(postsDirectory, file), "utf8").startsWith("---\n"),
+  );
 }
 
-export function getPostBySlug(slug: string) {
+export function getPostBySlug(slug: string, locale: Locale = "es") {
   const realSlug = slug.replace(/\.md$/, "");
-  const fullPath = join(postsDirectory, `${realSlug}.md`);
+  const originalPath = join(postsDirectory, `${realSlug}.md`);
+  const localizedPath = join(postsDirectory, `${realSlug}.${locale}.md`);
+  const originalMatter = matter(fs.readFileSync(originalPath, "utf8"));
+  const fullPath = originalMatter.data.language === locale || !existsSync(localizedPath)
+    ? originalPath
+    : localizedPath;
   const fileContents = fs.readFileSync(fullPath, "utf8");
   const { data, content } = matter(fileContents);
 
@@ -61,10 +72,10 @@ export function getPostBySlug(slug: string) {
   } as Post;
 }
 
-export function getAllPosts(): Post[] {
+export function getAllPosts(locale: Locale = "es"): Post[] {
   const slugs = getPostSlugs();
   const posts = slugs
-    .map((slug) => getPostBySlug(slug))
+    .map((slug) => getPostBySlug(slug, locale))
     // sort posts by date in descending order
     .sort(
       (post1, post2) =>
@@ -74,10 +85,10 @@ export function getAllPosts(): Post[] {
   return posts;
 }
 
-export function getSections(): PostSection[] {
+export function getSections(locale: Locale = "es"): PostSection[] {
   const sections = new Map<string, { name: string; posts: Post[] }>();
 
-  for (const post of getAllPosts()) {
+  for (const post of getAllPosts(locale)) {
     const slug = getSectionSlug(post.section);
 
     if (!slug) {
@@ -103,15 +114,22 @@ export function getSections(): PostSection[] {
   }));
 }
 
-export function getSectionBySlug(slug: string) {
-  return getSections().find((section) => section.slug === getSectionSlug(slug));
+export function getSectionBySlug(slug: string, locale: Locale = "es") {
+  return getSections(locale).find((section) => section.slug === getSectionSlug(slug));
 }
 
-export function getAuthors(): BlogAuthor[] {
+export function getAlternateSectionSlug(slug: string, locale: Locale) {
+  const section = getSectionBySlug(slug, locale);
+  if (!section) return slug;
+  const otherLocale: Locale = locale === "es" ? "en" : "es";
+  return getSectionSlug(getPostBySlug(section.posts[0].slug, otherLocale).section);
+}
+
+export function getAuthors(locale: Locale = "es"): BlogAuthor[] {
   const authors = new Map<string, BlogAuthor>();
 
-  for (const post of getAllPosts()) {
-    const profile = getAuthorProfile(post.author.name);
+  for (const post of getAllPosts(locale)) {
+    const profile = getAuthorProfile(post.author.name, locale);
     const existingAuthor = authors.get(profile.slug);
 
     if (existingAuthor) {
@@ -128,8 +146,8 @@ export function getAuthors(): BlogAuthor[] {
   return Array.from(authors.values());
 }
 
-export function getAuthorBySlug(slug: string) {
+export function getAuthorBySlug(slug: string, locale: Locale = "es") {
   const normalizedSlug = slug.trim().toLowerCase();
 
-  return getAuthors().find((author) => author.slug === normalizedSlug);
+  return getAuthors(locale).find((author) => author.slug === normalizedSlug);
 }

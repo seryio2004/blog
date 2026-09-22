@@ -1,8 +1,8 @@
 ---
-title: "Package-version-management"
+title: "Package version management"
 section: "Python"
 language: "en"
-excerpt: "En este articulo se explicara brevemente la herramienta uv, si usas o conoces pip este articulo te sera muy util"
+excerpt: "A practical guide to Semantic Versioning, Python package versions, Git tags and changelogs."
 coverImage: "/assets/blog/editorial-cover.png"
 date: "2026-08-26T05:35:07.322Z"
 author:

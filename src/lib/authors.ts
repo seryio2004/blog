@@ -1,12 +1,15 @@
 type AuthorProfile = {
   slug: string;
-  bio: string;
+  bio: Record<"es" | "en", string>;
 };
 
 const authorProfiles: Record<string, AuthorProfile> = {
   "sergio rodriguez": {
     slug: "sergio-rodriguez",
-    bio: "Comparte guías prácticas, herramientas y experiencias sobre desarrollo e infraestructura.",
+    bio: {
+      es: "Comparte guías prácticas, herramientas y experiencias sobre desarrollo e infraestructura.",
+      en: "Shares practical guides, tools and experiences about software development and infrastructure.",
+    },
   },
 };
 
@@ -20,16 +23,19 @@ function createAuthorSlug(name: string) {
     .replace(/^-|-$/g, "");
 }
 
-export function getAuthorProfile(name: string): AuthorProfile {
+export function getAuthorProfile(name: string, locale: "es" | "en" = "es") {
   const normalizedName = name.trim().toLocaleLowerCase("es");
   const profile = authorProfiles[normalizedName];
 
-  return (
-    profile ?? {
+  const resolved = profile ?? {
       slug: createAuthorSlug(name),
-      bio: `${name} comparte artículos y experiencias técnicas en el blog.`,
-    }
-  );
+      bio: {
+        es: `${name} comparte artículos y experiencias técnicas en el blog.`,
+        en: `${name} shares technical articles and experiences on the blog.`,
+      },
+    };
+
+  return { slug: resolved.slug, bio: resolved.bio[locale] };
 }
 
 export function getAuthorSlug(name: string) {

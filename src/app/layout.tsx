@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { withBasePath } from "@/lib/paths";
 import { canonicalSiteUrl, canonicalUrl } from "@/lib/site";
-import Header from "./_components/header";
-import Footer from "./_components/footer";
 
 import "./globals.css";
 
@@ -12,7 +10,7 @@ const siteUrl =
 
 export const metadata: Metadata = {
   metadataBase: new URL(new URL(siteUrl).origin),
-  alternates: { canonical: canonicalUrl("/") },
+  alternates: { canonical: canonicalUrl("/"), languages: { es: canonicalUrl("/"), en: canonicalUrl("/en/"), "x-default": canonicalUrl("/") } },
   title: {
     default: "Continuous Disintegration — Ideas, código y otras cosas",
     template: "%s | Continuous Disintegration",
@@ -27,7 +25,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es">
+    <html lang="es" suppressHydrationWarning>
       <head>
         <link
           rel="apple-touch-icon"
@@ -73,10 +71,20 @@ export default function RootLayout({
         <link
           rel="alternate"
           type="application/rss+xml"
+          hrefLang="es"
           href={withBasePath("/feed.xml")}
         />
+        <link
+          rel="alternate"
+          type="application/rss+xml"
+          hrefLang="en"
+          href={withBasePath("/en/feed.xml")}
+        />
       </head>
-      <body id="top"><Header />{children}<Footer /></body>
+      <body id="top">
+        <script dangerouslySetInnerHTML={{ __html: "if(location.pathname==='/en'||location.pathname.startsWith('/en/'))document.documentElement.lang='en'" }} />
+        {children}
+      </body>
     </html>
   );
 }

@@ -1,8 +1,8 @@
 ---
-title: "Uv pacakage manager"
+title: "uv: Python package and project manager"
 section: "Python"
 language: "en"
-excerpt: "En este articulo se explicara brevemente la herramienta uv, si usas o conoces pip este articulo te sera muy util"
+excerpt: "What uv adds to pip and how to use it for environments, dependencies, lock files and project commands."
 coverImage: "/assets/blog/editorial-cover.png"
 date: "2026-08-20T05:35:07.322Z"
 author:

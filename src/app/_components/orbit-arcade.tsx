@@ -14,6 +14,15 @@ const alerts = [
   "DEPENDENCIA SIN FIJAR",
 ] as const;
 
+const alertsEn = [
+  "PUSH TO MAIN ON FRIDAY",
+  "DEPLOY WITHOUT TESTS",
+  "FORCE PUSH DETECTED",
+  "HOTFIX WITHOUT ROLLBACK",
+  "SECRETS IN THE COMMIT",
+  "UNPINNED DEPENDENCY",
+] as const;
+
 type MeteorConfig = {
   generation: number;
   startX: number;
@@ -66,7 +75,17 @@ type Shot = {
   impact: boolean;
 };
 
-export function OrbitArcade() {
+export function OrbitArcade({ locale = "es" }: { locale?: "es" | "en" }) {
+  const localizedAlerts = locale === "es" ? alerts : alertsEn;
+  const text = locale === "es" ? {
+    touch: "Toca un meteorito para disparar.", mouse: "Apunta con el ratón y haz clic para disparar.", keyboard: "Con teclado, usa las flechas y pulsa Intro.", intercepted: "interceptados.",
+    manual: "MODO MANUAL", demo: "MODO DEMO", incident: "INCIDENTE", touchFire: "TOCA UN METEORITO / DISPARAR", aimFire: "APUNTA AL METEORITO / CLIC PARA DISPARAR", touchActivate: "TOCA EL RADAR PARA ACTIVAR DEFENSA", hoverActivate: "PASA EL CURSOR PARA ACTIVAR DEFENSA",
+    warning: "ALERTA / MALAS DECISIONES ENTRANTES", defense: "DEFENSA DE PRODUCCIÓN ACTIVA_", eyebrow: "// IDEAS EN CONSTRUCCIÓN", titleA: "Todo sistema", titleB: "merece una", titleC: "segunda vida.", body: "Construir, romper y volver a intentarlo. Cada proyecto deja aprendizajes que vale la pena documentar y compartir.", active: "ARCHIVO ACTIVO", status: "IDEAS / PROCESO / CÓDIGO",
+  } : {
+    touch: "Tap a meteor to fire.", mouse: "Aim with the mouse and click to fire.", keyboard: "With a keyboard, use the arrow keys and press Enter.", intercepted: "intercepted.",
+    manual: "MANUAL MODE", demo: "DEMO MODE", incident: "INCIDENT", touchFire: "TAP A METEOR / FIRE", aimFire: "AIM AT METEOR / CLICK TO FIRE", touchActivate: "TAP RADAR TO ACTIVATE DEFENSE", hoverActivate: "HOVER TO ACTIVATE DEFENSE",
+    warning: "WARNING / BAD DECISIONS INCOMING", defense: "PRODUCTION DEFENSE ACTIVE_", eyebrow: "// IDEAS IN PROGRESS", titleA: "Every system", titleB: "deserves a", titleC: "second life.", body: "Build, break and try again. Every project leaves lessons worth documenting and sharing.", active: "ARCHIVE ACTIVE", status: "IDEAS / PROCESS / CODE",
+  };
   const gameRef = useRef<HTMLDivElement>(null);
   const meteorRefs = useRef<Record<string, HTMLSpanElement | null>>({});
   const destroyedRef = useRef<Set<string>>(new Set());
@@ -106,7 +125,7 @@ export function OrbitArcade() {
   useEffect(() => {
     if (!active) return;
     const interval = window.setInterval(
-      () => setAlertIndex(index => (index + 1) % alerts.length),
+      () => setAlertIndex(index => (index + 1) % localizedAlerts.length),
       1500,
     );
     return () => window.clearInterval(interval);
@@ -218,7 +237,7 @@ export function OrbitArcade() {
           className="orbit-game"
           role="button"
           tabIndex={0}
-          aria-label={`Defensa orbital interactiva. ${touchMode ? "Toca un meteorito para disparar." : "Apunta con el ratón y haz clic para disparar."} Con teclado, usa las flechas y pulsa Intro. ${intercepts} interceptados.`}
+          aria-label={`${locale === "es" ? "Defensa orbital interactiva." : "Interactive orbital defense."} ${touchMode ? text.touch : text.mouse} ${text.keyboard} ${intercepts} ${text.intercepted}`}
           onPointerEnter={event => {
             if (event.pointerType === "mouse") setActive(true);
           }}
@@ -282,16 +301,16 @@ export function OrbitArcade() {
         >
           <div className="orbit-game__hud">
             <span>SCORE <b>{String(intercepts * 250).padStart(6, "0")}</b></span>
-            <span>{active ? "MODO MANUAL" : "MODO DEMO"}</span>
+            <span>{active ? text.manual : text.demo}</span>
             <span>SHIELD <b>███░</b></span>
           </div>
 
           <div className="orbit-game__incident" aria-live="polite">
-            <span>[!] INCIDENTE #{String(alertIndex + 1).padStart(2, "0")}</span>
-            <strong>{alerts[alertIndex]}</strong>
+            <span>[!] {text.incident} #{String(alertIndex + 1).padStart(2, "0")}</span>
+            <strong>{localizedAlerts[alertIndex]}</strong>
             <small>{active
-              ? touchMode ? "TOCA UN METEORITO / DISPARAR" : "APUNTA AL METEORITO / CLIC PARA DISPARAR"
-              : touchMode ? "TOCA EL RADAR PARA ACTIVAR DEFENSA" : "PASA EL CURSOR PARA ACTIVAR DEFENSA"}
+              ? touchMode ? text.touchFire : text.aimFire
+              : touchMode ? text.touchActivate : text.hoverActivate}
             </small>
           </div>
 
@@ -319,7 +338,7 @@ export function OrbitArcade() {
                 className={`orbit-game__meteor orbit-game__meteor--${meteorite} ${destroyed.includes(meteorite) ? "is-destroyed" : ""}`}
                 style={style}
                 aria-hidden="true"
-                data-threat={alerts[config.alert]}
+                data-threat={localizedAlerts[config.alert]}
                 onAnimationIteration={() => {
                   if (!destroyedRef.current.has(meteorite)) regenerateMeteor(meteorite);
                 }}
@@ -376,16 +395,16 @@ export function OrbitArcade() {
 
           {active && <span key={intercepts} className="orbit-game__target" aria-hidden="true"><i /><i /></span>}
 
-          <div className="orbit-game__message"><span>ALERTA / MALAS DECISIONES ENTRANTES</span><b>DEFENSA DE PRODUCCIÓN ACTIVA_</b></div>
+          <div className="orbit-game__message"><span>{text.warning}</span><b>{text.defense}</b></div>
           <div className="orbit-game__scanline" aria-hidden="true" />
         </div>
       </div>
 
       <div className="orbit-feature__copy">
-        <p className="eyebrow">// IDEAS EN CONSTRUCCIÓN</p>
-        <h2 id="orbit-feature-title">Todo sistema<br />merece una <em>segunda vida.</em><span className="heading-star">*</span></h2>
-        <p>Construir, romper y volver a intentarlo. Cada proyecto deja aprendizajes que vale la pena documentar y compartir.</p>
-        <div className="orbit-feature__status"><span><i /> ARCHIVO ACTIVO</span><span>IDEAS / PROCESO / CÓDIGO</span></div>
+        <p className="eyebrow">{text.eyebrow}</p>
+        <h2 id="orbit-feature-title">{text.titleA}<br />{text.titleB} <em>{text.titleC}</em><span className="heading-star">*</span></h2>
+        <p>{text.body}</p>
+        <div className="orbit-feature__status"><span><i /> {text.active}</span><span>{text.status}</span></div>
       </div>
     </section>
   );

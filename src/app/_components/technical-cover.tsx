@@ -1,7 +1,8 @@
 import Link from "next/link";
 import type { CSSProperties, ReactNode } from "react";
+import { copy, routes, type Locale } from "@/lib/i18n";
 
-type Props = { title: string; section?: string; slug?: string; large?: boolean };
+type Props = { title: string; section?: string; slug?: string; large?: boolean; locale?: Locale };
 type Motif = "orbit" | "branch" | "signal" | "circuit" | "stack" | "constellation" | "network";
 type Palette = { paper: string; ink: string; accent: string };
 type CoverStyle = CSSProperties & {
@@ -25,6 +26,9 @@ const namedSections: Record<string, { motif: Motif; palette: Palette }> = {
   python: { motif: "orbit", palette: { paper: "#bdcbd0", ink: "#172329", accent: "#300a24" } },
   forgejo: { motif: "branch", palette: { paper: "#d3ccbb", ink: "#292119", accent: "#ffa86a" } },
   infraestructura: { motif: "network", palette: { paper: "#c6d3d8", ink: "#172a32", accent: "#a7e7c7" } },
+  infrastructure: { motif: "network", palette: { paper: "#c6d3d8", ink: "#172a32", accent: "#a7e7c7" } },
+  proyectos: { motif: "circuit", palette: { paper: "#d9c9c5", ink: "#30211f", accent: "#ffb6a2" } },
+  projects: { motif: "circuit", palette: { paper: "#d9c9c5", ink: "#30211f", accent: "#ffb6a2" } },
 };
 
 function sectionKey(section: string) {
@@ -134,7 +138,7 @@ function Diagram({ motif, seed }: { motif: Motif; seed: number }) {
   </svg>;
 }
 
-export function TechnicalCover({ title, section = "Editorial", slug, large = false }: Props) {
+export function TechnicalCover({ title, section = "Editorial", slug, large = false, locale = "es" }: Props) {
   const key = sectionKey(section);
   const seed = hashSection(key);
   const identity = namedSections[key] ?? {
@@ -159,5 +163,5 @@ export function TechnicalCover({ title, section = "Editorial", slug, large = fal
     <div className="technical-cover__bottom"><span>{section.toUpperCase()} / {title.toUpperCase()}</span><span>CD_{plate}</span></div>
   </div>;
 
-  return slug ? <Link href={`/posts/${slug}`} className="technical-cover__link" aria-label={`Leer ${title}`}>{visual}</Link> : visual;
+  return slug ? <Link href={routes(locale).post(slug)} className="technical-cover__link" aria-label={`${copy[locale].readLabel} ${title}`}>{visual}</Link> : visual;
 }

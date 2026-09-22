@@ -1,24 +1,28 @@
 "use client";
 
+import { copy, type Locale } from "@/lib/i18n";
+
 type Props = {
-  value: "recientes" | "antiguos";
-  onChange: (value: "recientes" | "antiguos") => void;
+  value: "newest" | "oldest";
+  onChange: (value: "newest" | "oldest") => void;
+  locale?: Locale;
 };
 
-export function ArticleSortSelect({ value, onChange }: Props) {
+export function ArticleSortSelect({ value, onChange, locale = "es" }: Props) {
+  const text = copy[locale];
   return (
     <label className="sort-control">
-      ORDENAR /
+      {text.sort}
       <select
         value={value}
         onChange={(event) => {
-          onChange(event.target.value as "recientes" | "antiguos");
+          onChange(event.target.value as "newest" | "oldest");
         }}
         className="sort-control__select"
-        aria-label="Orden de los artículos"
+        aria-label={text.sortLabel}
       >
-        <option value="recientes">Más recientes</option>
-        <option value="antiguos">Más antiguos</option>
+        <option value="newest">{text.newest}</option>
+        <option value="oldest">{text.oldest}</option>
       </select>
     </label>
   );

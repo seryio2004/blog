@@ -6,6 +6,7 @@ import { type Author } from "@/interfaces/author";
 import { type PostLanguage } from "@/interfaces/post";
 import { TechnicalCover } from "./technical-cover";
 import Link from "next/link";
+import { routes, type Locale } from "@/lib/i18n";
 
 type Props = {
   title: string;
@@ -15,6 +16,7 @@ type Props = {
   section?: string;
   sectionSlug?: string;
   readingMinutes: number;
+  locale?: Locale;
 };
 
 export function PostHeader({
@@ -25,18 +27,24 @@ export function PostHeader({
   section,
   sectionSlug,
   readingMinutes,
+  locale = "es",
 }: Props) {
+  const text = locale === "es" ? {
+    back: "<- VOLVER AL ARCHIVO", kicker: "IDEAS / CÓDIGO / PROCESO", reading: "TIEMPO DE LECTURA", min: "MIN",
+  } : {
+    back: "<- BACK TO ARCHIVE", kicker: "IDEAS / CODE / PROCESS", reading: "READING TIME", min: "MIN",
+  };
   return (
     <header className="article-header">
-      <Link href="/articulos" className="breadcrumb">&lt;- VOLVER AL ARCHIVO</Link>
+      <Link href={routes(locale).articles} className="breadcrumb">{text.back}</Link>
       <div className="article-header__meta">
-        {section && sectionSlug ? <Link href={`/secciones/${sectionSlug}`} className="section-tag">{section}</Link> : null}
-        <DateFormatter dateString={date} /><LanguageBadge language={language} />
+        {section && sectionSlug ? <Link href={routes(locale).section(sectionSlug)} className="section-tag">{section}</Link> : null}
+        <DateFormatter dateString={date} locale={locale} /><LanguageBadge language={language} />
       </div>
       <PostTitle>{title}</PostTitle>
-      <p className="article-header__kicker">IDEAS / CÓDIGO / PROCESO <span>*</span></p>
-      <div className="article-header__byline"><Avatar name={author.name} picture={author.picture} /><span>TIEMPO DE LECTURA / {String(readingMinutes).padStart(2, "0")} MIN</span></div>
-      <TechnicalCover title={title} section={section} large />
+      <p className="article-header__kicker">{text.kicker} <span>*</span></p>
+      <div className="article-header__byline"><Avatar name={author.name} picture={author.picture} locale={locale} /><span>{text.reading} / {String(readingMinutes).padStart(2, "0")} {text.min}</span></div>
+      <TechnicalCover title={title} section={section} large locale={locale} />
     </header>
   );
 }

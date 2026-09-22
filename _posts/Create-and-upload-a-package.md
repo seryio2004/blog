@@ -1,8 +1,8 @@
 ---
-title: "Create and upload a package in forgejo"
+title: "Create and upload a package in Forgejo"
 section: "Forgejo"
 language: "en"
-excerpt: "En esta guía se explicara el proceso para generar codigo empaquetado a raiz de un repositorio, para asi poder usarlo como modulo estable y mejorar la trazabilidad."
+excerpt: "How to build Python code from a repository, publish it to Forgejo and reuse it as a stable, traceable dependency."
 coverImage: "/assets/blog/editorial-cover.png"
 date: "2026-08-27T05:35:07.322Z"
 author:

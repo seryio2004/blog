@@ -1,7 +1,9 @@
-type Props = { dateString: string };
+import type { Locale } from "@/lib/i18n";
 
-export default function DateFormatter({ dateString }: Props) {
-  const formatted = new Intl.DateTimeFormat("es-ES", {
+type Props = { dateString: string; locale?: Locale };
+
+export default function DateFormatter({ dateString, locale = "es" }: Props) {
+  const formatted = new Intl.DateTimeFormat(locale === "es" ? "es-ES" : "en-GB", {
     day: "2-digit",
     month: "short",
     year: "numeric",

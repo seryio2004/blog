@@ -35,6 +35,7 @@ export function GET() {
     <title>Continuous Disintegration</title>
     <link>${siteUrl}/</link>
     <description>Ideas sobre programación, electrónica y diseño digital.</description>${items}
+    <language>es</language>
   </channel>
 </rss>`;
 
