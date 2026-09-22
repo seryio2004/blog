@@ -9,7 +9,7 @@ author:
   name: Sergio Rodriguez
   picture: "/assets/blog/authors/jj.jpeg"
 ogImage:
-  url: "/assets/blog/editorial-cover.png"
+  url: "/assets/blog/social-preview.png"
 ---
 
 # Monitorización de equipos y sesiones RDP en una infraestructura compartida

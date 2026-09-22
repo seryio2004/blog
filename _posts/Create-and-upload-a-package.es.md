@@ -9,7 +9,7 @@ author:
   name: Sergio Rodriguez
   picture: "/assets/blog/authors/jj.jpeg"
 ogImage:
-  url: "/assets/blog/editorial-cover.png"
+  url: "/assets/blog/social-preview.png"
 ---
 
 # Crear y publicar un paquete

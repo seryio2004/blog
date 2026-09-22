@@ -5,7 +5,7 @@ import SocialSidebar from "@/app/_components/social-sidebar";
 import { OrbitArcade } from "@/app/_components/orbit-arcade";
 import { getAllPosts, getSectionSlug, getSections } from "@/lib/api";
 import { routes, type Locale } from "@/lib/i18n";
-import { canonicalUrl } from "@/lib/site";
+import { canonicalUrl, siteAuthor, siteAuthorGithub, siteAuthorXUrl, siteName } from "@/lib/site";
 import Link from "next/link";
 
 const homeCopy = {
@@ -32,7 +32,24 @@ export function HomePage({ locale }: { locale: Locale }) {
   const href = routes(locale);
   const sections = getSections(locale);
   const posts = getAllPosts(locale);
-  const websiteSchema = { "@context": "https://schema.org", "@type": "WebSite", name: "Continuous Disintegration", url: canonicalUrl(locale === "en" ? "/en/" : "/"), inLanguage: locale };
+  const homeUrl = canonicalUrl(locale === "en" ? "/en/" : "/");
+  const websiteSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "@id": `${homeUrl}#website`,
+    name: siteName,
+    description: locale === "es"
+      ? "Un archivo independiente de programación, electrónica, diseño web e ideas en construcción."
+      : "An independent archive of programming, electronics, web design and ideas in progress.",
+    url: homeUrl,
+    inLanguage: locale,
+    publisher: {
+      "@type": "Person",
+      name: siteAuthor,
+      url: canonicalUrl(`${routes(locale).author("sergio-rodriguez")}/`),
+      sameAs: [siteAuthorGithub, siteAuthorXUrl],
+    },
+  };
 
   return <PageChrome locale={locale} alternateHref={text.alternate}>
     <main>

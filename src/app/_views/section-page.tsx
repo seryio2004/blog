@@ -5,6 +5,7 @@ import { PostPreview } from "@/app/_components/post-preview";
 import { getAlternateSectionSlug, getSectionBySlug, getSections } from "@/lib/api";
 import { routes, type Locale } from "@/lib/i18n";
 import { canonicalUrl } from "@/lib/site";
+import { buildPageSocialMetadata } from "@/lib/seo";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -37,5 +38,12 @@ export async function buildSectionMetadata({ params, locale }: Props & { locale:
   const esPath = locale === "es" ? routes("es").section(section.slug) : routes("es").section(otherSlug);
   const enPath = locale === "en" ? routes("en").section(section.slug) : routes("en").section(otherSlug);
   const es = canonicalUrl(esPath + "/"); const en = canonicalUrl(enPath + "/");
-  return { title: section.name, description: locale === "es" ? `Artículos de ${section.name} en Continuous Disintegration.` : `${section.name} articles on Continuous Disintegration.`, alternates: { canonical: locale === "es" ? es : en, languages: { es, en, "x-default": es } } };
+  const description = locale === "es" ? `Artículos de ${section.name} en Continuous Disintegration.` : `${section.name} articles on Continuous Disintegration.`;
+  const canonical = locale === "es" ? es : en;
+  return {
+    title: section.name,
+    description,
+    alternates: { canonical, languages: { es, en, "x-default": es } },
+    ...buildPageSocialMetadata({ locale, title: section.name, description, url: canonical }),
+  };
 }

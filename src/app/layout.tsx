@@ -1,6 +1,15 @@
 import type { Metadata } from "next";
 import { withBasePath } from "@/lib/paths";
-import { canonicalSiteUrl, canonicalUrl } from "@/lib/site";
+import {
+  canonicalSiteUrl,
+  canonicalUrl,
+  defaultSocialImage,
+  defaultSocialImageHeight,
+  defaultSocialImageWidth,
+  siteAuthor,
+  siteAuthorX,
+  siteName,
+} from "@/lib/site";
 
 import "./globals.css";
 
@@ -10,6 +19,11 @@ const siteUrl =
 
 export const metadata: Metadata = {
   metadataBase: new URL(new URL(siteUrl).origin),
+  applicationName: siteName,
+  authors: [{ name: siteAuthor, url: canonicalUrl("/autores/sergio-rodriguez/") }],
+  creator: siteAuthor,
+  publisher: siteAuthor,
+  category: "technology",
   alternates: { canonical: canonicalUrl("/"), languages: { es: canonicalUrl("/"), en: canonicalUrl("/en/"), "x-default": canonicalUrl("/") } },
   title: {
     default: "Continuous Disintegration — Ideas, código y otras cosas",
@@ -17,6 +31,28 @@ export const metadata: Metadata = {
   },
   description:
     "Un archivo independiente de programación, electrónica, diseño web e ideas en construcción.",
+  openGraph: {
+    type: "website",
+    siteName,
+    title: "Continuous Disintegration — Ideas, código y otras cosas",
+    description: "Un archivo independiente de programación, electrónica, diseño web e ideas en construcción.",
+    url: canonicalUrl("/"),
+    locale: "es_ES",
+    alternateLocale: "en_GB",
+    images: [{ url: canonicalUrl(defaultSocialImage), width: defaultSocialImageWidth, height: defaultSocialImageHeight, alt: siteName }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    creator: siteAuthorX,
+    title: "Continuous Disintegration — Ideas, código y otras cosas",
+    description: "Un archivo independiente de programación, electrónica, diseño web e ideas en construcción.",
+    images: [canonicalUrl(defaultSocialImage)],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1, "max-video-preview": -1 },
+  },
 };
 
 export default function RootLayout({
@@ -80,6 +116,7 @@ export default function RootLayout({
           hrefLang="en"
           href={withBasePath("/en/feed.xml")}
         />
+        <link rel="describedby" href={withBasePath("/llms.txt")} />
       </head>
       <body id="top">
         <script dangerouslySetInnerHTML={{ __html: "if(location.pathname==='/en'||location.pathname.startsWith('/en/'))document.documentElement.lang='en'" }} />
