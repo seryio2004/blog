@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="800" viewBox="0 0 800 800">
+  <title>Sergio Rodriguez — el pingüino del laboratorio</title>
+  <desc>Emblema de un pingüino electrónico con una terminal como rostro, cuerpo de microcontrolador y conexiones asimétricas. Tinta berenjena, papel cálido, verde menta y naranja.</desc>
+  <defs>
+    <pattern id="dots" width="28" height="28" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1.4" fill="#352136" opacity=".16"/>
+    </pattern>
+  </defs>
+  <path fill="#d7cdd9" d="M0 0h800v800H0z"/>
+  <path fill="url(#dots)" d="M0 0h800v800H0z"/>
+  <circle cx="400" cy="396" r="282" fill="#eee8df"/>
+  <g fill="none" stroke="#352136" stroke-width="3" opacity=".25">
+    <path d="M104 330V210h128M570 144h88v114M686 468v120H578M216 670H122v-84"/>
+    <path d="M144 330v-80h72M602 178h22v82M648 482v70h-56"/>
+    <circle cx="400" cy="396" r="302" stroke-dasharray="2 14"/>
+  </g>
+  <g fill="none" stroke="#352136" stroke-width="8" stroke-linecap="square" stroke-linejoin="round">
+    <path d="M286 366h-76l-42-42v-70"/>
+    <path d="M276 444H138"/>
+    <path d="M522 370h88l46-46v-48"/>
+    <path d="M526 448h90l40 40v42"/>
+  </g>
+  <g stroke="#352136" stroke-width="6">
+    <circle cx="168" cy="246" r="14" fill="#eee8df"/>
+    <circle cx="134" cy="444" r="14" fill="#a9d5ba"/>
+    <circle cx="656" cy="266" r="18" fill="#ec865b"/>
+    <circle cx="656" cy="540" r="14" fill="#eee8df"/>
+  </g>
+  <!-- Broad silhouette stays recognizable in the small circular bylines. -->
+  <path d="M283 350c-58 30-93 100-99 178 38 2 78-19 109-53zm234 0c58 30 93 100 99 178-38 2-78-19-109-53z" fill="#352136"/>
+  <path d="M304 571l-59 65q-7 13 12 15h114l7-66zm192 0 59 65q7 13-12 15H429l-7-66z" fill="#ec865b" stroke="#352136" stroke-width="8" stroke-linejoin="round"/>
+  <path d="M400 158c-90 0-137 63-137 157v182c0 85 49 119 137 119s137-34 137-119V315c0-94-47-157-137-157z" fill="#352136"/>
+  <path d="M400 363c-68 0-103 52-103 130 0 56 32 82 103 82s103-26 103-82c0-78-35-130-103-130z" fill="#eee8df"/>
+  <!-- A terminal visor and the beak form the personal Linux / embedded emblem. -->
+  <rect x="290" y="235" width="220" height="112" rx="32" fill="#a9d5ba"/>
+  <g fill="none" stroke="#352136" stroke-width="15" stroke-linecap="square" stroke-linejoin="miter">
+    <path d="m325 266 29 24-29 24M394 314h48"/>
+  </g>
+  <circle cx="480" cy="257" r="6" fill="#352136"/>
+  <path d="m370 348 30 34 30-34z" fill="#ec865b"/>
+  <!-- An asymmetric circuit signature, drawn as paths rather than a font. -->
+  <g fill="none" stroke="#352136" stroke-width="7" stroke-linecap="square">
+    <path d="M378 437h-31v26h31v27h-31M417 490v-53h29v26h-29m14 0 20 27"/>
+  </g>
+  <path d="M347 512h104" stroke="#b16c9e" stroke-width="5"/>
+  <path d="M400 185v25" stroke="#b16c9e" stroke-width="7"/>
+  <g fill="#352136">
+    <path d="M76 90h38v5H81v33h-5zM724 710h-38v-5h33v-33h5z"/>
+    <rect x="358" y="701" width="12" height="6"/>
+    <rect x="379" y="701" width="42" height="6"/>
+    <rect x="430" y="701" width="12" height="6"/>
+  </g>
+</svg>

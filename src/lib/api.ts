@@ -65,6 +65,10 @@ export function getPostBySlug(slug: string, locale: Locale = "es") {
 
   return {
     ...data,
+    author: {
+      ...data.author,
+      picture: getAuthorProfile(data.author.name, locale).picture ?? data.author.picture,
+    },
     section: data.section.trim(),
     language: data.language,
     slug: realSlug,
