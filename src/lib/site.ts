@@ -1,6 +1,7 @@
 export const canonicalSiteUrl = "https://continuousdisintegration.com";
 export const siteName = "Continuous Disintegration";
 export const siteAuthor = "Sergio Rodriguez";
+export const siteAuthorEmail = "rodriguezsergiomartinez@gmail.com";
 export const siteAuthorX = "@seryioDev";
 export const siteAuthorGithub = "https://github.com/seryio2004";
 export const siteAuthorXUrl = "https://x.com/seryioDev";

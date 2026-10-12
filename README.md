@@ -103,6 +103,20 @@ Todo el blog comparte la misma interfaz editorial:
 - [`src/app/_components/post-preview.tsx`](./src/app/_components/post-preview.tsx): tarjetas del inicio, archivo, secciones y autores.
 - [`src/app/posts/[slug]/page.tsx`](./src/app/posts/%5Bslug%5D/page.tsx): plantilla única de lectura.
 - [`src/app/_components/markdown-styles.module.css`](./src/app/_components/markdown-styles.module.css): contenido Markdown, código, tablas y citas.
+- [`src/app/_components/article-sidebar.tsx`](./src/app/_components/article-sidebar.tsx): ventanas laterales de artículos, repositorios y RSS en escritorio.
+- [`src/app/_components/follow-menu.tsx`](./src/app/_components/follow-menu.tsx): menú «Sígueme» de la cabecera y las ventanas laterales, con RSS, correo y X.
+
+Instagram y TikTok aparecen como «Próximamente» hasta añadir sus URLs en
+`upcomingChannels`, dentro de `follow-menu.tsx`. El correo y la cuenta de X se
+configuran en `src/lib/site.ts`.
+
+Las ventanas laterales recomiendan otros artículos, dando prioridad a la misma
+sección, y utilizan el RSS del idioma de lectura. En pantallas amplias se
+distribuyen a ambos lados; en portátiles se agrupan a la izquierda y por debajo
+de 1024 px se ocultan. Cada ventana se puede cerrar durante la lectura del
+artículo; permanece cerrada para ese artículo durante la sesión de la pestaña,
+también al recargar o cambiar de idioma. Los enlaces de repositorios se editan
+en `article-sidebar.tsx`.
 
 Los temas espaciales del frontend anterior fueron retirados para evitar que
 componentes y estilos sin uso entren en conflicto con el sistema actual.

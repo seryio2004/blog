@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { FollowMenu } from "./follow-menu";
 import Container from "./container";
 import { copy, routes, type Locale } from "@/lib/i18n";
 
@@ -17,6 +18,7 @@ export default function Header({ locale, alternateHref }: { locale: Locale; alte
             <Link href={href.home}>{text.nav.home}</Link>
             <Link href={href.articles}>{text.nav.articles}</Link>
             <Link href={href.sectionsAnchor}>{text.nav.sections}</Link>
+            <FollowMenu locale={locale} />
           </nav>
           <div className="site-header__tools">
             <div className="language-switcher" aria-label={locale === "es" ? "Seleccionar idioma" : "Select language"}>

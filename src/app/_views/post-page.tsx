@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { getAllPosts, getPostBySlug, getSectionSlug } from "@/lib/api";
 import markdownToHtml from "@/lib/markdownToHtml";
 import Container from "@/app/_components/container";
+import { ArticleSidebar } from "@/app/_components/article-sidebar";
 import { PostBody } from "@/app/_components/post-body";
 import { PostHeader } from "@/app/_components/post-header";
 import { PageChrome } from "@/app/_components/page-chrome";
@@ -25,8 +26,12 @@ export async function PostPageContent({ params, locale }: Params & { locale: Loc
   if (!post) notFound();
   const content = await markdownToHtml(post.content || "", locale);
   const readingMinutes = Math.max(1, Math.ceil(post.content.trim().split(/\s+/).length / 220));
+  const recommendations = getAllPosts(locale)
+    .filter((candidate) => candidate.slug !== post.slug)
+    .sort((left, right) => Number(right.section === post.section) - Number(left.section === post.section))
+    .slice(0, 2)
+    .map(({ slug, title, section }) => ({ slug, title, section }));
   const alternateHref = routes(locale === "es" ? "en" : "es").post(post.slug);
-  const text = locale === "es" ? { workshop: "DESDE EL TALLER / 001", note: "Aquí voy dejando lo que aprendo, lo que rompo y cómo termino arreglándolo.", talk: "¿HABLAMOS?", contact: "Datos de contacto", email: "CORREO" } : { workshop: "FROM THE WORKSHOP / 001", note: "This is where I leave what I learn, what I break and how I eventually fix it.", talk: "LET'S TALK", contact: "Contact details", email: "EMAIL" };
   const articleUrl = canonicalUrl(`${routes(locale).post(post.slug)}/`);
   const authorUrl = canonicalUrl(`${routes(locale).author(getAuthorSlug(post.author.name))}/`);
   const articleSchema = {
@@ -55,7 +60,7 @@ export async function PostPageContent({ params, locale }: Params & { locale: Loc
 
   return <PageChrome locale={locale} alternateHref={alternateHref}><main className="article-page"><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema).replace(/</g, "\\u003c") }} /><Container><article lang={post.language}>
     <PostHeader title={post.title} date={post.date} updatedDate={post.updatedDate} author={post.author} language={post.language} section={post.section} sectionSlug={getSectionSlug(post.section)} readingMinutes={readingMinutes} shareUrl={articleUrl} locale={locale} />
-    <div className="article-layout"><aside className="article-aside"><span>{text.workshop}</span><p>{text.note}</p><span className="article-aside__line" /><span>{text.talk}</span><nav className="article-aside__contacts" aria-label={text.contact}><a href="https://x.com/seryioDev" target="_blank" rel="noreferrer"><span>X</span><span>@seryioDev</span></a><a href="mailto:rodriguezsergiomartinez@gmail.com"><span>{text.email}</span><span>rodriguezsergiomartinez@gmail.com</span></a><a href="https://github.com/seryio2004" target="_blank" rel="noreferrer"><span>GITHUB</span><span>@seryio2004</span></a></nav></aside><PostBody content={content} locale={locale} /></div>
+    <ArticleSidebar key={`${locale}-${post.slug}`} slug={post.slug} locale={locale} recommendations={recommendations}><PostBody content={content} locale={locale} /></ArticleSidebar>
   </article></Container></main></PageChrome>;
 }
 
