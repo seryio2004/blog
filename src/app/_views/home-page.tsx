@@ -4,26 +4,26 @@ import { PostPreview } from "@/app/_components/post-preview";
 import SocialSidebar from "@/app/_components/social-sidebar";
 import { OrbitArcade } from "@/app/_components/orbit-arcade";
 import { getAllPosts, getSectionSlug, getSections } from "@/lib/api";
-import { routes, type Locale } from "@/lib/i18n";
+import { copy, routes, type Locale } from "@/lib/i18n";
 import { canonicalUrl, siteAuthor, siteAuthorGithub, siteAuthorXUrl, siteName } from "@/lib/site";
 import Link from "next/link";
 
 const homeCopy = {
   es: {
-    alternate: "/en", journal: "INDEPENDENT TECH JOURNAL", explore: "EXPLORANDO LO QUE VIENE",
-    eyebrow: "UN ESPACIO PARA PENSAR EN VOZ ALTA", lead: "Ideas sobre programación, electrónica y diseño digital. Apuntes desde el laboratorio de quienes no pueden dejar de experimentar.",
-    sectionsId: "secciones", exploreArticles: "Explorar artículos", viewSections: "Ver secciones", topics: "Temas del blog", manifest: "$ cat manifiesto.txt", radar: "// Temas en el radar", continue: "// SIGUE EXPLORANDO_",
-    tinkering: "SEGUIMOS TRASTEANDO", articles: "ARTÍCULOS", sections: "SECCIONES", scroll: "BAJA Y ECHA UN OJO v", mobileSignal: "* SEGUIMOS TRASTEANDO. BAJA Y ECHA UN OJO v",
-    recently: "01 / RECIÉN PUBLICADO", archiveA: "En el", archiveB: "archivo", all: "Todos los artículos", routes: "02 / RUTAS DE EXPLORACIÓN", by: "Por", sectionWord: "secciones", note: "Un índice abierto de ideas, herramientas y experimentos.",
-    behind: "// DETRÁS DE LA PANTALLA", dismantleA: "Siempre hay algo", dismantleB: "nuevo que", dismantleC: "desmontar.", about: "Este blog reúne notas, guías y pruebas sobre las tecnologías que usamos todos los días. Escribimos para aprender, compartir y seguir haciéndonos preguntas.",
+    alternate: "/en", journal: "MI CUADERNO DE PROYECTOS", explore: "APRENDIENDO SOBRE LA MARCHA",
+    eyebrow: "LO QUE PRUEBO, APRENDO Y VOY CONTANDO", lead: "Comparto lo que voy aprendiendo sobre programación, electrónica y los proyectos que monto por mi cuenta. También lo que se rompe y cómo termino arreglándolo.",
+    sectionsId: "secciones", exploreArticles: "Explorar artículos", viewSections: "Ver secciones", topics: "Temas del blog", manifest: "$ cat manifiesto.txt", radar: "// Lo que tengo entre manos", continue: "// SIGUE EXPLORANDO_",
+    tinkering: "SIGO TRASTEANDO", articles: "ARTÍCULOS", sections: "SECCIONES", scroll: "BAJA Y ECHA UN OJO v", mobileSignal: "* SIGO TRASTEANDO. BAJA Y ECHA UN OJO v",
+    recently: "01 / LO ÚLTIMO QUE HE ESCRITO", archiveA: "En mi", archiveB: "archivo", all: "Todos los artículos", routes: "02 / RUTAS DE EXPLORACIÓN", by: "Por", sectionWord: "secciones", note: "Mis notas, herramientas y experimentos, ordenados por tema.",
+    behind: "// DETRÁS DE LA PANTALLA", dismantleA: "Siempre tengo", dismantleB: "algo por", dismantleC: "probar.", about: "Soy Sergio. Me gusta programar, cacharrear con electrónica y montar mi propia infraestructura. Aquí dejo guías, proyectos y los problemas que voy resolviendo por el camino.",
   },
   en: {
-    alternate: "/", journal: "INDEPENDENT TECH JOURNAL", explore: "EXPLORING WHAT COMES NEXT",
-    eyebrow: "A PLACE TO THINK OUT LOUD", lead: "Ideas about programming, electronics and digital design. Notes from the lab of people who cannot stop experimenting.",
-    sectionsId: "sections", exploreArticles: "Explore articles", viewSections: "View sections", topics: "Blog topics", manifest: "$ cat manifesto.txt", radar: "// Topics on the radar", continue: "// KEEP EXPLORING_",
-    tinkering: "STILL TINKERING", articles: "ARTICLES", sections: "SECTIONS", scroll: "SCROLL DOWN AND HAVE A LOOK v", mobileSignal: "* STILL TINKERING. SCROLL DOWN AND HAVE A LOOK v",
-    recently: "01 / JUST PUBLISHED", archiveA: "In the", archiveB: "archive", all: "All articles", routes: "02 / EXPLORATION ROUTES", by: "By", sectionWord: "section", note: "An open index of ideas, tools and experiments.",
-    behind: "// BEHIND THE SCREEN", dismantleA: "There is always", dismantleB: "something new to", dismantleC: "take apart.", about: "This blog collects notes, guides and experiments about the technologies we use every day. We write to learn, share and keep asking questions.",
+    alternate: "/", journal: "MY PROJECT NOTEBOOK", explore: "LEARNING AS I GO",
+    eyebrow: "WHAT I TRY, LEARN AND WRITE ABOUT", lead: "I share what I learn about programming, electronics and the projects I build on my own. Including what breaks and how I eventually fix it.",
+    sectionsId: "sections", exploreArticles: "Explore articles", viewSections: "View sections", topics: "Blog topics", manifest: "$ cat manifesto.txt", radar: "// What I am working on", continue: "// KEEP EXPLORING_",
+    tinkering: "I KEEP TINKERING", articles: "ARTICLES", sections: "SECTIONS", scroll: "SCROLL DOWN AND HAVE A LOOK v", mobileSignal: "* I KEEP TINKERING. SCROLL DOWN AND HAVE A LOOK v",
+    recently: "01 / MY LATEST WRITING", archiveA: "In my", archiveB: "archive", all: "All articles", routes: "02 / EXPLORATION ROUTES", by: "By", sectionWord: "section", note: "My notes, tools and experiments, organized by topic.",
+    behind: "// BEHIND THE SCREEN", dismantleA: "I always have", dismantleB: "something to", dismantleC: "try.", about: "I am Sergio. I enjoy programming, tinkering with electronics and running my own infrastructure. Here I write about my projects, share guides and work through the problems I encounter along the way.",
   },
 } as const;
 
@@ -38,9 +38,7 @@ export function HomePage({ locale }: { locale: Locale }) {
     "@type": "WebSite",
     "@id": `${homeUrl}#website`,
     name: siteName,
-    description: locale === "es"
-      ? "Un archivo independiente de programación, electrónica, diseño web e ideas en construcción."
-      : "An independent archive of programming, electronics, web design and ideas in progress.",
+    description: copy[locale].siteDescription,
     url: homeUrl,
     inLanguage: locale,
     publisher: {

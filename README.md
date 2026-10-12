@@ -52,13 +52,21 @@ Contenido del artículo en Markdown.
 | `excerpt` | Resumen en tarjetas y metadatos |
 | `coverImage` | Imagen editorial de referencia; se mantiene por compatibilidad |
 | `date` | Fecha ISO y orden cronológico |
+| `updatedDate` | Fecha ISO de la última edición; opcional, solo para artículos modificados |
 | `author` | Nombre y fotografía del autor |
-| `ogImage.url` | Imagen para compartir el artículo |
+| `ogImage.url` | Imagen social personalizada; la imagen general activa la generación automática |
 
 Las tarjetas y cabeceras usan ahora una composición técnica generada con CSS.
 `coverImage` sigue formando parte del contrato editorial para mantener
-compatibilidad con los artículos existentes. `ogImage.url` sí se usa en los
-metadatos sociales.
+compatibilidad con los artículos existentes. Si `ogImage.url` apunta a
+`/assets/blog/social-preview.png` o se omite, se genera una imagen propia para
+cada artículo e idioma. Puedes indicar otra imagen para sustituirla.
+
+Al editar un artículo publicado, conserva `date` y añade o actualiza
+`updatedDate` en el frontmatter de cada versión de idioma modificada. Este
+campo muestra una sección «Artículo editado» con la fecha de última edición,
+y actualiza la fecha de modificación en los metadatos y el sitemap. Los
+artículos sin `updatedDate` no muestran esta sección.
 
 ## Imágenes
 
@@ -100,6 +108,14 @@ Los temas espaciales del frontend anterior fueron retirados para evitar que
 componentes y estilos sin uso entren en conflicto con el sistema actual.
 
 ## RSS y metadatos
+
+Las vistas previas de los artículos se generan como PNG de 1200 × 630 durante
+la compilación, en `/social/es/<slug>.png` y `/social/en/<slug>.png`. Incluyen
+título, sección, autor y marca del blog, con los colores de cada tema. Open
+Graph, Twitter y los datos estructurados usan la misma imagen. Cambiar el
+título o la sección y recompilar actualiza la vista previa automáticamente.
+Las fuentes están incluidas en `src/assets/fonts/`, por lo que no se necesitan
+descargas ni un servidor de imágenes en producción.
 
 [`src/app/feed.xml/route.ts`](./src/app/feed.xml/route.ts) genera el feed RSS
 durante la exportación estática y enlaza al dominio principal. Los metadatos de

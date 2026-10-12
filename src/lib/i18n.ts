@@ -7,13 +7,13 @@ export const locales: Locale[] = ["es", "en"];
 
 export const copy = {
   es: {
-    siteDescription: "Un archivo independiente de programación, electrónica, diseño web e ideas en construcción.",
+    siteDescription: "Soy Sergio. Comparto lo que aprendo sobre programación, electrónica y mi propia infraestructura, con guías y proyectos personales.",
     nav: { home: "Inicio", articles: "Artículos", sections: "Secciones", label: "Navegación principal" },
     systemActive: "SISTEMA ACTIVO",
     exploreArticles: "Explorar artículos",
     footerEnd: "// FIN DEL ARCHIVO",
-    footerStatement: ["Seguimos", "cacharreando"] as const,
-    footerTagline: "IDEAS, CÓDIGO Y OTRAS COSAS.",
+    footerStatement: ["Sigo", "cacharreando"] as const,
+    footerTagline: "MIS NOTAS, CÓDIGO Y EXPERIMENTOS.",
     backTop: "VOLVER ARRIBA ^",
     readArticle: "LEER ARTÍCULO",
     readLabel: "Leer",
@@ -28,13 +28,13 @@ export const copy = {
     filler: { log: "publicaciones.log", synced: "[ok] índice sincronizado", signals: "[ok] señales recibidas", waiting: ["ESPERANDO LA", "SIGUIENTE ENTRADA"] as const },
   },
   en: {
-    siteDescription: "An independent archive of programming, electronics, web design and ideas in progress.",
+    siteDescription: "I am Sergio. I share what I learn about programming, electronics and running my own infrastructure through guides and personal projects.",
     nav: { home: "Home", articles: "Articles", sections: "Sections", label: "Main navigation" },
     systemActive: "SYSTEM ONLINE",
     exploreArticles: "Explore articles",
     footerEnd: "// END OF ARCHIVE",
-    footerStatement: ["We keep", "tinkering"] as const,
-    footerTagline: "IDEAS, CODE AND OTHER THINGS.",
+    footerStatement: ["I keep", "tinkering"] as const,
+    footerTagline: "MY NOTES, CODE AND EXPERIMENTS.",
     backTop: "BACK TO TOP ^",
     readArticle: "READ ARTICLE",
     readLabel: "Read",

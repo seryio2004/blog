@@ -30,6 +30,60 @@
 .markdown table { display: block; width: 100%; max-width: 100%; overflow-x: auto; margin: 2em 0; border-collapse: collapse; font: 13px/1.5 "Courier New", monospace; overscroll-behavior-inline: contain; }
 .markdown th, .markdown td { padding: 12px; border: 1px solid #11110f; text-align: left; }.markdown th { color: #fbfaf4; background: var(--accent); }
 
+.markdown [data-code-block] {
+  min-width: 0;
+  margin: 2em 0;
+  border: 1px solid var(--terminal-surface);
+  background: var(--terminal);
+  box-shadow: 6px 6px 0 var(--accent);
+}
+.markdown [data-code-toolbar] {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px 16px;
+  min-height: 45px;
+  padding: 8px 16px;
+  border-bottom: 1px solid #875174;
+  color: var(--white);
+  background: var(--terminal-surface);
+  font: 700 11px/1.4 "Courier New", monospace;
+}
+.markdown [data-code-language] { min-width: 0; overflow-wrap: anywhere; text-transform: uppercase; letter-spacing: .08em; }
+.markdown [data-code-copy] {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 30px;
+  padding: 4px 9px;
+  border: 1px solid #c8a9c3;
+  border-radius: 0;
+  color: var(--white);
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+}
+.markdown [data-code-copy][hidden] { display: none; }
+.markdown [data-code-copy] svg { flex: none; }
+.markdown [data-code-copy]:focus-visible { outline: 2px solid var(--white); outline-offset: 3px; }
+.markdown [data-code-copy]:disabled { cursor: wait; opacity: .65; }
+.markdown [data-code-copy][data-state="copied"] { color: #b6e3ce; border-color: #b6e3ce; }
+.markdown [data-code-copy][data-state="error"] { color: #ffd1b0; border-color: #ffd1b0; }
+.markdown [data-code-copy]:hover { color: var(--terminal); background: var(--accent-on-dark); }
+.markdown [data-code-block] pre { margin: 0; border: 0; box-shadow: none; }
+.markdown [data-code-block] pre:focus-visible { outline: 2px solid var(--accent-on-dark); outline-offset: -3px; }
+.markdown :global(.hljs-comment), .markdown :global(.hljs-quote) { color: #c8a9c3; font-style: italic; }
+.markdown :global(.hljs-keyword), .markdown :global(.hljs-selector-tag), .markdown :global(.hljs-literal), .markdown :global(.hljs-doctag) { color: #f0c4e8; }
+.markdown :global(.hljs-string), .markdown :global(.hljs-regexp), .markdown :global(.hljs-addition) { color: #b6e3ce; }
+.markdown :global(.hljs-number), .markdown :global(.hljs-symbol), .markdown :global(.hljs-bullet), .markdown :global(.hljs-variable), .markdown :global(.hljs-template-variable) { color: #ffd1b0; }
+.markdown :global(.hljs-title), .markdown :global(.hljs-section), .markdown :global(.hljs-built_in), .markdown :global(.hljs-type) { color: #c1dfff; }
+.markdown :global(.hljs-attr), .markdown :global(.hljs-attribute), .markdown :global(.hljs-name), .markdown :global(.hljs-selector-class) { color: #f4dfa2; }
+.markdown :global(.hljs-meta) { color: #c8a9c3; }
+.markdown :global(.hljs-deletion) { color: #ffb6a2; }
+.markdown :global(.hljs-emphasis) { font-style: italic; }
+.markdown :global(.hljs-strong) { font-weight: bold; }
+
 @media (max-width: 640px) {
   .markdown { font-size: 17px; line-height: 1.7; }
   .markdown h1 { font-size: 34px; }
@@ -38,4 +92,6 @@
   .markdown blockquote { padding: 15px 17px; border-left-width: 6px; }
   .markdown pre { margin-inline: 0; padding: 16px; font-size: 12px; box-shadow: 4px 4px 0 var(--accent); }
   .markdown img { margin-block: 1.7em; }
+  .markdown [data-code-block] { box-shadow: 4px 4px 0 var(--accent); }
+  .markdown [data-code-toolbar] { padding-inline: 12px; }
 }

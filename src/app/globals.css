@@ -324,3 +324,21 @@ a { color: inherit; text-decoration: none; }
 }
 
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; }.hero-terminal__cursor, .orbit-game__stars, .orbit-game__ship, .orbit-game__thruster, .orbit-game__meteor, .orbit-game__laser, .orbit-game__blast, .orbit-game__message b, .orbit-game__scanline, .orbit-game__target, .orbit-game__manual-shots line, .orbit-game__manual-impact, .is-active .orbit-game__incident strong { animation: none; }.orbit-game__meteor { opacity: .75; left: var(--end-x); top: var(--end-y); }.orbit-game__manual-shots line { stroke-dashoffset: 0; }.orbit-game__scanline { display: none; } }
+
+.article-edit-note {
+  margin-top: 24px;
+  padding: 18px 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+.article-edit-note h2 {
+  margin: 0 0 8px;
+  color: var(--muted);
+  font: 700 10px/1.4 "Courier New", monospace;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.article-edit-note p {
+  margin: 0;
+  font: 15px/1.6 Georgia, serif;
+}

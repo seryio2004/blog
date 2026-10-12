@@ -1,3 +1,4 @@
+import { copy } from "@/lib/i18n";
 import type { Metadata } from "next";
 import { withBasePath } from "@/lib/paths";
 import {
@@ -30,12 +31,12 @@ export const metadata: Metadata = {
     template: "%s | Continuous Disintegration",
   },
   description:
-    "Un archivo independiente de programación, electrónica, diseño web e ideas en construcción.",
+    copy.es.siteDescription,
   openGraph: {
     type: "website",
     siteName,
     title: "Continuous Disintegration — Ideas, código y otras cosas",
-    description: "Un archivo independiente de programación, electrónica, diseño web e ideas en construcción.",
+    description: copy.es.siteDescription,
     url: canonicalUrl("/"),
     locale: "es_ES",
     alternateLocale: "en_GB",
@@ -45,7 +46,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     creator: siteAuthorX,
     title: "Continuous Disintegration — Ideas, código y otras cosas",
-    description: "Un archivo independiente de programación, electrónica, diseño web e ideas en construcción.",
+    description: copy.es.siteDescription,
     images: [canonicalUrl(defaultSocialImage)],
   },
   robots: {

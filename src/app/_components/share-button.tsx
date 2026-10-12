@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { Locale } from "@/lib/i18n";
+import { copyToClipboard } from "@/lib/clipboard";
 
 type ShareState = "idle" | "shared" | "copied" | "error";
 
@@ -21,25 +22,6 @@ const labels = {
     aria: "Share this article",
   },
 } as const;
-
-async function copyToClipboard(value: string) {
-  if (navigator.clipboard?.writeText) {
-    await navigator.clipboard.writeText(value);
-    return;
-  }
-
-  const input = document.createElement("textarea");
-  input.value = value;
-  input.setAttribute("readonly", "");
-  input.style.position = "fixed";
-  input.style.opacity = "0";
-  document.body.appendChild(input);
-  input.select();
-  const copied = document.execCommand("copy");
-  document.body.removeChild(input);
-
-  if (!copied) throw new Error("Copy command failed");
-}
 
 export function ShareButton({
   title,

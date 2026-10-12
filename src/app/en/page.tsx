@@ -1,3 +1,4 @@
+import { copy } from "@/lib/i18n";
 import type { Metadata } from "next";
 import { HomePage } from "../_views/home-page";
 import { canonicalUrl } from "@/lib/site";
@@ -5,13 +6,13 @@ import { defaultSocialImage, defaultSocialImageHeight, defaultSocialImageWidth, 
 
 export const metadata: Metadata = {
   title: { absolute: "Continuous Disintegration — Ideas, code and other things" },
-  description: "An independent archive of programming, electronics, web design and ideas in progress.",
+  description: copy.en.siteDescription,
   alternates: { canonical: canonicalUrl("/en/"), languages: { es: canonicalUrl("/"), en: canonicalUrl("/en/"), "x-default": canonicalUrl("/") } },
   openGraph: {
     type: "website",
     siteName,
     title: "Continuous Disintegration — Ideas, code and other things",
-    description: "An independent archive of programming, electronics, web design and ideas in progress.",
+    description: copy.en.siteDescription,
     url: canonicalUrl("/en/"),
     locale: "en_GB",
     alternateLocale: "es_ES",
@@ -21,7 +22,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     creator: siteAuthorX,
     title: "Continuous Disintegration — Ideas, code and other things",
-    description: "An independent archive of programming, electronics, web design and ideas in progress.",
+    description: copy.en.siteDescription,
     images: [canonicalUrl(defaultSocialImage)],
   },
 };

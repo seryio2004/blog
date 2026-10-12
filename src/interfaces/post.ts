@@ -8,10 +8,11 @@ export type Post = {
   language: PostLanguage;
   title: string;
   date: string;
+  updatedDate?: string;
   coverImage: string;
   author: Author;
   excerpt: string;
-  ogImage: {
+  ogImage?: {
     url: string;
   };
   content: string;

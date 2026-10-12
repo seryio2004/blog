@@ -12,6 +12,7 @@ import { ShareButton } from "./share-button";
 type Props = {
   title: string;
   date: string;
+  updatedDate?: string;
   author: Author;
   language: PostLanguage;
   section?: string;
@@ -24,6 +25,7 @@ type Props = {
 export function PostHeader({
   title,
   date,
+  updatedDate,
   author,
   language,
   section,
@@ -48,6 +50,12 @@ export function PostHeader({
       <p className="article-header__kicker">{text.kicker} <span>*</span></p>
       <div className="article-header__byline"><Avatar name={author.name} picture={author.picture} locale={locale} /><div className="article-header__byline-actions"><span>{text.reading} / {String(readingMinutes).padStart(2, "0")} {text.min}</span><ShareButton title={title} url={shareUrl} locale={locale} /></div></div>
       <TechnicalCover title={title} section={section} large locale={locale} />
+      {updatedDate && (
+        <section className="article-edit-note" aria-label={locale === "es" ? "Información de edición" : "Edit information"}>
+          <h2>{locale === "es" ? "Artículo editado" : "Edited article"}</h2>
+          <p>{locale === "es" ? "Última edición: " : "Last edited: "}<DateFormatter dateString={updatedDate} locale={locale} /></p>
+        </section>
+      )}
     </header>
   );
 }

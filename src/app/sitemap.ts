@@ -47,12 +47,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     })),
     ...esPosts.map((post) => ({
       url: canonicalUrl(`/posts/${encodeURIComponent(post.slug)}/`),
-      lastModified: post.date,
+      lastModified: post.updatedDate ?? post.date,
       alternates: { languages: languageAlternates(`/posts/${encodeURIComponent(post.slug)}/`, `/en/posts/${encodeURIComponent(post.slug)}/`) },
     })),
     ...enPosts.map((post) => ({
       url: canonicalUrl(`/en/posts/${encodeURIComponent(post.slug)}/`),
-      lastModified: post.date,
+      lastModified: post.updatedDate ?? post.date,
       alternates: { languages: languageAlternates(`/posts/${encodeURIComponent(post.slug)}/`, `/en/posts/${encodeURIComponent(post.slug)}/`) },
     })),
   ];
