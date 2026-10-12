@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { type Locale } from "@/lib/i18n";
+import { routes, type Locale } from "@/lib/i18n";
 import { withBasePath } from "@/lib/paths";
 import { siteAuthorEmail, siteAuthorX, siteAuthorXUrl } from "@/lib/site";
 
@@ -17,7 +17,7 @@ export function FollowMenu({ locale, inline = false }: { locale: Locale; inline?
     ? { follow: "Sígueme", label: "Dónde seguirme y contactar", title: "Nos vemos por aquí", rss: "Artículos en tu lector de feeds", email: "Correo", emailNote: "Escríbeme directamente", soon: "Próximamente" }
     : { follow: "Follow me", label: "Where to follow and contact me", title: "Find me here", rss: "Articles in your feed reader", email: "Email", emailNote: "Write to me directly", soon: "Coming soon" };
   const links = [
-    { name: "RSS", icon: "RSS", note: text.rss, href: withBasePath(locale === "en" ? "/en/feed.xml" : "/feed.xml") },
+    { name: "RSS", icon: "RSS", note: text.rss, href: withBasePath(routes(locale).rss) },
     { name: text.email, icon: "@", note: text.emailNote, href: `mailto:${siteAuthorEmail}` },
     { name: "X", icon: "X", note: siteAuthorX, href: siteAuthorXUrl },
   ];

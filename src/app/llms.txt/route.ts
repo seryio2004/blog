@@ -77,6 +77,8 @@ ${sectionList("en")}
 ## Descubrimiento / Discovery
 
 - [Sitemap](${canonicalUrl("/sitemap.xml")}): Índice XML de todas las páginas y sus alternativas de idioma.
+- [Página RSS en español](${canonicalUrl("/rss/")}): Instrucciones y dirección del feed.
+- [English RSS page](${canonicalUrl("/en/rss/")}): Subscription instructions and feed address.
 - [RSS en español](${canonicalUrl("/feed.xml")}): Publicaciones recientes en español.
 - [English RSS](${canonicalUrl("/en/feed.xml")}): Recent posts in English.
 

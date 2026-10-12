@@ -123,6 +123,13 @@ componentes y estilos sin uso entren en conflicto con el sistema actual.
 
 ## RSS y metadatos
 
+Las páginas `/rss/` y `/en/rss/` presentan el feed con el estilo del blog,
+instrucciones de suscripción, la dirección para copiar y las últimas
+publicaciones. El menú «Sígueme» enlaza a estas páginas. Los archivos
+`/feed.xml` y `/en/feed.xml` conservan el formato RSS para los lectores y la
+autodetección del navegador. La vista se mantiene en
+[`src/app/_views/rss-page.tsx`](./src/app/_views/rss-page.tsx).
+
 Las vistas previas de los artículos se generan como PNG de 1200 × 630 durante
 la compilación, en `/social/es/<slug>.png` y `/social/en/<slug>.png`. Incluyen
 título, sección, autor y marca del blog, con los colores de cada tema. Open

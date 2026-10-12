@@ -19,6 +19,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: canonicalUrl("/en/"), lastModified: latestPostDate, alternates: { languages: languageAlternates("/", "/en/") } },
     { url: canonicalUrl("/articulos/"), lastModified: latestPostDate, alternates: { languages: languageAlternates("/articulos/", "/en/articles/") } },
     { url: canonicalUrl("/en/articles/"), lastModified: latestPostDate, alternates: { languages: languageAlternates("/articulos/", "/en/articles/") } },
+    { url: canonicalUrl("/rss/"), lastModified: latestPostDate, alternates: { languages: languageAlternates("/rss/", "/en/rss/") } },
+    { url: canonicalUrl("/en/rss/"), lastModified: latestPostDate, alternates: { languages: languageAlternates("/rss/", "/en/rss/") } },
     ...getSections("es").map((section) => {
       const enSlug = getAlternateSectionSlug(section.slug, "es");
       return {

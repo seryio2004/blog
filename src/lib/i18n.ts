@@ -54,6 +54,7 @@ export function routes(locale: Locale) {
   const prefix = locale === "en" ? "/en" : "";
   return {
     home: prefix || "/",
+    rss: `${prefix}/rss`,
     articles: locale === "en" ? "/en/articles" : "/articulos",
     sectionsAnchor: `${prefix || "/"}#${locale === "es" ? "secciones" : "sections"}`,
     post: (slug: string) => `${prefix}/posts/${slug}`,
