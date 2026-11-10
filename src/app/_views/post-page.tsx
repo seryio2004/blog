@@ -75,7 +75,7 @@ export async function buildPostMetadata({ params, locale }: Params & { locale: L
   const image = getPostSocialImage(post, locale);
 
   return {
-    title: post.title,
+    title: { absolute: post.title },
     description: post.excerpt,
     authors: [{ name: post.author.name, url: authorUrl }],
     alternates: { canonical, languages: { es, en, "x-default": es } },

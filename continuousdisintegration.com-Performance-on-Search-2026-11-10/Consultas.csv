@@ -1,0 +1,19 @@
+Consultas principales,Clics,Impresiones,CTR,Posición
+rdp monitoring,0,15,0%,56.87
+rdp session monitoring,0,11,0%,43.36
+forgejo traefik,0,5,0%,88.6
+forgejo packages,0,4,0%,7.5
+python semver,0,2,0%,37.5
+forgejo ci,0,2,0%,42.5
+pep440,0,1,0%,5
+unix tv remote,0,1,0%,10
+uv_system_certs,0,1,0%,17
+wtsenumeratesessions,0,1,0%,33
+semantic versioning python,0,1,0%,42
+python versioning package,0,1,0%,46
+woodpecker ci vs forgejo actions,0,1,0%,69
+forgejo ci/cd,0,1,0%,75
+forgejo cache,0,1,0%,83
+forgejo hardware requirements,0,1,0%,85
+forgejo runner,0,1,0%,88
+forgejo actions ci,0,1,0%,97

@@ -11,7 +11,7 @@ export function postSocialImagePath(slug: string, locale: Locale) {
 
 export function getPostSocialImage(post: Post, locale: Locale) {
   const customImage = post.ogImage?.url;
-  const generated = !customImage || customImage === defaultSocialImage;
+  const generated = !customImage || customImage === defaultSocialImage || customImage === "/assets/blog/social-preview.png";
   const path = generated ? postSocialImagePath(post.slug, locale) : customImage;
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL?.trim() || canonicalSiteUrl;
 

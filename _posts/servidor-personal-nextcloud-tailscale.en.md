@@ -1,18 +1,17 @@
 ---
-title: "From an old tower to a personal server: Docker, Grafana, Tailscale and Nextcloud"
+title: "Home server with Docker, Tailscale and Nextcloud"
 section: "Infrastructure"
 language: "en"
 excerpt: "Turning an old tower into a home server with Docker, centralized monitoring, remote access through Tailscale and Nextcloud using two independent drives."
 coverImage: "/assets/blog/editorial-cover.png"
 date: "2026-10-06T10:00:00.000Z"
+updatedDate: "2026-11-10T00:00:00.000Z"
 author:
   name: Sergio Rodriguez
   picture: "/assets/blog/authors/jj.jpeg"
 ogImage:
   url: "/assets/blog/social-preview.png"
 ---
-
-# From an old tower to a personal server: Docker, Grafana, Tailscale and Nextcloud
 
 For quite a while, I had a tower PC that did little more than take up space. It was not particularly powerful and had no clear purpose, but it did have something useful: hard drives, a permanent network connection and enough hardware to run several services without too much trouble.
 
@@ -746,3 +745,5 @@ Tailscale
 It is not a datacenter.
 
 But it is starting to look too serious to keep calling it "the old tower".
+
+If you need to track multiple computers, see my [computer and RDP session monitoring system](/en/posts/Monitorizacion_equipos/). Another use for an old laptop is a [phone-controlled media center with TV Remote](/en/posts/Tv-remote/).

@@ -2,7 +2,9 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "tsc --noEmit && next build --webpack",
+    "build": "tsc --noEmit && next build --webpack && npm run check:seo",
+    "check:seo": "python3 scripts/check_seo.py",
+    "seo:search-console": "python3 scripts/analyze_search_console.py",
     "start": "next start"
   },
   "dependencies": {

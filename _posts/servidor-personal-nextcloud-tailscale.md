@@ -1,18 +1,17 @@
 ---
-title: "De torre vieja a servidor personal: Docker, Grafana, Tailscale y Nextcloud"
+title: "Servidor doméstico con Docker, Tailscale y Nextcloud"
 section: "Infraestructura"
 language: "es"
 excerpt: "Cómo convertir una torre vieja en un servidor doméstico con Docker, monitorización centralizada, acceso remoto con Tailscale y Nextcloud sobre dos discos independientes."
 coverImage: "/assets/blog/editorial-cover.png"
 date: "2026-10-06T10:00:00.000Z"
+updatedDate: "2026-11-10T00:00:00.000Z"
 author:
   name: Sergio Rodriguez
   picture: "/assets/blog/authors/jj.jpeg"
 ogImage:
   url: "/assets/blog/social-preview.png"
 ---
-
-# De torre vieja a servidor personal: Docker, Grafana, Tailscale y Nextcloud
 
 Durante bastante tiempo tuve una torre que hacía poco más que ocupar espacio. No era especialmente potente ni tenía un propósito claro, pero sí tenía algo bastante útil: discos duros, conexión permanente a la red y suficiente hardware como para ejecutar varios servicios sin demasiadas complicaciones.
 
@@ -746,3 +745,5 @@ Tailscale
 No es un datacenter.
 
 Pero ya empieza a parecer demasiado serio para seguir llamándolo "la torre vieja".
+
+Si necesitas vigilar varios ordenadores, cuento cómo desarrollé un [sistema de monitorización de equipos y sesiones RDP](/posts/Monitorizacion_equipos/). Otra forma de aprovechar un portátil antiguo es convertirlo en un [centro multimedia controlado desde el móvil con TV Remote](/posts/Tv-remote/).

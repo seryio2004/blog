@@ -5,14 +5,13 @@ language: "es"
 excerpt: "Cómo centralizar el estado de equipos compartidos y distinguir el uso local de las sesiones RDP con PowerShell, FastAPI y SQLite."
 coverImage: "/assets/blog/editorial-cover.png"
 date: "2026-09-17T10:00:00.000Z"
+updatedDate: "2026-11-10T00:00:00.000Z"
 author:
   name: Sergio Rodriguez
   picture: "/assets/blog/authors/jj.jpeg"
 ogImage:
   url: "/assets/blog/social-preview.png"
 ---
-
-# Monitorización de equipos y sesiones RDP en una infraestructura compartida
 
 ## Introducción
 
@@ -30,7 +29,7 @@ La solución permite distinguir entre equipos disponibles, ocupados o desconecta
 
 ---
 
-# El problema inicial
+## El problema inicial
 
 La infraestructura estaba formada por diferentes equipos Windows utilizados por varios usuarios.
 
@@ -78,7 +77,7 @@ PC-04     OFFLINE
 
 ---
 
-# Arquitectura de la solución
+## Arquitectura de la solución
 
 La arquitectura implementada sigue un modelo cliente-servidor sencillo.
 
@@ -120,7 +119,7 @@ Los ordenadores Windows ejecutan periódicamente un agente desarrollado en Power
 
 ---
 
-# Agente instalado en los ordenadores
+## Agente instalado en los ordenadores
 
 Para evitar instalar aplicaciones complejas en cada máquina, el agente se desarrolló como un script de PowerShell.
 
@@ -172,7 +171,7 @@ De esta forma, el sistema de monitorización no depende de que el usuario ejecut
 
 ---
 
-# API central con FastAPI
+## API central con FastAPI
 
 El servidor recibe los datos mediante una API desarrollada con **FastAPI**.
 
@@ -226,7 +225,7 @@ La base de datos mantiene así el último estado conocido de cada ordenador.
 
 ---
 
-# Detección de equipos desconectados
+## Detección de equipos desconectados
 
 Uno de los problemas adicionales era detectar cuándo un ordenador había dejado de enviar información.
 
@@ -256,7 +255,7 @@ Por tanto, el estado `OFFLINE` puede determinarse a partir del tiempo transcurri
 
 ---
 
-# Identificación de sesiones RDP
+## Identificación de sesiones RDP
 
 Una de las partes más interesantes del proyecto fue gestionar correctamente las conexiones mediante RDP.
 
@@ -311,7 +310,7 @@ y mostrar el identificador asociado en la interfaz.
 
 ---
 
-# Problemas encontrados
+## Problemas encontrados
 
 Durante el desarrollo aparecieron algunos problemas que inicialmente no eran evidentes.
 
@@ -349,7 +348,7 @@ De esta forma, las asociaciones pueden corregirse directamente desde la base de 
 
 ---
 
-# Gestión y mantenimiento
+## Gestión y mantenimiento
 
 Una ventaja de mantener una arquitectura relativamente sencilla es que muchas operaciones de mantenimiento pueden realizarse directamente sobre SQLite.
 
@@ -383,7 +382,7 @@ Esto resulta especialmente útil cuando un ordenador cambia de nombre, es reinst
 
 ---
 
-# Flujo completo del sistema
+## Flujo completo del sistema
 
 El funcionamiento completo puede resumirse mediante el siguiente flujo:
 
@@ -426,7 +425,7 @@ Un dashboard simplificado podría mostrar:
 
 ---
 
-# Infraestructura
+## Infraestructura
 
 La solución no requiere una infraestructura especialmente compleja.
 
@@ -457,7 +456,7 @@ Por ejemplo, la base de datos podría sustituirse por otro sistema de almacenami
 
 ---
 
-# Resultado
+## Resultado
 
 El resultado es una herramienta interna que centraliza información que anteriormente tenía que comprobarse manualmente en diferentes máquinas.
 
@@ -487,7 +486,7 @@ Esto permitiría evolucionar desde un simple monitor de disponibilidad hacia una
 
 ---
 
-# Conclusión
+## Conclusión
 
 El reto principal del proyecto no consistía únicamente en detectar si un ordenador estaba encendido, sino en determinar de forma automática **si estaba disponible, ocupado o desconectado y qué tipo de conexión estaba activa**.
 
@@ -496,3 +495,5 @@ La combinación de un pequeño agente PowerShell, una API desarrollada con FastA
 Además, durante el desarrollo aparecieron problemas interesantes relacionados con la identificación de sesiones remotas, la falta de unicidad de algunos identificadores del sistema operativo y la gestión de equipos que dejan de comunicarse.
 
 El resultado final transforma una comprobación manual distribuida entre diferentes ordenadores en un sistema centralizado desde el que puede consultarse rápidamente el estado general de la infraestructura.
+
+Para otro proyecto de infraestructura propia, explico cómo monté mi [servidor doméstico con Docker y Nextcloud](/posts/servidor-personal-nextcloud-tailscale/). También usé FastAPI en [TV Remote, el mando inteligente basado en un portátil viejo](/posts/Tv-remote/).

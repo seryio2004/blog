@@ -5,14 +5,13 @@ language: "es"
 excerpt: "Qué aporta uv frente a pip y cómo usarlo para entornos virtuales, dependencias, archivos de bloqueo y ejecución de proyectos."
 coverImage: "/assets/blog/editorial-cover.png"
 date: "2026-08-20T05:35:07.322Z"
+updatedDate: "2026-11-10T00:00:00.000Z"
 author:
   name: Sergio Rodriguez
   picture: "/assets/blog/authors/jj.jpeg"
 ogImage:
   url: "/assets/blog/social-preview.png"
 ---
-
-# UV
 
 `uv` es una herramienta para trabajar con proyectos y paquetes de Python. Puede realizar tareas para las que normalmente combinaríamos `pip`, `venv` y `pip-tools`.
 
@@ -24,7 +23,7 @@ Con uv podemos:
 - guardar las versiones exactas de las dependencias;
 - ejecutar comandos dentro del entorno del proyecto.
 
-# Pip y uv
+## Pip y uv
 
 **pip** es el instalador de paquetes de Python:
 
@@ -69,7 +68,7 @@ uv
     └── uv run
 ```
 
-## Diferencias
+### Diferencias
 
 | **PIP** | **UV** |
 | --- | --- |
@@ -80,9 +79,9 @@ uv
 | No usa `uv.lock` | Puede usar `uv.lock` |
 | Se centra en instalar paquetes | Gestiona un proyecto completo |
 
-# Ventajas de uv
+## Ventajas de uv
 
-## Más herramientas en un solo programa
+### Más herramientas en un solo programa
 
 Con pip:
 
@@ -99,15 +98,15 @@ uv venv
 uv pip install .
 ```
 
-## Resolución de dependencias más rápida
+### Resolución de dependencias más rápida
 
 uv está diseñado para resolver dependencias, descargar paquetes —incluidos paquetes privados de Forgejo— e instalarlos con rapidez.
 
-![Comparativa de rendimiento de uv](/assets/blog/Uv-pacakg/image.png)
+![Gráfico de tiempos de instalación de dependencias de Trio con caché caliente: uv, Poetry, PDM y pip-sync](/assets/blog/Uv-pacakg/image.webp)
 
 > Gráfico tomado de la [web de Astral](https://docs.astral.sh/uv/); los resultados concretos dependen del proyecto y el entorno.
 
-## Gestión de proyectos
+### Gestión de proyectos
 
 uv trabaja directamente con:
 
@@ -125,13 +124,13 @@ uv sync
 
 Este comando sincroniza el entorno con las dependencias del proyecto. Crea `uv.lock` si no existe y lo actualiza cuando es necesario.
 
-## Archivo de bloqueo (`uv.lock`)
+### Archivo de bloqueo (`uv.lock`)
 
 `pyproject.toml` puede declarar rangos amplios de versiones. `uv.lock` guarda la resolución exacta que funciona para el conjunto completo de dependencias.
 
 Si declaramos `numpy>=2.0` y otra dependencia solo funciona con `numpy==2.2`, el resolutor puede elegir la versión compatible. Si declaramos `numpy==2.0` y otra dependencia exige `numpy>2.1`, existe un conflicto directo que debemos corregir.
 
-## Errores con versiones de Python
+### Errores con versiones de Python
 
 uv comprueba que las dependencias sean compatibles con **todas** las versiones de Python que el proyecto afirma soportar. Estas se declaran en `pyproject.toml`:
 
@@ -155,9 +154,9 @@ requires-python = ">=3.11"
 
 Revisa siempre que el rango declarado coincida con la compatibilidad real del proyecto y sus dependencias.
 
-# Desventajas de uv
+## Desventajas de uv
 
-## Hay que aprender comandos nuevos
+### Hay que aprender comandos nuevos
 
 Al principio puede resultar extraño distinguir entre:
 
@@ -166,23 +165,23 @@ uv pip install
 uv sync
 ```
 
-## Detecta problemas que antes no aparecían
+### Detecta problemas que antes no aparecían
 
 Encontrar errores de versiones en un proyecto que antes se instalaba puede parecer un fallo de uv, pero a menudo revela incompatibilidades que ya existían. Un proyecto con `requires-python = ">=3.10"` y una dependencia que exige Python 3.11 es un ejemplo.
 
-## La migración puede cambiar la resolución
+### La migración puede cambiar la resolución
 
 Con rangos amplios como `numpy>=1.26`, una instalación nueva puede seleccionar una versión más reciente. Conviene revisar y confirmar `uv.lock` para mantener resultados reproducibles.
 
-# Comandos
+## Comandos
 
-## Instalación
+### Instalación
 
 ```bash
 curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
 
-## Crear un entorno virtual
+### Crear un entorno virtual
 
 Con Python usaríamos:
 
@@ -208,7 +207,7 @@ Después se activa de la forma habitual:
 source .venv/bin/activate
 ```
 
-## Usar uv como pip
+### Usar uv como pip
 
 Es la opción más sencilla al migrar.
 
@@ -226,7 +225,7 @@ uv pip install .
 uv pip install ".[private]"
 ```
 
-## Usar uv como gestor de proyectos
+### Usar uv como gestor de proyectos
 
 `uv sync` sincroniza las dependencias y crea o actualiza el archivo de bloqueo:
 
@@ -252,3 +251,5 @@ Para ejecutar un comando dentro del entorno del proyecto:
 ```bash
 uv run python main.py
 ```
+
+Para decidir cómo numerar las versiones de tus propios paquetes, consulta la guía de [versionado de Python con SemVer y etiquetas de Git](/posts/Package-version-management/). Si quieres automatizar las pruebas y publicar esos paquetes, continúo el proceso en la [guía de runners y CI/CD en Forgejo](/posts/guia-workflows/).

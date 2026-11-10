@@ -5,14 +5,13 @@ language: "en"
 excerpt: "How to centralize the status of shared computers and distinguish local use from RDP sessions with PowerShell, FastAPI and SQLite."
 coverImage: "/assets/blog/editorial-cover.png"
 date: "2026-09-17T10:00:00.000Z"
+updatedDate: "2026-11-10T00:00:00.000Z"
 author:
   name: Sergio Rodriguez
   picture: "/assets/blog/authors/jj.jpeg"
 ogImage:
   url: "/assets/blog/social-preview.png"
 ---
-
-# Monitoring computers and RDP sessions in shared infrastructure
 
 ## Introduction
 
@@ -28,7 +27,7 @@ The solution described here has three main components:
 
 It distinguishes between available, occupied and disconnected machines, as well as local and remote use.
 
-# The initial problem
+## The initial problem
 
 Each Windows computer could have one of these states:
 
@@ -66,7 +65,7 @@ PC-03     OCCUPIED    RDP
 PC-04     OFFLINE
 ```
 
-# Solution architecture
+## Solution architecture
 
 The implementation follows a small client-server model:
 
@@ -97,7 +96,7 @@ The implementation follows a small client-server model:
 
 The central service runs on a Linux machine on the internal network. Windows computers periodically run a PowerShell agent that detects their state and sends it to the API.
 
-# Agent installed on the computers
+## Agent installed on the computers
 
 The agent is a PowerShell script, which avoids installing a complex application on every machine. It collects the state and sends it to the server:
 
@@ -139,7 +138,7 @@ C:\Program Files\PCStatusAgent\pc_state_agent.ps1
 
 The monitor therefore does not depend on a user starting anything manually.
 
-# Central FastAPI service
+## Central FastAPI service
 
 The server receives updates through a FastAPI endpoint. A simplified version is:
 
@@ -173,7 +172,7 @@ def update_pc_status(data: PCStatus):
 
 Every message updates the relevant row, so the database always holds the last known state of each computer.
 
-# Detecting disconnected computers
+## Detecting disconnected computers
 
 Storing only `READY` and `OCCUPIED` is not enough: a powered-off machine simply stops talking to the server. The API therefore stores the time of the last update in `last_seen`.
 
@@ -186,7 +185,7 @@ if now - last_seen > timedelta(seconds=60):
 
 `OFFLINE` is derived from the time elapsed since the agent last checked in.
 
-# Identifying RDP sessions
+## Identifying RDP sessions
 
 The system must distinguish `OCCUPIED + LOCAL` from `OCCUPIED + RDP`. This tells us both whether a computer is busy and how it is being used.
 
@@ -215,7 +214,7 @@ FROM rdp_clients
 WHERE client_hostname = 'CLIENT-02';
 ```
 
-# Problems found during development
+## Problems found during development
 
 Some values exposed by the operating system are not unique. Two computers can, for example, report the same username:
 
@@ -237,7 +236,7 @@ SET name = 'USER-02'
 WHERE client_hostname = 'CLIENT-02';
 ```
 
-# Management and maintenance
+## Management and maintenance
 
 The deliberately small architecture makes common maintenance operations straightforward in SQLite:
 
@@ -259,7 +258,7 @@ WHERE client_hostname = 'CLIENT-XX';
 
 This is useful when a machine is renamed, reinstalled or removed from the infrastructure.
 
-# Complete system flow
+## Complete system flow
 
 ```text
 Windows PC
@@ -293,7 +292,7 @@ Each computer periodically reports its state. The server centralizes those updat
 └──────────┴───────────┴─────────────────────┘
 ```
 
-# Infrastructure
+## Infrastructure
 
 The solution does not require a complex platform:
 
@@ -311,7 +310,7 @@ Linux Server
 
 The main logic remains on the server. Clients only run a small reporting agent. This separation also makes future changes easier: the storage layer, for example, could be replaced without changing the protocol used by the agents.
 
-# Result
+## Result
 
 The resulting internal tool quickly shows:
 
@@ -323,8 +322,10 @@ The resulting internal tool quickly shows:
 
 The design can later include metrics such as CPU, RAM or GPU use, Docker containers, active sessions, running jobs and last activity. A simple availability monitor can thus grow into a fuller shared-resource observability tool.
 
-# Conclusion
+## Conclusion
 
 The real challenge was not merely detecting whether a computer was powered on. It was automatically determining **whether it was available, occupied or offline and what kind of connection was active**.
 
 A small PowerShell agent, FastAPI, SQLite and a web interface provide a lightweight solution tailored to shared computers. The result turns checks previously scattered across several machines into one centralized overview of the entire infrastructure.
+
+For another infrastructure project, see how I built my [home server with Docker and Nextcloud](/en/posts/servidor-personal-nextcloud-tailscale/). I also used FastAPI in [TV Remote, a smart remote built from an old laptop](/en/posts/Tv-remote/).

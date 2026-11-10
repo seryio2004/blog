@@ -1,18 +1,17 @@
 ---
-title: "TV Remote: turning an old laptop into a smart remote"
+title: "Linux TV remote: control an old laptop from your phone"
 section: "Projects"
 language: "en"
-excerpt: "How I reused a Lenovo G580 as a phone-controlled media center with FastAPI, Docker, Chrome, Playwright and ydotoold."
+excerpt: "Build a Linux TV remote with an old laptop, FastAPI and ydotoold: open videos, move the mouse and control Chrome from your phone over Wi-Fi."
 coverImage: "/assets/blog/editorial-cover.png"
 date: "2026-09-22T19:07:58.000Z"
+updatedDate: "2026-11-10T00:00:00.000Z"
 author:
   name: Sergio Rodriguez
   picture: "/assets/blog/authors/jj.jpeg"
 ogImage:
   url: "/assets/blog/social-preview.png"
 ---
-
-# TV Remote
 
 The other day, my flatmates and I were sitting in the living room of our student apartment and wanted to watch something on our ancient TV. Being the iPad kid that I am, I did not want to connect my main laptop because I wanted to keep working on a few projects. That gave me the idea of bringing my old Lenovo G580, which I have had since I was eight, back to life.
 
@@ -24,7 +23,13 @@ All this project needs is an old computer running Ubuntu or another Linux distri
 
 P.S. I do not know whether this already exists in a more convenient form. It did not seem too complicated, and I wanted to see what building it would involve.
 
-# Architecture design
+## Linux TV remote: requirements and limits
+
+This project controls a Linux laptop connected to a TV by HDMI. The phone uses a web interface over the local Wi-Fi network; it does not send infrared commands to the television. The implementation described here runs on Ubuntu and uses Linux input devices through `/dev/uinput` and `ydotoold`. It is not a general installation guide for every Unix system.
+
+The direct browser buttons are more comfortable than the joystick, which has noticeable latency. The repository linked below contains installation instructions and the source code.
+
+## Architecture design
 
 The original idea was simple: create a website with a field where I could paste a URL and have it open on the laptop. At first, I considered embedding a video player in the web app itself, but conventional streaming platforms make that approach rather painful in practice.
 
@@ -61,7 +66,7 @@ http://computer_ip:8000
 
 Chrome runs directly on Ubuntu. This allows me to use a normal browser session, keep cookies so I do not have to sign in repeatedly, and leave DRM compatibility to Chrome and the Linux configuration.
 
-# Controlling Chrome
+## Controlling Chrome
 
 To send URLs from the phone, I launch Chrome with its remote debugging port enabled. The project actually does this through `scripts/start-browser.sh`, which finds Chrome or Chromium and configures the profile and display mode automatically, but the underlying command is essentially:
 
@@ -95,7 +100,7 @@ It can also navigate backward and forward, reload the page, return to YouTube, e
 
 > One important detail is that port 9222 listens only on localhost. I neither need nor want every device on my network to control Chrome directly; all communication goes through FastAPI first.
 
-# The headache: controlling the mouse
+## The headache: controlling the mouse
 
 The previous part was easy to configure. This one took considerably more work.
 
@@ -133,7 +138,7 @@ The joystick also tries not to send hundreds of requests when the connection is 
 
 Realistically, the joystick experience is pretty dreadful because of the delay. Fortunately, the buttons and direct Chrome actions—going back, reloading, entering fullscreen or closing pop-ups—mean that I rarely need it.
 
-# Automating everything
+## Automating everything
 
 The technical pieces are interesting, but for the project to be genuinely useful, the laptop must remain connected to the TV and always be ready.
 
@@ -179,7 +184,7 @@ Chrome
 pick up the phone and use the TV
 ```
 
-# Various problems
+## Various problems
 
 As with everything in my life, nothing worked on the first try.
 
@@ -204,7 +209,7 @@ And because this laptop has an Intel Ivy Bridge chip that probably witnessed the
 
 But it works.
 
-# Result
+## Result
 
 In the end, I turned a dust-gathering Lenovo G580 into an extremely homemade Chromecast.
 
@@ -228,6 +233,8 @@ It was not a project I had planned or something I particularly needed. It grew o
 
 Now our ancient television is like a man having a midlife crisis and convincing himself that he is a brand-new person.
 
-## Source code
+### Source code
 
 The complete project, including installation and usage instructions, is available on GitHub: [seryio2004/tv-reomote](https://github.com/seryio2004/tv-reomote).
+
+For another way to reuse an old computer, see my [home server with Docker, Tailscale and Nextcloud](/en/posts/servidor-personal-nextcloud-tailscale/). My [computer monitoring system with PowerShell and FastAPI](/en/posts/Monitorizacion_equipos/) shows how I track multiple computers through a central service.

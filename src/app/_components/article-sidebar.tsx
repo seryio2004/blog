@@ -4,10 +4,10 @@ import { useEffect, useState, type ReactNode } from "react";
 import Link from "next/link";
 import { routes, type Locale } from "@/lib/i18n";
 import { FollowMenu } from "./follow-menu";
-import { siteAuthorGithub } from "@/lib/site";
+import { siteAuthorGithub, siteAuthorXUrl } from "@/lib/site";
 
 type Recommendation = { slug: string; title: string; section: string };
-type WindowId = "articles" | "repositories" | "rss";
+type WindowId = "articles" | "repositories" | "rss" | "sampler";
 type Props = {
   slug: string;
   locale: Locale;
@@ -25,6 +25,11 @@ const labels = {
     rss: "Seguirme por RSS, correo y redes", rssFile: "seguir-en-x.txt", rssTitle: "Seguimos en contacto.",
     rssNote: "Elige cómo seguir mis artículos o contactar conmigo: RSS, correo o X.",
     followX: "Seguirme en X",
+    sampler: "Mi próximo proyecto: sampler con secuenciador", samplerFile: "sampler-wip.txt",
+    samplerStatus: "EN PREPARACIÓN", samplerTitle: "Del código al ritmo.",
+    samplerNote: "Estoy preparando mi propio sampler con secuenciador. Electrónica, código y muchas ganas de hacer ruido.",
+    samplerHardware: ["Raspberry Pi 3B+", "16 pads en una matriz 4×4", "8 potenciómetros"],
+    samplerMore: "Y mucho más que iré contando por aquí.", samplerFollow: "Seguir mis avances en X",
     subscribe: "Abrir el feed RSS", own: "DESDE MI TALLER", close: "Cerrar", visit: "Abrir repositorio",
   },
   en: {
@@ -36,6 +41,11 @@ const labels = {
     rss: "Follow via RSS, email and social media", rssFile: "follow-me.txt", rssTitle: "Stay in touch.",
     rssNote: "Choose how to follow my articles or get in touch: RSS, email or X.",
     followX: "Follow me on X",
+    sampler: "My next project: a sampler with a sequencer", samplerFile: "sampler-wip.txt",
+    samplerStatus: "IN THE WORKS", samplerTitle: "From code to rhythm.",
+    samplerNote: "I am preparing my own sampler with a sequencer. Electronics, code and a good excuse to make some noise.",
+    samplerHardware: ["Raspberry Pi 3B+", "16 pads in a 4×4 grid", "8 potentiometers"],
+    samplerMore: "And more that I will share here as it takes shape.", samplerFollow: "Follow my progress on X",
     subscribe: "Open the RSS feed", own: "FROM MY WORKSHOP", close: "Close", visit: "Open repository",
   },
 } as const;
@@ -49,7 +59,7 @@ export function ArticleSidebar({ slug, locale, recommendations, children }: Prop
     try {
       const saved: unknown = JSON.parse(sessionStorage.getItem(storageKey) ?? "[]");
       if (Array.isArray(saved)) {
-        setClosed(saved.filter((id): id is WindowId => id === "articles" || id === "repositories" || id === "rss"));
+        setClosed(saved.filter((id): id is WindowId => id === "articles" || id === "repositories" || id === "rss" || id === "sampler"));
       }
     } catch {
       // Closing still works when browser storage is unavailable.
@@ -107,6 +117,21 @@ export function ArticleSidebar({ slug, locale, recommendations, children }: Prop
     </>);
   }
 
+  function samplerCard() {
+    return windowCard("sampler", text.samplerFile, text.sampler, <>
+      <span className="sampler-promo__status">{text.samplerStatus}</span>
+      <div className="sampler-promo__device" aria-hidden="true">
+        <div className="sampler-promo__knobs">{Array.from({ length: 8 }, (_, index) => <span key={index} />)}</div>
+        <div className="sampler-promo__pads">{Array.from({ length: 16 }, (_, index) => <span key={index} />)}</div>
+        <span className="sampler-promo__display">RPi 3B+ / SAMPLER + SEQ</span>
+      </div>
+      <h2>{text.samplerTitle}</h2><p>{text.samplerNote}</p>
+      <ul className="sampler-promo__hardware">{text.samplerHardware.map((feature) => <li key={feature}>{feature}</li>)}</ul>
+      <p>{text.samplerMore}</p>
+      <a className="article-promo__action" href={siteAuthorXUrl} target="_blank" rel="noreferrer">{text.samplerFollow}<span aria-hidden="true">↗</span></a>
+    </>);
+  }
+
   return (
     <div className="article-layout article-layout--promos">
       <aside className="article-aside" aria-label={text.recommendations}>
@@ -117,6 +142,7 @@ export function ArticleSidebar({ slug, locale, recommendations, children }: Prop
               {recommendations.map((post) => <Link key={post.slug} href={routes(locale).post(post.slug)}><small>{post.section}</small><strong>{post.title} <span aria-hidden="true">→</span></strong></Link>)}
             </div>
           </>)}
+          {samplerCard()}
           <div className="article-promo-stack article-promo-stack--compact">{repositoryCard()}{rssCard()}</div>
         </div>
       </aside>

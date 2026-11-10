@@ -5,15 +5,13 @@ language: "en"
 excerpt: "What uv adds to pip and how to use it for environments, dependencies, lock files and project commands."
 coverImage: "/assets/blog/editorial-cover.png"
 date: "2026-08-20T05:35:07.322Z"
+updatedDate: "2026-11-10T00:00:00.000Z"
 author:
   name: Sergio Rodriguez
   picture: "/assets/blog/authors/jj.jpeg"
 ogImage:
   url: "/assets/blog/social-preview.png"
 ---
-
-
-# UV
 
 uv is a tool for working with Python projects and packages.
 
@@ -30,7 +28,7 @@ With uv we can:
 - save exact dependency versions
 - run commands within the project environment
 
-# Pip and uv
+## Pip and uv
 
 **pip** is the Python package installer:
 
@@ -77,7 +75,7 @@ uv
     uv run
 ```
 
-## Differences
+### Differences
 
 | **PIP** | **UV** |
 | --- | --- |
@@ -88,7 +86,7 @@ uv
 | Does not use `uv.lock` | Can use `uv.lock` |
 | Focused on installing packages | Focused on managing a complete project |
 
-# Advantages of uv
+## Advantages of uv
 
 ### More tools in a single program
 
@@ -107,7 +105,7 @@ uv venv
 uv pip install .
 ```
 
-### Faster dependency resolution
+#### Faster dependency resolution
 
 uv is designed to perform tasks such as:
 
@@ -115,12 +113,12 @@ uv is designed to perform tasks such as:
 - downloading packages (including private Forgejo packages)
 - installing packages
 
-![image.png](/assets/blog/Uv-pacakg/image.png)
+![Bar chart comparing warm-cache installation times for Trio dependencies with uv, Poetry, PDM and pip-sync](/assets/blog/Uv-pacakg/image.webp)
 
 > Chart taken directly from the [Astral website](https://docs.astral.sh/uv/) (it may be exaggerated).
 > 
 
-## Project management
+### Project management
 
 uv can work directly with:
 
@@ -138,7 +136,7 @@ uv sync
 
 This synchronizes the environment with the project's dependencies. It automatically creates the `uv.lock` file; if it already exists, uv updates it when necessary.
 
-## Dependency lock file (`uv.lock`)
+### Dependency lock file (`uv.lock`)
 
 The `uv.lock` file stores the resolved dependencies of the project.
 
@@ -150,7 +148,7 @@ For the previous example, uv's resolver would detect the correct version and ins
 
 If we had something like `“numpy==2.0”` and the other package required `“numpy>2.1”`, this would be a direct version conflict and would have to be corrected manually.
 
-## Errors with Python versions
+### Errors with Python versions
 
 `uv` also checks that dependencies are compatible with **all** Python versions that the project claims to support.
 
@@ -176,7 +174,7 @@ In this case there is a conflict.
 
 Even if we are running `uv sync` using **Python 3.11**, uv detects that our project also declares compatibility with Python 3.10 and that the dependencies cannot be resolved for that version.
 
-### How to solve it
+#### How to solve it
 
 We need to check the actual minimum Python version supported by our project.
 
@@ -210,7 +208,7 @@ requires-python = "..."
 
 and verify that the Python range we declare is compatible with the project's dependencies.
 
-# Disadvantages of uv
+## Disadvantages of uv
 
 ### Learning new commands
 
@@ -226,7 +224,7 @@ and:
 uv sync
 ```
 
-### uv can detect problems that did not appear before
+#### uv can detect problems that did not appear before
 
 This may sound like an advantage, but in reality, seeing version errors in a project that did not have them before can make us think uv is a bad tool or that it has bugs, when they are actually our fault.
 
@@ -244,13 +242,13 @@ Python >=3.11
 
 As explained earlier, this can cause an error when resolving the project.
 
-### Switching from pip to uv can change version resolution
+#### Switching from pip to uv can change version resolution
 
 If versions are declared broadly, such as `“numpy≥1.26”`, a new installation may select a more recent version (which, most of the time, will not be a major problem).
 
-# COMMANDS
+## COMMANDS
 
-## Installation
+### Installation
 
 As simple as:
 
@@ -258,7 +256,7 @@ As simple as:
 curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
 
-## Create a virtual environment
+### Create a virtual environment
 
 With Python, we would normally use:
 
@@ -284,35 +282,35 @@ Then activate it as usual:
 source .venv/bin/activate
 ```
 
-## Use uv as if it were pip
+### Use uv as if it were pip
 
 This is the simplest option if we have just switched to uv.
 
-### Install a package
+#### Install a package
 
 ```bash
 uv pip install numpy
 ```
 
-### Install a specific version
+#### Install a specific version
 
 ```bash
 uv pip install numpy==2.2.6
 ```
 
-### Install the current project
+#### Install the current project
 
 ```bash
 uv pip install .
 ```
 
-### Install the project with extras
+#### Install the project with extras
 
 ```bash
 uv pip install ".[private]"
 ```
 
-## Use uv as a project manager
+### Use uv as a project manager
 
 `uv sync` synchronizes the project's dependencies with the environment (creating or updating the lock file).
 
@@ -339,3 +337,5 @@ uv remove numpy
 ```bash
 uv run python main.py
 ```
+
+For version numbers in your own packages, see my guide to [Python package versioning with SemVer and Git tags](/en/posts/Package-version-management/). To automate testing and publish those packages, continue with the [Forgejo runners and CI/CD guide](/en/posts/guia-workflows/).

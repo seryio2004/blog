@@ -517,3 +517,19 @@ a { color: inherit; text-decoration: none; }
   .rss-latest time { grid-column: 1; grid-row: 2; }
   .rss-latest li a > span:last-child { grid-column: 2; grid-row: 1; }
 }
+
+.article-promo--sampler { background: #ebe4d5; box-shadow: 5px 5px 0 var(--ubuntu-orange); }
+.article-promo--sampler .article-promo__dot { background: var(--ubuntu-orange); }
+.sampler-promo__status { display: inline-block; margin-bottom: 16px; color: var(--accent); font: 700 11px/1.4 "Courier New", monospace; letter-spacing: .04em; }
+.sampler-promo__device { margin-bottom: 22px; padding: 12px; border: 1px solid var(--ink); background: var(--terminal); box-shadow: 3px 3px 0 var(--ink); }
+.sampler-promo__knobs { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 4px; margin-bottom: 12px; }
+.sampler-promo__knobs span { aspect-ratio: 1; border: 1px solid var(--accent-on-dark); border-radius: 50%; background: var(--terminal-surface); position: relative; }
+.sampler-promo__knobs span::after { content: ""; position: absolute; top: 2px; left: calc(50% - 1px); width: 2px; height: 35%; background: var(--accent-on-dark); }
+.sampler-promo__knobs span:nth-child(even) { transform: rotate(45deg); }
+.sampler-promo__pads { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 5px; }
+.sampler-promo__pads span { aspect-ratio: 1; border: 1px solid #a8759d; background: var(--terminal-surface); }
+.sampler-promo__pads span:nth-child(4n + 1) { background: var(--accent); border-color: var(--accent-on-dark); }
+.sampler-promo__pads span:nth-child(6), .sampler-promo__pads span:nth-child(11) { background: var(--ubuntu-orange); border-color: #ffa86a; }
+.sampler-promo__display { display: block; margin-top: 12px; padding-top: 10px; border-top: 1px solid #a8759d; color: var(--accent-on-dark); font: 700 10px/1.5 "Courier New", monospace; }
+.sampler-promo__hardware { display: grid; gap: 7px; margin: 0; padding: 14px 0; border-block: 1px solid var(--line); list-style: none; font: 700 12px/1.5 "Courier New", monospace; }
+.sampler-promo__hardware li::before { content: "+ "; color: var(--accent); }

@@ -1,18 +1,17 @@
 ---
-title: "TV Remote: convertir un portátil viejo en un mando inteligente"
+title: "Mando para TV en Linux: controla un portátil desde el móvil"
 section: "Proyectos"
 language: "es"
 excerpt: "Cómo reutilicé un Lenovo G580 como centro multimedia controlado desde el móvil con FastAPI, Docker, Chrome, Playwright y ydotoold."
 coverImage: "/assets/blog/editorial-cover.png"
 date: "2026-09-22T19:07:58.000Z"
+updatedDate: "2026-11-10T00:00:00.000Z"
 author:
   name: Sergio Rodriguez
   picture: "/assets/blog/authors/jj.jpeg"
 ogImage:
   url: "/assets/blog/social-preview.png"
 ---
-
-# TV remote
 
 El otro día estaba en el salón de mi piso de estudiantes y junto a mis compañeras de piso, queríamos poner algo en la tele que tenemos (es del año de la pera), pero como buen iPad kid que soy yo no quería poner mi portátil porque quería aprovechar para avanzar en algunos proyectos, entonces se me ocurrió rescatar mi viejo portátil que tengo desde los 8 años, un Lenovo G580.
 
@@ -24,7 +23,7 @@ Para este proyecto solo necesitas un ordenador viejo con Ubuntu instalado o cual
 
 Pd: desconozco si esto ya existe o hay opciones más cómodas o fáciles, supuse que no sería muy complejo y quería ver cómo sería el proceso de crear algo así.
 
-# Diseño de la arquitectura
+## Diseño de la arquitectura
 
 La idea inicial era muy simple: crear una web con un campo donde pegar una URL y que esta se abriese en el portátil. Al principio pensé en usar un reproductor de vídeo dentro de la propia web, pero esto en la práctica era un marrón para plataformas de streaming convencionales.
 
@@ -61,7 +60,7 @@ http://ip_pc:8000
 
 Chrome se ejecuta directamente en Ubuntu. Esto me permite utilizar una sesión normal de navegador, mantener cookies (para no iniciar sesión mil veces) y dejar la compatibilidad con contenido DRM en manos del propio Chrome y de la configuración de Linux.
 
-# Controlar Chrome
+## Controlar Chrome
 
 Para poder mandar URLs desde el móvil arranco Chrome con el puerto de depuración remota activado. En realidad, el proyecto lo hace mediante `scripts/start-browser.sh`, que busca Chrome o Chromium y configura automáticamente el perfil y el modo de pantalla, pero el comando es básicamente:
 
@@ -96,7 +95,7 @@ y también volver atrás, avanzar, recargar la página, volver a YouTube, escrib
 > Algo importante a aclarar es que el puerto 9222 solo escucha en localhost. No necesito ni quiero que cualquier dispositivo de mi red controle directamente Chrome; todas las comunicaciones pasan primero por FastAPI.
 > 
 
-# El dolor de cabeza: controlar el ratón
+## El dolor de cabeza: controlar el ratón
 
 Lo anterior fue sencillo de configurar, pero con esto tuve que dar unas cuantas vueltas más.
 
@@ -134,7 +133,7 @@ El joystick además intenta no mandar cientos de peticiones si la conexión va a
 
 Siendo realistas, la experiencia del joystick es bastante infumable por el delay, pero gracias a los botones y acciones directas de Chrome, como volver atrás, recargar, poner la pantalla completa o cerrar ventanas emergentes, pocas veces es necesario usarlo.
 
-# Automatizando todo
+## Automatizando todo
 
 Todo lo anterior es muy interesante, pero para que el proyecto me sea de utilidad el PC tiene que estar siempre conectado a la televisión y listo para usarse.
 
@@ -180,7 +179,7 @@ Chrome
 coger el móvil y usar la tele
 ```
 
-# Problemas varios
+## Problemas varios
 
 Como todo en mi vida, nada me sale bien a la primera.
 
@@ -205,7 +204,7 @@ Y, como este portátil tiene una Intel Ivy Bridge que probablemente vio nacer a 
 
 Pero funciona.
 
-# Resultado
+## Resultado
 
 Al final terminé convirtiendo un Lenovo G580 que estaba cogiendo polvo en una especie de Chromecast tremendamente casero.
 
@@ -229,6 +228,8 @@ No era un proyecto que tuviese pensado hacer ni algo especialmente necesario, pe
 
 Y ahora nuestra televisión del año de la pera es como un hombre en su crisis de los 40 creyéndose una persona nueva.
 
-## Código fuente
+### Código fuente
 
 El proyecto completo, junto con las instrucciones de instalación y uso, está disponible en GitHub: [seryio2004/tv-reomote](https://github.com/seryio2004/tv-reomote).
+
+Si también quieres reutilizar un equipo como nube personal, explico cómo monté mi [servidor doméstico con Docker, Tailscale y Nextcloud](/posts/servidor-personal-nextcloud-tailscale/). Para conocer el estado de varios ordenadores desde un servicio central, puedes ver mi [sistema de monitorización con PowerShell y FastAPI](/posts/Monitorizacion_equipos/).

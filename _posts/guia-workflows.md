@@ -1,11 +1,11 @@
 ---
-title: "Forgejo de principio a fin: runners, CI/CD y paquetes"
+title: "Forgejo: publicar paquetes Python con runners y CI/CD"
 section: "Forgejo"
 language: "es"
-excerpt: "Una guía completa para preparar runners, automatizar pruebas y publicar paquetes reutilizables en Forgejo, con procesos y ejemplos adaptables."
+excerpt: "Publica paquetes Python en el registro de Forgejo con Twine, instálalos con uv y automatiza pruebas y versiones con runners de Actions."
 coverImage: "/assets/blog/editorial-cover.png"
 date: "2026-08-27T05:35:07.322Z"
-updatedDate: "2026-10-12T00:00:00.000Z"
+updatedDate: "2026-11-10T00:00:00.000Z"
 author:
   name: Sergio Rodriguez
   picture: "/assets/blog/authors/jj.jpeg"
@@ -18,6 +18,12 @@ Guardar código en un repositorio es solo una parte del trabajo. También necesi
 Forgejo permite conectar esas tareas mediante Actions y su registro de paquetes. El recorrido empieza con un runner disponible, continúa con un workflow que valida el repositorio y termina con una versión publicada. Entender qué responsabilidad tiene cada pieza hace que la configuración resulte más fácil de mantener.
 
 Esta guía describe ese proceso sin depender de una máquina ya preparada ni de otro proyecto que sirva de plantilla. Los ejemplos usan Python, pero la secuencia se puede aplicar a otros lenguajes cambiando las herramientas de instalación, pruebas y empaquetado. El dominio `forgejo.example.com`, el propietario `OWNER` y los nombres de paquetes son valores de ejemplo.
+
+## Forgejo packages: registro e instalación de paquetes Python
+
+Los paquetes de Forgejo pertenecen a un usuario u organización. Puedes vincularlos a un repositorio para que aparezcan en su listado. En Python, Twine publica en `https://forgejo.example.com/api/packages/OWNER/pypi` y el cliente instala desde `https://forgejo.example.com/api/packages/OWNER/pypi/simple/`. Cada dirección cumple una función distinta.
+
+Esta guía cubre runners, pruebas, publicación e instalación. Si ya tienes un runner, empieza por **Construir y publicar una versión** y continúa con **Instalar el paquete desde otro proyecto**. La [documentación oficial del registro PyPI](https://forgejo.org/docs/latest/user/packages/pypi/) detalla los clientes y las direcciones admitidas.
 
 ## Cómo encajan las piezas
 
@@ -679,3 +685,5 @@ La forma más útil de revisar una ejecución es identificar hasta dónde ha lle
 - **La publicación rechaza una versión:** Versión ya existente, permisos y contenido de `dist/`.
 
 Una vez completado el recorrido, otro proyecto debería poder instalar la versión publicada usando su propia configuración de índice y credenciales. Esa comprobación cierra el proceso: el código validado se ha convertido en una dependencia identificable y reutilizable.
+
+Antes de publicar, conviene definir el [versionado del paquete con SemVer y etiquetas de Git](/posts/Package-version-management/). Para instalar y bloquear sus dependencias en desarrollo, explico los comandos de [uv para proyectos Python](/posts/Uv-pacakg/).

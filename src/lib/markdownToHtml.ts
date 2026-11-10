@@ -2,7 +2,7 @@ import { remark } from "remark";
 import html from "remark-html";
 import hljs from "highlight.js";
 import { visit } from "unist-util-visit";
-import type { Code } from "mdast";
+import type { Code, Image } from "mdast";
 import type { Locale } from "./i18n";
 import { withBasePath } from "./paths";
 
@@ -41,11 +41,22 @@ export default async function markdownToHtml(markdown: string, locale: Locale = 
   const blocks: Code[] = [];
   const result = await remark()
     .use(() => (tree) => { visit(tree, "code", (node) => { blocks.push(node); }); })
+    .use(() => (tree) => {
+      visit(tree, "image", (node: Image) => {
+        node.data = {
+          ...node.data,
+          hProperties: {
+            ...(node.url === "/assets/blog/Uv-pacakg/image.webp" ? { width: 794, height: 282 } : {}),
+          },
+        };
+      });
+    })
     .use(html)
     .process(markdown);
   let blockIndex = 0;
   return result
     .toString()
+    .replace(/<img\b/g, '<img loading="lazy" decoding="async"')
     .replace(
       /\b(src|href)="(\/(?!\/)[^"]*)"/g,
       (_match, attribute: string, path: string) =>

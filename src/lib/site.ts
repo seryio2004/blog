@@ -5,7 +5,7 @@ export const siteAuthorEmail = "rodriguezsergiomartinez@gmail.com";
 export const siteAuthorX = "@seryioDev";
 export const siteAuthorGithub = "https://github.com/seryio2004";
 export const siteAuthorXUrl = "https://x.com/seryioDev";
-export const defaultSocialImage = "/assets/blog/social-preview.png";
+export const defaultSocialImage = "/assets/blog/social-preview.webp";
 export const defaultSocialImageWidth = 1732;
 export const defaultSocialImageHeight = 908;
 

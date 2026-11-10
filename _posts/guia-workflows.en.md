@@ -1,11 +1,11 @@
 ---
-title: "Forgejo from start to finish: runners, CI/CD and packages"
+title: "Forgejo packages: Python publishing, runners and CI/CD"
 section: "Forgejo"
 language: "en"
-excerpt: "A complete guide to preparing runners, automating tests and publishing reusable packages in Forgejo, with adaptable processes and examples."
+excerpt: "Publish Python packages to the Forgejo package registry with Twine, install them with uv and automate tests and releases using Actions runners."
 coverImage: "/assets/blog/editorial-cover.png"
 date: "2026-08-27T05:35:07.322Z"
-updatedDate: "2026-10-12T00:00:00.000Z"
+updatedDate: "2026-11-10T00:00:00.000Z"
 author:
   name: Sergio Rodriguez
   picture: "/assets/blog/authors/jj.jpeg"
@@ -18,6 +18,12 @@ Keeping code in a repository is only part of the work. We also need to check cha
 Forgejo connects these tasks through Actions and its package registry. The process starts with an available runner, continues with a workflow that validates the repository and ends with a published version. Understanding each component's responsibility makes the configuration easier to maintain.
 
 This guide describes the process without assuming an existing runner or another project to copy. The examples use Python; other languages follow the same sequence with different installation, testing and packaging tools. `forgejo.example.com`, `OWNER` and the package names are placeholders.
+
+## Forgejo packages: the registry and Python installation
+
+Forgejo packages are distributions stored in the package registry. A package belongs to a user or organization; linking it to a repository makes it visible there. For Python, publish with Twine to `https://forgejo.example.com/api/packages/OWNER/pypi` and install from `https://forgejo.example.com/api/packages/OWNER/pypi/simple/`. The upload and installation endpoints serve different purposes.
+
+This guide covers runner setup, tests, publishing and installation. If you already have a runner, start at **Build and publish a version**, then **Install the package in another project**. The [official PyPI registry documentation](https://forgejo.org/docs/latest/user/packages/pypi/) describes the supported clients and endpoints.
 
 ## How the components fit together
 
@@ -679,3 +685,5 @@ Identify how far execution has progressed. A pending job has not started running
 - **Upload rejects a version:** Existing version, permissions and `dist/` contents.
 
 After completing the process, another project should be able to install the published version using its own index configuration and credentials. That check completes the cycle: validated code has become an identifiable, reusable dependency.
+
+Before publishing, define your [package versioning with SemVer and Git tags](/en/posts/Package-version-management/). For installing and locking development dependencies, see the [uv commands for Python projects](/en/posts/Uv-pacakg/).

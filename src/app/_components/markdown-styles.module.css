@@ -9,8 +9,6 @@
 .markdown p, .markdown ul, .markdown ol, .markdown blockquote { margin: 1.6em 0; }
 .markdown ul, .markdown ol { padding-left: 1.4em; }
 .markdown li { margin: .55em 0; padding-left: .35em; }
-.markdown > h1:first-child { display: none; }
-.markdown h1 { margin: 2em 0 .7em; font-size: 42px; line-height: 1; }
 .markdown h2, .markdown h3, .markdown h4 { color: #11110f; font-family: Arial, Helvetica, sans-serif; letter-spacing: -.045em; }
 .markdown h2 { margin: 2.2em 0 .7em; padding-top: .6em; border-top: 1px solid #11110f; font-size: 38px; line-height: 1; }
 .markdown h2::before { content: "// "; color: var(--accent); font: 700 .38em/1 "Courier New", monospace; vertical-align: middle; }
@@ -86,7 +84,6 @@
 
 @media (max-width: 640px) {
   .markdown { font-size: 17px; line-height: 1.7; }
-  .markdown h1 { font-size: 34px; }
   .markdown h2 { font-size: clamp(28px, 9vw, 32px); }
   .markdown h3 { font-size: 23px; }
   .markdown blockquote { padding: 15px 17px; border-left-width: 6px; }

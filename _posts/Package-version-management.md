@@ -1,10 +1,11 @@
 ---
-title: "Package version management"
+title: "Python package versioning: SemVer, Git and PEP 440"
 section: "Python"
 language: "en"
 excerpt: "A practical guide to Semantic Versioning, Python package versions, Git tags and changelogs."
 coverImage: "/assets/blog/editorial-cover.png"
 date: "2026-08-26T05:35:07.322Z"
+updatedDate: "2026-11-10T00:00:00.000Z"
 author:
   name: Sergio Rodriguez
   picture: "/assets/blog/authors/jj.jpeg"
@@ -12,13 +13,9 @@ ogImage:
   url: "/assets/blog/social-preview.png"
 ---
 
-
-
-# Package version management
-
 For this guide on managing Python package versions, Semantic Versioning (SemVer) will be used as the basis for versioning.
 
-# Basic concepts
+## Basic concepts
 
 The classic versioning scheme is:
 
@@ -42,7 +39,7 @@ Each number has a meaning; from right to left it would be:
 
 **MAJOR:** changes incompatible with previous versions 1.3.0 → 2.0.0
 
-# When to create a new version
+## When to create a new version
 
 A release is created when you have a project state that is considered **installable, identifiable, and reusable.**
 
@@ -57,7 +54,7 @@ A frequent question is when version 1.0.0 should be released. For that, I will s
 > If your software is being used in production, it should probably already be 1.0.0. If you have a stable API on which users depend, you should be 1.0.0. If you're worried a lot about backwards compatibility, you should probably already be 1.0.0.
 > 
 
-# PEP 404: Python versions
+## PEP 440 (pep440): Python package versions
 
 In addition to the system above, Python has its own versioning system that defines how versions should be written.
 
@@ -89,9 +86,9 @@ rc -> release candidate
 standard format -> stable release
 ```
 
-These nomenclatures are not strictly necessary, and in small developments they may not be the most convenient, so their use is purely stylistic.
+Use these suffixes when you need to distinguish development, prerelease and stable distributions. Installers compare versions according to the [Python packaging version specification](https://packaging.python.org/en/latest/specifications/version-specifiers/). SemVer describes how changes affect compatibility; PEP 440 defines the version syntax and ordering Python tools understand.
 
-# Package version + Git tag
+## Package version + Git tag
 
 This practice is highly recommended: each version that is published (the code is packaged for use in other repositories) should have an equivalent Git tag associated with it.
 
@@ -122,7 +119,7 @@ git push origin v0.2.0
 > Normally a `git push` does not automatically push tags, so `git push origin v0.2.0` is used explicitly.
 > 
 
-# How to specify dependencies
+## How to specify dependencies
 
 You can pin an exact version such as: `"example-package==0.3.1"`
 
@@ -130,7 +127,7 @@ But this format will not automatically receive bug fixes.
 
 So it is much more recommended to use MINOR version ranges, e.g.: `"example-package>=0.3.1,<0.4"`
 
-# Changelog
+## Changelog
 
 Since the packages we use are private packages, it is recommended to have a log of the changes that each version implements. It is very useful for people who want to add a package as a dependency; with this log, doubts such as “Can I update from `0.2.1` to `0.3.0`?” will be cleared up, and similar questions.
 
@@ -167,14 +164,16 @@ A possible format for this log would be:
 - Initial atmospheric interpolation support.
 ```
 
-# Keep in mind
+## Keep in mind
 
 1. Software that uses semantic versioning MUST declare a public API. This API can be declared in the code itself or exist exclusively in the documentation. Whatever the method, it MUST be precise and complete.
 2. Once a package version has been published, the contents of that version MUST NOT be modified. Any modification MUST be published as a new version.
 3. Version 1.0.0 defines the public API. How the version number is incremented after this release depends on this public API and how it changes.
 
-# Sources
+## Sources
 
 [semver](https://semver.org/)
 
-[pep404](https://peps.python.org/pep-0440/)
+[PEP 440](https://peps.python.org/pep-0440/)
+
+To manage your environment and lock dependencies, see [uv as a Python project manager](/en/posts/Uv-pacakg/). My [Forgejo CI/CD and package publishing guide](/en/posts/guia-workflows/) connects Git tags with building and uploading a release.

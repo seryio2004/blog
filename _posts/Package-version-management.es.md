@@ -1,10 +1,11 @@
 ---
-title: "Gestión de versiones de paquetes"
+title: "Versionar paquetes Python con SemVer, Git y PEP 440"
 section: "Python"
 language: "es"
 excerpt: "Una guía práctica para versionar paquetes de Python con SemVer, etiquetas de Git y un changelog claro."
 coverImage: "/assets/blog/editorial-cover.png"
 date: "2026-08-26T05:35:07.322Z"
+updatedDate: "2026-11-10T00:00:00.000Z"
 author:
   name: Sergio Rodriguez
   picture: "/assets/blog/authors/jj.jpeg"
@@ -12,11 +13,9 @@ ogImage:
   url: "/assets/blog/social-preview.png"
 ---
 
-# Gestión de versiones de paquetes
-
 Esta guía usa el versionado semántico (SemVer) como base para gestionar las versiones de paquetes de Python.
 
-# Conceptos básicos
+## Conceptos básicos
 
 El esquema clásico es `MAJOR.MINOR.PATCH`:
 
@@ -33,7 +32,7 @@ Cada número tiene un significado:
 - **MINOR:** funciones nuevas que mantienen la compatibilidad: `1.2.4 → 1.3.0`.
 - **MAJOR:** cambios incompatibles: `1.3.0 → 2.0.0`.
 
-# Cuándo crear una versión nueva
+## Cuándo crear una versión nueva
 
 Se crea una versión cuando el proyecto alcanza un estado **instalable, identificable y reutilizable**.
 
@@ -41,7 +40,7 @@ Si corriges un error sin romper compatibilidad, incrementa PATCH. Si añades una
 
 Una duda frecuente es cuándo publicar `1.0.0`. La recomendación de SemVer es hacerlo cuando el software ya se usa en producción o tiene una API estable de la que dependen otros usuarios.
 
-# PEP 440: versiones de Python
+## PEP 440 (pep440): versiones de paquetes Python
 
 Python define en PEP 440 cómo escribir las versiones. Admite versiones estables:
 
@@ -69,9 +68,9 @@ rc -> release candidate
 sin sufijo -> versión estable
 ```
 
-No siempre necesitas estas variantes en proyectos pequeños; su uso depende del proceso de publicación.
+Estos sufijos distinguen distribuciones de desarrollo, preliminares y estables. SemVer describe el impacto de un cambio en la compatibilidad; PEP 440 define la sintaxis y el orden que interpretan las herramientas de Python. La referencia actual está en la [especificación de versiones de Python Packaging](https://packaging.python.org/en/latest/specifications/version-specifiers/).
 
-# Versión del paquete + etiqueta de Git
+## Versión del paquete + etiqueta de Git
 
 Es recomendable asociar cada versión publicada con una etiqueta de Git. Una **Git tag** apunta a un commit concreto y permite identificar exactamente qué código generó, por ejemplo, el paquete `v0.3.0`.
 
@@ -97,7 +96,7 @@ git push origin v0.2.0
 
 > Un `git push` normal no suele subir las etiquetas. Por eso se envía explícitamente `v0.2.0`.
 
-# Cómo declarar dependencias
+## Cómo declarar dependencias
 
 Puedes fijar una versión exacta:
 
@@ -111,7 +110,7 @@ Sin embargo, así no recibirás automáticamente correcciones. Suele ser más pr
 "example-package>=0.3.1,<0.4"
 ```
 
-# Changelog
+## Changelog
 
 En paquetes privados conviene mantener un registro de los cambios de cada versión. Ayuda a responder preguntas como: «¿puedo actualizar de `0.2.1` a `0.3.0`?».
 
@@ -143,13 +142,15 @@ Un formato posible es:
 - Initial atmospheric interpolation support.
 ```
 
-# Ten en cuenta
+## Ten en cuenta
 
 1. El software que usa SemVer debe declarar una API pública, ya sea en el código o en la documentación. Debe ser precisa y completa.
 2. Una versión publicada no debe modificarse. Cualquier cambio debe publicarse como una versión nueva.
 3. La versión `1.0.0` define la API pública. Los incrementos posteriores dependen de cómo cambie esa API.
 
-# Fuentes
+## Fuentes
 
 - [Semantic Versioning](https://semver.org/)
 - [PEP 440](https://peps.python.org/pep-0440/)
+
+Para gestionar el entorno y bloquear las dependencias, puedes usar [uv como gestor de proyectos Python](/posts/Uv-pacakg/). La [guía de CI/CD y publicación de paquetes en Forgejo](/posts/guia-workflows/) conecta estas etiquetas de Git con la construcción y subida de una versión.

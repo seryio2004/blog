@@ -1,0 +1,10 @@
+# Permanent moves on Cloudflare Workers Static Assets.
+# The HTML refresh pages remain as a fallback on GitHub Pages.
+/posts/Create-and-upload-a-package /posts/guia-workflows/ 301
+/posts/Create-and-upload-a-package/ /posts/guia-workflows/ 301
+/posts/guia_runners /posts/guia-workflows/ 301
+/posts/guia_runners/ /posts/guia-workflows/ 301
+/en/posts/Create-and-upload-a-package /en/posts/guia-workflows/ 301
+/en/posts/Create-and-upload-a-package/ /en/posts/guia-workflows/ 301
+/en/posts/guia_runners /en/posts/guia-workflows/ 301
+/en/posts/guia_runners/ /en/posts/guia-workflows/ 301
