@@ -1,6 +1,5 @@
-"""Validate the actual static export before either deployment (Python stdlib only)."""
+"""Validate the actual static export before deployment (Python stdlib only)."""
 import json
-import os
 from collections import defaultdict
 from html.parser import HTMLParser
 from pathlib import Path
@@ -8,8 +7,6 @@ from urllib.parse import unquote, urljoin, urlparse
 import xml.etree.ElementTree as ET
 
 ROOT = Path('out')
-BASE = '/' + os.environ.get('NEXT_PUBLIC_BASE_PATH', '').strip('/')
-BASE = '' if BASE == '/' else BASE
 ORIGIN = 'https://continuousdisintegration.com'
 errors = []
 
@@ -35,6 +32,7 @@ class Page(HTMLParser):
         self.headings = []
         self.schemas = []
         self.title = ''
+        self.lang = ''
         self.h1 = ''
         self.capture = None
         self.script = None
@@ -43,7 +41,9 @@ class Page(HTMLParser):
 
     def handle_starttag(self, tag, attributes):
         attrs = dict(attributes)
-        if tag == 'meta':
+        if tag == 'html':
+            self.lang = attrs.get('lang', '')
+        elif tag == 'meta':
             self.meta[attrs.get('name', attrs.get('property', ''))] = attrs.get('content', '')
         elif tag == 'link':
             self.links.append(attrs)
@@ -85,8 +85,6 @@ class Page(HTMLParser):
 
 def exported(url):
     path = unquote(urlparse(url).path)
-    if BASE and (path == BASE or path.startswith(BASE + '/')):
-        path = path[len(BASE):]
     candidate = ROOT / path.lstrip('/')
     if candidate.is_dir() or path.endswith('/') or not candidate.suffix:
         candidate = candidate / 'index.html'
@@ -113,6 +111,8 @@ for path in ROOT.rglob('*.html'):
     check(bool(page.title.strip()), path, 'missing title')
     check(bool(page.meta.get('description', '').strip()), path, 'missing description')
     check(page.headings.count(1) == 1, path, 'expected exactly one H1')
+    expected_lang = 'en' if urlparse(canonical).path.startswith('/en/') else 'es'
+    check(page.lang == expected_lang, path, f'html lang is {page.lang!r}, expected {expected_lang!r}')
     for image in page.images:
         check('alt' in image, path, 'image missing alt attribute')
         src = image.get('src', '')
@@ -133,8 +133,6 @@ for canonical, page in pages.items():
             continue
         check(exported(target).exists(), page.path, f'broken internal link: {href}')
         target_path = parsed.path
-        if BASE and (target_path == BASE or target_path.startswith(BASE + '/')):
-            target_path = target_path[len(BASE):]
         normalized = ORIGIN + target_path.rstrip('/') + '/'
         if canonical != normalized:
             inbound[normalized].add(canonical)
@@ -170,13 +168,19 @@ for path in [ROOT / '404.html', ROOT / '404/index.html']:
         check('noindex' in Page(path).meta.get('robots', ''), path, '404 must not be indexed')
 redirects = ROOT / '_redirects'
 check(redirects.exists(), 'redirects', 'missing exported redirect rules')
-if redirects.exists() and not BASE:
+if redirects.exists():
     for line in redirects.read_text().splitlines():
         if not line.strip() or line.startswith('#'):
             continue
         source, target, status = line.split()
         check(status == '301' and source != target, source, 'invalid permanent redirect')
-        check(ORIGIN + target in pages, source, 'redirect destination is not an indexable page')
+        if target.endswith('/'):
+            check(ORIGIN + target in pages, source, 'redirect destination is not an indexable page')
+        elif ':splat' in target:
+            check(exported(target.split(':splat')[0]).parent.is_dir(), source, 'redirect destination folder not exported')
+        else:
+            check(exported(target).exists(), source, 'redirect destination file not exported')
+        check(not exported(source.rstrip('*')).exists() or source.endswith('*'), source, 'redirect source still exported')
 if errors:
     raise SystemExit('\n'.join(errors))
 print(f'SEO OK: {len(pages)} indexable pages, {sum("/posts/" in url for url in pages)} articles; canonicals, hreflang, H1, descriptions, internal links, images, JSON-LD and sitemap verified.')

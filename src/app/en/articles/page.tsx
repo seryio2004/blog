@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ArticlesPageContent } from "../../_views/articles-page";
+import { ArticlesPageContent } from "@/app/_views/articles-page";
 import { canonicalUrl } from "@/lib/site";
 import { buildPageSocialMetadata } from "@/lib/seo";
 

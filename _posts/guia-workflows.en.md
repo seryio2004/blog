@@ -459,7 +459,7 @@ An `/etc/hosts` entry only resolves a hostname. It neither installs a CA nor fix
 
 ## Build and publish a version
 
-Start with validated code and an identifiable version. Declare the package name, version and build backend in `pyproject.toml`, run tests and associate the version with a commit or Git tag. The [version management article](/en/posts/Package-version-management/) explains that process further.
+Start with validated code and an identifiable version. Declare the package name, version and build backend in `pyproject.toml`, run tests and associate the version with a commit or Git tag. The [version management article](/en/posts/python-semver-pep440/) explains that process further.
 
 ### Generate artifacts
 
@@ -686,4 +686,4 @@ Identify how far execution has progressed. A pending job has not started running
 
 After completing the process, another project should be able to install the published version using its own index configuration and credentials. That check completes the cycle: validated code has become an identifiable, reusable dependency.
 
-Before publishing, define your [package versioning with SemVer and Git tags](/en/posts/Package-version-management/). For installing and locking development dependencies, see the [uv commands for Python projects](/en/posts/Uv-pacakg/).
+Before publishing, define your [package versioning with SemVer and Git tags](/en/posts/python-semver-pep440/). For installing and locking development dependencies, see the [uv commands for Python projects](/en/posts/uv-python/).

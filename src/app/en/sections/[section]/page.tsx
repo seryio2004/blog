@@ -1,5 +1,5 @@
 import { getSections } from "@/lib/api";
-import { buildSectionMetadata, SectionPageContent } from "../../../_views/section-page";
+import { buildSectionMetadata, SectionPageContent } from "@/app/_views/section-page";
 
 type Props = { params: Promise<{ section: string }> };
 export default function EnglishSectionPage(props: Props) { return <SectionPageContent {...props} locale="en" />; }

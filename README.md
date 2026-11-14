@@ -21,8 +21,12 @@ npm run build
 
 ## Añadir un artículo
 
-Los artículos están en [`_posts/`](./_posts/). El nombre del archivo se usa
-como slug; por ejemplo, `mi-articulo.md` genera `/posts/mi-articulo/`.
+Los artículos están en [`_posts/`](./_posts/). Cada artículo tiene dos
+archivos: `mi-articulo.md` (español) y `mi-articulo.en.md` (inglés). El nombre
+se usa como slug en ambos idiomas: `/posts/mi-articulo/` y
+`/en/posts/mi-articulo/`. Usa minúsculas, guiones y palabras que la gente
+buscaría; no lo cambies tras publicar sin añadir una redirección 301 en
+[`public/_redirects`](./public/_redirects).
 
 ```md
 ---
@@ -77,8 +81,6 @@ frontmatter o el cuerpo Markdown empiezan por `/assets/`:
 ![Descripción de la captura](/assets/blog/mi-articulo/captura.png)
 ```
 
-Las rutas Markdown se adaptan automáticamente al `basePath` de cada despliegue.
-
 ## Secciones
 
 No hay un registro manual de secciones. [`src/lib/api.ts`](./src/lib/api.ts)
@@ -107,7 +109,8 @@ Todo el blog comparte la misma interfaz editorial:
 - [`src/app/_components/follow-menu.tsx`](./src/app/_components/follow-menu.tsx): menú «Sígueme» de la cabecera y las ventanas laterales, con RSS, correo y X.
 
 Instagram y TikTok aparecen como «Próximamente» hasta añadir sus URLs en
-`upcomingChannels`, dentro de `follow-menu.tsx`. El correo y la cuenta de X se
+`upcomingChannels`, dentro de `follow-menu.tsx`. La página `/tiktok/` (no
+indexable) es el destino del enlace de la bio de TikTok y lista las guías. El correo y la cuenta de X se
 configuran en `src/lib/site.ts`.
 
 Las ventanas laterales recomiendan otros artículos, dando prioridad a la misma
@@ -139,37 +142,46 @@ Las fuentes están incluidas en `src/assets/fonts/`, por lo que no se necesitan
 descargas ni un servidor de imágenes en producción.
 
 [`src/app/feed.xml/route.ts`](./src/app/feed.xml/route.ts) genera el feed RSS
-durante la exportación estática y enlaza al dominio principal. Los metadatos de
-imágenes usan `NEXT_PUBLIC_SITE_URL` para apuntar a los archivos del despliegue
-correspondiente; en desarrollo se usa `https://continuousdisintegration.com`.
+durante la exportación estática y enlaza al dominio principal. Todas las URLs
+absolutas usan `https://continuousdisintegration.com`.
 
-## GitHub Pages
+## Idiomas
 
-El workflow [`deploy-pages.yml`](./.github/workflows/deploy-pages.yml) ejecuta
-`npm ci` y `npm run build`. `NEXT_PUBLIC_BASE_PATH` procede de
-`actions/configure-pages` y `NEXT_PUBLIC_SITE_URL` de su URL pública.
-[`src/lib/paths.ts`](./src/lib/paths.ts) adapta las rutas públicas al
-subdirectorio del sitio. La configuración de Next.js se mantiene en
-[`next.config.ts`](./next.config.ts); `configure-pages` solo obtiene los datos
-del destino.
+El español vive en el grupo de rutas [`src/app/(es)/`](./src/app/(es)/) y el
+inglés en [`src/app/en/`](./src/app/en/). Cada uno tiene su propio layout raíz,
+de modo que el HTML exportado lleva `<html lang="es">` o `<html lang="en">`
+sin depender de JavaScript. Ambos usan
+[`root-document.tsx`](./src/app/_components/root-document.tsx). Como hay dos
+layouts raíz, el 404 global está en
+[`global-not-found.tsx`](./src/app/global-not-found.tsx).
 
 ## Cloudflare Workers
 
-[`wrangler.jsonc`](./wrangler.jsonc) publica la exportación estática de `out/`
-en la raíz del Worker. El workflow compila de nuevo con `NEXT_PUBLIC_BASE_PATH`
-vacío y `NEXT_PUBLIC_SITE_URL=https://continuousdisintegration.com`, de modo
-que las rutas no incluyen el subdirectorio de GitHub Pages.
+El blog se publica solo en Cloudflare. [`wrangler.jsonc`](./wrangler.jsonc)
+publica la exportación estática de `out/` en la raíz del Worker, y el workflow
+[`deploy.yml`](./.github/workflows/deploy.yml) ejecuta `npm ci`,
+`npm run build` y el despliegue en cada push a `main`. Las redirecciones 301
+están en [`public/_redirects`](./public/_redirects).
 
 El workflow necesita los secretos `CLOUDFLARE_API_TOKEN` y
 `CLOUDFLARE_ACCOUNT_ID` para publicar.
+
+### Analítica
+
+Se usa Cloudflare Web Analytics (sin cookies). Crea el sitio en el panel de
+Cloudflare (**Analytics & Logs → Web Analytics → Add a site**), copia el token
+del fragmento JavaScript y guárdalo como **variable** del repositorio
+`CF_WEB_ANALYTICS_TOKEN` (Settings → Secrets and variables → Actions →
+Variables). El token es público. Sin esa variable el sitio se compila sin
+analítica. Para medir TikTok, usa enlaces con `?utm_source=tiktok`.
 
 ## SEO y Google Search Console
 
 La URL principal es `https://continuousdisintegration.com/`.
 [`src/app/sitemap.ts`](./src/app/sitemap.ts) genera `/sitemap.xml` con las
 páginas y artículos del dominio principal; [`src/app/robots.ts`](./src/app/robots.ts)
-lo anuncia a los buscadores. Las páginas publicadas también en GitHub Pages
-indican mediante `rel="canonical"` que la versión preferida es la de Cloudflare.
+lo anuncia a los buscadores. Cada página declara su URL canónica con
+`rel="canonical"`.
 La portada incluye datos estructurados `WebSite` con el nombre del blog.
 
 Para registrar el dominio en [Google Search Console](https://search.google.com/search-console):

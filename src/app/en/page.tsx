@@ -1,6 +1,6 @@
 import { copy } from "@/lib/i18n";
 import type { Metadata } from "next";
-import { HomePage } from "../_views/home-page";
+import { HomePage } from "@/app/_views/home-page";
 import { canonicalUrl } from "@/lib/site";
 import { defaultSocialImage, defaultSocialImageHeight, defaultSocialImageWidth, siteAuthorX, siteName } from "@/lib/site";
 

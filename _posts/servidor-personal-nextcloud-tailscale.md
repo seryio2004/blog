@@ -746,4 +746,4 @@ No es un datacenter.
 
 Pero ya empieza a parecer demasiado serio para seguir llamándolo "la torre vieja".
 
-Si necesitas vigilar varios ordenadores, cuento cómo desarrollé un [sistema de monitorización de equipos y sesiones RDP](/posts/Monitorizacion_equipos/). Otra forma de aprovechar un portátil antiguo es convertirlo en un [centro multimedia controlado desde el móvil con TV Remote](/posts/Tv-remote/).
+Si necesitas vigilar varios ordenadores, cuento cómo desarrollé un [sistema de monitorización de equipos y sesiones RDP](/posts/rdp-session-monitoring/). Otra forma de aprovechar un portátil antiguo es convertirlo en un [centro multimedia controlado desde el móvil con TV Remote](/posts/linux-tv-remote/).

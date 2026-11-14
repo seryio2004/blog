@@ -746,4 +746,4 @@ It is not a datacenter.
 
 But it is starting to look too serious to keep calling it "the old tower".
 
-If you need to track multiple computers, see my [computer and RDP session monitoring system](/en/posts/Monitorizacion_equipos/). Another use for an old laptop is a [phone-controlled media center with TV Remote](/en/posts/Tv-remote/).
+If you need to track multiple computers, see my [computer and RDP session monitoring system](/en/posts/rdp-session-monitoring/). Another use for an old laptop is a [phone-controlled media center with TV Remote](/en/posts/linux-tv-remote/).

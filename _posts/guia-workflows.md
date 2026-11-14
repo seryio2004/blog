@@ -459,7 +459,7 @@ Una entrada en `/etc/hosts` solo resuelve un nombre. No instala una CA ni corrig
 
 ## Construir y publicar una versión
 
-El proceso de publicación empieza con código validado y una versión identificable. Declara el nombre, la versión y el backend de construcción en `pyproject.toml`, ejecuta las pruebas y asocia la versión con un commit o una etiqueta de Git. El artículo sobre [gestión de versiones](/posts/Package-version-management/) desarrolla ese criterio.
+El proceso de publicación empieza con código validado y una versión identificable. Declara el nombre, la versión y el backend de construcción en `pyproject.toml`, ejecuta las pruebas y asocia la versión con un commit o una etiqueta de Git. El artículo sobre [gestión de versiones](/posts/python-semver-pep440/) desarrolla ese criterio.
 
 ### Generar los artefactos
 
@@ -686,4 +686,4 @@ La forma más útil de revisar una ejecución es identificar hasta dónde ha lle
 
 Una vez completado el recorrido, otro proyecto debería poder instalar la versión publicada usando su propia configuración de índice y credenciales. Esa comprobación cierra el proceso: el código validado se ha convertido en una dependencia identificable y reutilizable.
 
-Antes de publicar, conviene definir el [versionado del paquete con SemVer y etiquetas de Git](/posts/Package-version-management/). Para instalar y bloquear sus dependencias en desarrollo, explico los comandos de [uv para proyectos Python](/posts/Uv-pacakg/).
+Antes de publicar, conviene definir el [versionado del paquete con SemVer y etiquetas de Git](/posts/python-semver-pep440/). Para instalar y bloquear sus dependencias en desarrollo, explico los comandos de [uv para proyectos Python](/posts/uv-python/).

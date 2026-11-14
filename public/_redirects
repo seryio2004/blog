@@ -1,10 +1,34 @@
-# Permanent moves on Cloudflare Workers Static Assets.
-# The HTML refresh pages remain as a fallback on GitHub Pages.
+# Permanent moves served by Cloudflare Workers Static Assets.
 /posts/Create-and-upload-a-package /posts/guia-workflows/ 301
 /posts/Create-and-upload-a-package/ /posts/guia-workflows/ 301
 /posts/guia_runners /posts/guia-workflows/ 301
 /posts/guia_runners/ /posts/guia-workflows/ 301
+/posts/Uv-pacakg /posts/uv-python/ 301
+/posts/Uv-pacakg/ /posts/uv-python/ 301
+/posts/Package-version-management /posts/python-semver-pep440/ 301
+/posts/Package-version-management/ /posts/python-semver-pep440/ 301
+/posts/Tv-remote /posts/linux-tv-remote/ 301
+/posts/Tv-remote/ /posts/linux-tv-remote/ 301
+/posts/Monitorizacion_equipos /posts/rdp-session-monitoring/ 301
+/posts/Monitorizacion_equipos/ /posts/rdp-session-monitoring/ 301
 /en/posts/Create-and-upload-a-package /en/posts/guia-workflows/ 301
 /en/posts/Create-and-upload-a-package/ /en/posts/guia-workflows/ 301
 /en/posts/guia_runners /en/posts/guia-workflows/ 301
 /en/posts/guia_runners/ /en/posts/guia-workflows/ 301
+/en/posts/Uv-pacakg /en/posts/uv-python/ 301
+/en/posts/Uv-pacakg/ /en/posts/uv-python/ 301
+/en/posts/Package-version-management /en/posts/python-semver-pep440/ 301
+/en/posts/Package-version-management/ /en/posts/python-semver-pep440/ 301
+/en/posts/Tv-remote /en/posts/linux-tv-remote/ 301
+/en/posts/Tv-remote/ /en/posts/linux-tv-remote/ 301
+/en/posts/Monitorizacion_equipos /en/posts/rdp-session-monitoring/ 301
+/en/posts/Monitorizacion_equipos/ /en/posts/rdp-session-monitoring/ 301
+/social/es/Uv-pacakg.png /social/es/uv-python.png 301
+/social/es/Package-version-management.png /social/es/python-semver-pep440.png 301
+/social/es/Tv-remote.png /social/es/linux-tv-remote.png 301
+/social/es/Monitorizacion_equipos.png /social/es/rdp-session-monitoring.png 301
+/social/en/Uv-pacakg.png /social/en/uv-python.png 301
+/social/en/Package-version-management.png /social/en/python-semver-pep440.png 301
+/social/en/Tv-remote.png /social/en/linux-tv-remote.png 301
+/social/en/Monitorizacion_equipos.png /social/en/rdp-session-monitoring.png 301
+/assets/blog/Uv-pacakg/* /assets/blog/uv-python/:splat 301

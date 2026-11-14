@@ -1,5 +1,5 @@
 import { getAllPosts } from "@/lib/api";
-import { buildPostMetadata, PostPageContent } from "../../../_views/post-page";
+import { buildPostMetadata, PostPageContent } from "@/app/_views/post-page";
 
 type Params = { params: Promise<{ slug: string }> };
 export default function EnglishPost(props: Params) { return <PostPageContent {...props} locale="en" />; }

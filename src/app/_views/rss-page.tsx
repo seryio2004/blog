@@ -6,7 +6,6 @@ import DateFormatter from "@/app/_components/date-formatter";
 import { RssSubscribe } from "@/app/_components/rss-subscribe";
 import { getAllPosts } from "@/lib/api";
 import { routes, type Locale } from "@/lib/i18n";
-import { withBasePath } from "@/lib/paths";
 import { canonicalUrl } from "@/lib/site";
 import { buildPageSocialMetadata } from "@/lib/seo";
 
@@ -58,7 +57,7 @@ export function RssPage({ locale }: { locale: Locale }) {
     </div>
     <section className="rss-channel" aria-labelledby="rss-subscribe-title">
       <div><p className="eyebrow">{text.channel}</p><h2 id="rss-subscribe-title">{text.subscribe}</h2><p>{text.description}</p><p className="rss-channel__language">{text.language}</p><Link className="text-link" href={routes(otherLocale).rss}>{text.other} {text.otherLink} →</Link></div>
-      <div className="rss-window"><div className="rss-window__bar"><span>~/continuous-disintegration</span><span>RSS / {locale.toUpperCase()}</span></div><div className="rss-window__body"><svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true"><circle cx="5" cy="19" r="1.5" fill="currentColor" stroke="none"/><path d="M4 11a9 9 0 0 1 9 9M4 4a16 16 0 0 1 16 16"/></svg><RssSubscribe url={canonicalUrl(feedPath)} xmlHref={withBasePath(feedPath)} locale={locale}/></div></div>
+      <div className="rss-window"><div className="rss-window__bar"><span>~/continuous-disintegration</span><span>RSS / {locale.toUpperCase()}</span></div><div className="rss-window__body"><svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true"><circle cx="5" cy="19" r="1.5" fill="currentColor" stroke="none"/><path d="M4 11a9 9 0 0 1 9 9M4 4a16 16 0 0 1 16 16"/></svg><RssSubscribe url={canonicalUrl(feedPath)} xmlHref={feedPath} locale={locale}/></div></div>
     </section>
     <section className="rss-instructions" aria-labelledby="rss-how-title"><p className="eyebrow">{text.how}</p><h2 id="rss-how-title">{text.howTitle}</h2><ol>{text.steps.map((step,index)=><li key={step.title}><span aria-hidden="true">/0{index+1}</span><h3>{step.title}</h3><p>{step.note}</p></li>)}</ol><p className="rss-instructions__note">{text.note}</p></section>
     <section className="rss-latest" aria-labelledby="rss-latest-title"><div className="section-heading"><div><p className="eyebrow">{text.latest}</p><h2 id="rss-latest-title">{text.latestTitle}</h2></div><Link className="text-link" href={href.articles}>{text.all} →</Link></div><ul>{posts.slice(0,4).map(post=><li key={post.slug}><Link href={href.post(post.slug)}><span><small>{post.section}</small><strong>{post.title}</strong></span><DateFormatter dateString={post.date} locale={locale}/><span aria-hidden="true">→</span></Link></li>)}</ul></section>

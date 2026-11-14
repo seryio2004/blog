@@ -4,7 +4,6 @@ import hljs from "highlight.js";
 import { visit } from "unist-util-visit";
 import type { Code, Image } from "mdast";
 import type { Locale } from "./i18n";
-import { withBasePath } from "./paths";
 
 const languageAliases = new Map([["dotenv", "ini"], ["fstab", "plaintext"]]);
 
@@ -46,7 +45,7 @@ export default async function markdownToHtml(markdown: string, locale: Locale = 
         node.data = {
           ...node.data,
           hProperties: {
-            ...(node.url === "/assets/blog/Uv-pacakg/image.webp" ? { width: 794, height: 282 } : {}),
+            ...(node.url === "/assets/blog/uv-python/image.webp" ? { width: 794, height: 282 } : {}),
           },
         };
       });
@@ -57,11 +56,6 @@ export default async function markdownToHtml(markdown: string, locale: Locale = 
   return result
     .toString()
     .replace(/<img\b/g, '<img loading="lazy" decoding="async"')
-    .replace(
-      /\b(src|href)="(\/(?!\/)[^"]*)"/g,
-      (_match, attribute: string, path: string) =>
-        `${attribute}="${withBasePath(path)}"`,
-    )
     .replace(/<pre><code(?:\s[^>]*)?>[\s\S]*?<\/code><\/pre>/g, (original) => {
       const node = blocks[blockIndex++];
       return node ? renderCodeBlock(node, locale) : original;
