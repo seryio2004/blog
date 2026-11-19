@@ -25,6 +25,8 @@ KEY_LOCATION = f'{ORIGIN}/{KEY}.txt'
 ENDPOINT = 'https://api.indexnow.org/indexnow'
 SITEMAP = Path('out/sitemap.xml')
 NS = {'s': 'http://www.sitemaps.org/schemas/sitemap/0.9'}
+# Cloudflare rejects Python's default User-Agent (403), so identify the client explicitly.
+USER_AGENT = 'continuousdisintegration-indexnow/1.0'
 
 
 def warn(message):
@@ -48,7 +50,7 @@ def key_is_live(attempts=6, delay=10):
     # The key file must be reachable before submitting, and a deploy can take a moment to propagate.
     for attempt in range(attempts):
         try:
-            with urllib.request.urlopen(KEY_LOCATION, timeout=15) as response:
+            with urllib.request.urlopen(urllib.request.Request(KEY_LOCATION, headers={'User-Agent': USER_AGENT}), timeout=15) as response:
                 if response.read().decode().strip() == KEY:
                     return True
         except (urllib.error.URLError, TimeoutError):
@@ -60,7 +62,7 @@ def key_is_live(attempts=6, delay=10):
 
 def submit(urls):
     body = json.dumps({'host': HOST, 'key': KEY, 'keyLocation': KEY_LOCATION, 'urlList': urls}).encode()
-    request = urllib.request.Request(ENDPOINT, data=body, method='POST', headers={'Content-Type': 'application/json; charset=utf-8'})
+    request = urllib.request.Request(ENDPOINT, data=body, method='POST', headers={'Content-Type': 'application/json; charset=utf-8', 'User-Agent': USER_AGENT})
     try:
         with urllib.request.urlopen(request, timeout=30) as response:
             return response.status, ''
