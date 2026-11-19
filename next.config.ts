@@ -2,6 +2,10 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   output: "export",
+  // Dev only: allow opening `npm run dev` from other devices on the home
+  // network (e.g. http://192.168.x.x:3000). Without this, Next blocks the
+  // dev chunks, HMR and lazily loaded code such as the STL viewer.
+  allowedDevOrigins: ["192.168.*.*"],
   experimental: {
     useTypeScriptCli: false,
     // Spanish and English use separate root layouts so each page ships the

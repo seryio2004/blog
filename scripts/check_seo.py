@@ -51,6 +51,12 @@ class Page(HTMLParser):
             self.anchors.append(attrs.get('href', ''))
         elif tag == 'img':
             self.images.append(attrs)
+        elif tag == 'figure' and 'data-media-pending' in attrs:
+            errors.append(f'{self.path}: pending media placeholder on a published page ({attrs.get("data-media-pending")}); add the file or mark the article as draft')
+        elif tag == 'figure' and attrs.get('data-src', '').startswith('/'):
+            self.images.append({'alt': '', 'src': attrs['data-src']})
+        elif tag == 'source' and attrs.get('src', '').startswith('/'):
+            self.images.append({'alt': '', 'src': attrs['src']})
         elif tag == 'title':
             self.capture = 'title'
         elif tag == 'h1':

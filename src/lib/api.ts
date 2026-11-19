@@ -32,12 +32,15 @@ export function getSectionSlug(section: string) {
     .replace(/^-|-$/g, "");
 }
 
+// Articles with `draft: true` only appear in `npm run dev`, never in a build.
+const showDrafts = process.env.NODE_ENV === "development";
+
 export function getPostSlugs() {
-  return fs.readdirSync(postsDirectory).filter((file) =>
-    file.endsWith(".md") &&
-    !/\.(?:es|en)\.md$/.test(file) &&
-    fs.readFileSync(join(postsDirectory, file), "utf8").startsWith("---\n"),
-  );
+  return fs.readdirSync(postsDirectory).filter((file) => {
+    if (!file.endsWith(".md") || /\.(?:es|en)\.md$/.test(file)) return false;
+    const source = fs.readFileSync(join(postsDirectory, file), "utf8");
+    return source.startsWith("---\n") && (showDrafts || matter(source).data.draft !== true);
+  });
 }
 
 export function getPostBySlug(slug: string, locale: Locale = "es") {

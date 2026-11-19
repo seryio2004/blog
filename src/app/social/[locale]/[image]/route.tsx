@@ -35,6 +35,47 @@ function plateFor(slug: string) {
   return (hash >>> 0) % 900 + 100;
 }
 
+// Hand-drawn vector art for posts that deserve something more specific than the generic plate.
+function SamplerArt({ theme }: { theme: ReturnType<typeof themeFor> }) {
+  const ink = theme.ink;
+  const active = new Set([0, 4, 8, 12, 10]);
+  const wave = [14, 26, 40, 22, 34, 48, 30, 18, 38, 52, 28, 16, 24, 44, 36, 20];
+  return (
+    <svg width="440" height="320" viewBox="0 0 440 320">
+      <g fill="none" stroke={ink} strokeWidth="1" opacity="0.16">
+        <path d="M0 40h440M0 100h440M0 160h440M0 220h440M0 280h440M40 0v320M120 0v320M200 0v320M280 0v320M360 0v320" />
+      </g>
+      <path d="M8 24V8h16M416 8h16v16M8 296v16h16M416 312h16v-16" fill="none" stroke={ink} strokeWidth="2" />
+      <rect x="32" y="52" width="384" height="232" fill={ink} />
+      <rect x="22" y="42" width="384" height="232" fill="#f2f1eb" stroke={ink} strokeWidth="3" />
+      {Array.from({ length: 16 }, (_, step) => (
+        <circle key={step} cx={50 + step * 22} cy="68" r="6.5"
+          fill={step === 5 ? "#e95420" : active.has(step) ? "#77216f" : "#fbfaf4"} stroke={ink} strokeWidth="2" />
+      ))}
+      <rect x="44" y="92" width="190" height="74" fill={theme.accent} stroke={ink} strokeWidth="3" />
+      {wave.map((height, index) => (
+        <rect key={index} x={54 + index * 10.6} y={129 - height / 2} width="6" height={height} fill={ink} />
+      ))}
+      {[92, 168].map((x) => (
+        <g key={x}>
+          <circle cx={x} cy="222" r="20" fill="#fbfaf4" stroke={ink} strokeWidth="3" />
+          <path d={`M${x} 222l${x === 92 ? -9 : 10} -13`} stroke={ink} strokeWidth="4" />
+        </g>
+      ))}
+      {Array.from({ length: 9 }, (_, index) => {
+        const x = 254 + (index % 3) * 50;
+        const y = 92 + Math.floor(index / 3) * 58;
+        return (
+          <g key={index}>
+            <rect x={x + 4} y={y + 5} width="42" height="48" fill={ink} />
+            <rect x={x} y={y} width="42" height="48" fill={index === 4 ? theme.accent : "#fbfaf4"} stroke={ink} strokeWidth="2.5" />
+          </g>
+        );
+      })}
+    </svg>
+  );
+}
+
 export async function GET(_request: Request, { params }: {
   params: Promise<{ locale: string; image: string }>;
 }) {
@@ -47,12 +88,14 @@ export async function GET(_request: Request, { params }: {
   const theme = themeFor(post.section);
   const plate = plateFor(slug);
   const shift = plate % 36;
-  const titleSize = post.title.length > 85 ? 54 : post.title.length > 55 ? 62 : 76;
+  const customArt = slug === "sampler-raspberry-pi" ? <SamplerArt theme={theme} /> : null;
+  const titleSize = customArt ? 62 : post.title.length > 85 ? 54 : post.title.length > 55 ? 62 : 76;
   const [regularFont, boldFont] = await fonts;
+  const artWidth = customArt ? 440 : 250;
 
   return new ImageResponse(
     <div style={{ width: "100%", height: "100%", display: "flex", flexDirection: "column", padding: "40px 52px", background: "#f2f1eb", color: "#11110f", fontFamily: "Liberation Sans", position: "relative" }}>
-      <div style={{ position: "absolute", right: 0, top: 0, bottom: 0, width: 280, display: "flex", background: theme.paper }} />
+      <div style={{ position: "absolute", right: 0, top: 0, bottom: 0, width: customArt ? 430 : 280, display: "flex", background: theme.paper }} />
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", paddingBottom: 24, borderBottom: "2px solid #11110f", position: "relative" }}>
         <div style={{ display: "flex", gap: 18, alignItems: "center" }}>
           <div style={{ display: "flex", fontSize: 32, fontWeight: 700, letterSpacing: -2 }}>C<span style={{ color: "#77216f" }}>/</span>D</div>
@@ -61,15 +104,15 @@ export async function GET(_request: Request, { params }: {
         <span style={{ fontSize: 18, color: theme.ink }}>CD_{plate} / {locale.toUpperCase()}</span>
       </div>
       <div style={{ display: "flex", flex: 1, alignItems: "center", gap: 26, position: "relative" }}>
-        <div style={{ display: "flex", flexDirection: "column", width: 804, gap: 24 }}>
+        <div style={{ display: "flex", flexDirection: "column", width: customArt ? 600 : 804, gap: 24 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 12, fontSize: 19, fontWeight: 700, letterSpacing: 2 }}>
             <span style={{ width: 12, height: 12, background: "#77216f" }} />
             <span>{post.section.toUpperCase()}</span>
           </div>
           <div style={{ display: "flex", fontSize: titleSize, fontWeight: 700, lineHeight: 1.12, letterSpacing: -2.3 }}>{post.title}</div>
         </div>
-        <div style={{ display: "flex", width: 250, height: 300, alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-          <svg width="250" height="300" viewBox="0 0 250 300">
+        <div style={{ display: "flex", width: artWidth, height: customArt ? 320 : 300, alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+          {customArt ?? <svg width="250" height="300" viewBox="0 0 250 300">
             <g fill="none" stroke={theme.ink} strokeWidth="1" opacity="0.18">
               <path d="M25 0v300M75 0v300M125 0v300M175 0v300M225 0v300M0 25h250M0 75h250M0 125h250M0 175h250M0 225h250M0 275h250" />
               <circle cx="125" cy="150" r="110" />
@@ -84,7 +127,7 @@ export async function GET(_request: Request, { params }: {
             <circle cx="125" cy="32" r="6" fill={theme.ink} />
             <circle cx="220" cy={232 - shift} r="8" fill={theme.accent} stroke={theme.ink} strokeWidth="3" />
             <path d="M10 25V10h15M225 10h15v15M10 275v15h15M225 290h15v-15" fill="none" stroke={theme.ink} strokeWidth="2" />
-          </svg>
+          </svg>}
         </div>
       </div>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", paddingTop: 22, borderTop: "2px solid #11110f", fontSize: 20, position: "relative" }}>

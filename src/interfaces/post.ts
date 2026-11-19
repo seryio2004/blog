@@ -17,4 +17,5 @@ export type Post = {
   };
   content: string;
   preview?: boolean;
+  draft?: boolean;
 };

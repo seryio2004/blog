@@ -79,7 +79,28 @@ frontmatter o el cuerpo Markdown empiezan por `/assets/`:
 
 ```md
 ![Descripción de la captura](/assets/blog/mi-articulo/captura.png)
+![Descripción del vídeo](/assets/blog/mi-articulo/demo.mp4)
+![Nombre de la pieza](/assets/blog/mi-articulo/modelos/pieza.stl)
 ```
+
+La misma sintaxis sirve para tres tipos de medio según la extensión:
+
+- Imagen (`.jpg`, `.png`, `.webp`…): se muestra tal cual.
+- Vídeo (`.mp4`, `.webm`): reproductor nativo con controles.
+- Modelo 3D (`.stl`): visor interactivo con three.js, que solo se descarga
+  cuando el visor entra en pantalla, y enlace para descargar el STL.
+
+Si el archivo todavía no existe en `public/`, se muestra un recuadro
+«pendiente» con la descripción y el nombre esperado. En cuanto añades el
+archivo, aparece el medio real sin tocar el texto. `npm run build` falla si un
+artículo publicado contiene recuadros pendientes.
+
+## Borradores
+
+Añade `draft: true` al frontmatter (basta en el archivo en español) para que
+el artículo solo aparezca con `npm run dev`. No se exporta, ni sale en el
+sitemap, el RSS o los listados. Quita la línea y pon la fecha real en `date`
+al publicarlo.
 
 ## Secciones
 
