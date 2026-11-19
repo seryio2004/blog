@@ -213,6 +213,24 @@ Para registrar el dominio en [Google Search Console](https://search.google.com/s
 4. En **Sitemaps**, envía `https://continuousdisintegration.com/sitemap.xml`.
 5. Usa **Inspección de URLs** con `https://continuousdisintegration.com/` para comprobar su indexación y, si hace falta, solicitarla.
 
+### IndexNow (Bing, Yandex, Seznam, Naver)
+
+Cada despliegue avisa automáticamente a [IndexNow](https://www.indexnow.org/)
+de las URLs nuevas, modificadas o eliminadas. El workflow guarda el
+`sitemap.xml` publicado antes de desplegar y, después,
+[`scripts/indexnow.py`](./scripts/indexnow.py) lo compara con el nuevo
+(URLs y `lastmod`). La clave pública está en `public/<clave>.txt`; si la
+cambias, actualiza también `KEY` en el script. Un fallo de IndexNow solo deja
+un aviso en el workflow, nunca rompe el despliegue.
+
+Google no usa IndexNow: para Google sigue valiendo el sitemap y la
+**Inspección de URLs** de Search Console.
+
+```bash
+python3 scripts/indexnow.py --all --dry-run          # ver qué se enviaría
+python3 scripts/indexnow.py --url https://continuousdisintegration.com/posts/slug/
+```
+
 Antes de publicar un artículo, comprueba que:
 
 - `section` y `language` son válidos.

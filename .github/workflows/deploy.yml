@@ -42,8 +42,18 @@ jobs:
           # Si no existe, el sitio se compila sin analítica.
           NEXT_PUBLIC_CF_WEB_ANALYTICS_TOKEN: ${{ vars.CF_WEB_ANALYTICS_TOKEN }}
 
+      # Copia del sitemap publicado antes de desplegar, para saber qué URLs cambian.
+      - name: Guardar el sitemap publicado
+        continue-on-error: true
+        run: curl -fsSL --retry 3 https://continuousdisintegration.com/sitemap.xml -o "$RUNNER_TEMP/previous-sitemap.xml"
+
       - name: Desplegar en Cloudflare
         uses: cloudflare/wrangler-action@v4
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
+      # Avisa a Bing, Yandex, Seznam y Naver de las URLs nuevas, modificadas o eliminadas.
+      - name: Avisar a IndexNow
+        continue-on-error: true
+        run: python3 scripts/indexnow.py --previous "$RUNNER_TEMP/previous-sitemap.xml"
