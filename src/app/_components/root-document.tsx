@@ -69,11 +69,11 @@ export function RootDocument({ locale, children }: { locale: Locale; children: R
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png" />
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png" />
         <link rel="manifest" href="/favicon/site.webmanifest" />
-        <link rel="mask-icon" href="/favicon/safari-pinned-tab.svg" color="#000000" />
+        <link rel="mask-icon" href="/favicon/safari-pinned-tab.svg" color="#77216f" />
         <link rel="shortcut icon" href="/favicon/favicon.ico" />
-        <meta name="msapplication-TileColor" content="#000000" />
+        <meta name="msapplication-TileColor" content="#300a24" />
         <meta name="msapplication-config" content="/favicon/browserconfig.xml" />
-        <meta name="theme-color" content="#000000" />
+        <meta name="theme-color" content="#f2f1eb" />
         <link rel="alternate" type="application/rss+xml" hrefLang="es" href="/feed.xml" />
         <link rel="alternate" type="application/rss+xml" hrefLang="en" href="/en/feed.xml" />
         <link rel="describedby" href="/llms.txt" />
